@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">OmniDex</string>
+    <string name="title_activity_main">OmniDex</string>
+    <string name="package_name">com.outergames.omnidex</string>
+    <string name="custom_url_scheme">com.outergames.omnidex</string>
+</resources>

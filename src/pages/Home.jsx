@@ -1,0 +1,87 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search, Sparkles } from 'lucide-react';
+
+export default function Home() {
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (query.trim()) {
+      navigate(`/search/${encodeURIComponent(query.trim())}`);
+    }
+  };
+
+  return (
+    <div className="animate-fade-in" style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center',
+      minHeight: '80vh',
+      textAlign: 'center'
+    }}>
+      <div style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: '8px',
+        padding: '8px 16px',
+        background: 'rgba(109, 40, 217, 0.1)',
+        border: '1px solid rgba(109, 40, 217, 0.3)',
+        borderRadius: 'var(--radius-full)',
+        color: 'var(--accent-primary)',
+        fontWeight: '600',
+        marginBottom: '24px',
+        fontSize: '0.9rem'
+      }}>
+        <Sparkles size={16} />
+        <span>Potenziato dall'IA</span>
+      </div>
+
+      <h1 style={{ fontSize: '4rem', marginBottom: '16px' }}>
+        Tutte le risposte sui tuoi <br/>
+        <span className="text-gradient">Giochi Preferiti</span>
+      </h1>
+      
+      <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', marginBottom: '40px', lineHeight: '1.6' }}>
+        Cerca qualsiasi titolo, personaggio o console. La nostra intelligenza artificiale troverà le informazioni e le ultime notizie da fonti attendibili come IGN, Multiplayer.it e Reddit.
+      </p>
+
+      <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', position: 'relative' }}>
+        <input
+          type="text"
+          placeholder="Cerca il gioco (es. The Witcher, GTA)..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          style={{
+            width: '100%',
+            padding: '20px 24px',
+            paddingLeft: '60px',
+            borderRadius: 'var(--radius-full)',
+            border: '2px solid rgba(255, 255, 255, 0.1)',
+            background: 'var(--bg-glass)',
+            color: 'var(--text-primary)',
+            fontSize: '1.2rem',
+            outline: 'none',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+            transition: 'all 0.3s ease'
+          }}
+          onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
+          onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+        />
+        <Search size={24} color="var(--text-secondary)" style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)' }} />
+        <button type="submit" className="btn-primary" style={{ position: 'absolute', right: '10px', top: '10px', bottom: '10px', padding: '0 24px' }}>
+          Cerca
+        </button>
+      </form>
+      
+      <div style={{ marginTop: '60px', display: 'flex', gap: '20px', color: 'var(--text-muted)' }}>
+        <span>Trending:</span>
+        <span style={{cursor: 'pointer', transition: 'color 0.3s'}} onMouseOver={e=>e.target.style.color='var(--text-primary)'} onMouseOut={e=>e.target.style.color='var(--text-muted)'} onClick={()=>navigate('/game/Helldivers 2')}>Helldivers 2</span>
+        <span style={{cursor: 'pointer', transition: 'color 0.3s'}} onMouseOver={e=>e.target.style.color='var(--text-primary)'} onMouseOut={e=>e.target.style.color='var(--text-muted)'} onClick={()=>navigate('/game/Final Fantasy VII Rebirth')}>FFVII Rebirth</span>
+        <span style={{cursor: 'pointer', transition: 'color 0.3s'}} onMouseOver={e=>e.target.style.color='var(--text-primary)'} onMouseOut={e=>e.target.style.color='var(--text-muted)'} onClick={()=>navigate('/game/Dragons Dogma 2')}>Dragon's Dogma 2</span>
+      </div>
+    </div>
+  );
+}
