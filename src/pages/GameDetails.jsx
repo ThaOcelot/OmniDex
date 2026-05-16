@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import {
   Loader2, Heart, ExternalLink, Calendar, Gamepad, Users,
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen,
-  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, Gamepad2, X
+  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, Gamepad2, X, ChevronLeft, ZoomIn, ZoomOut
 } from 'lucide-react';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
@@ -34,7 +34,9 @@ export default function GameDetails() {
   const [modalLoading, setModalLoading] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
-  const [selectedScreenshot, setSelectedScreenshot] = useState(null);
+  const [selectedScreenshotIndex, setSelectedScreenshotIndex] = useState(null);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [touchStartX, setTouchStartX] = useState(0);
 
   useEffect(() => {
     if (modalLoading) {
@@ -451,7 +453,7 @@ export default function GameDetails() {
                     key={i} 
                     src={s} 
                     alt={`Screenshot ${i}`} 
-                    onClick={() => setSelectedScreenshot(s)}
+                    onClick={() => { setSelectedScreenshotIndex(i); setZoomScale(1); }}
                     style={{ height: '200px', borderRadius: 'var(--radius-md)', objectFit: 'cover', border: '1px solid var(--glass-border)', cursor: 'zoom-in', transition: 'transform 0.2s' }} 
                     onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'}
                     onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -787,33 +789,149 @@ export default function GameDetails() {
       </Modal>
 
       {/* Fullscreen Screenshot Viewer */}
-      {selectedScreenshot && (
+      {selectedScreenshotIndex !== null && gameData.screenshots && (
         <div 
           className="animate-fade-in"
           style={{
             position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.95)', zIndex: 20000,
+            backgroundColor: 'rgba(0,0,0,0.96)', zIndex: 20000,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: '20px', cursor: 'zoom-out', backdropFilter: 'blur(10px)'
+            padding: '20px', backdropFilter: 'blur(12px)',
+            overflow: zoomScale > 1 ? 'auto' : 'hidden'
           }}
-          onClick={() => setSelectedScreenshot(null)}
+          onClick={() => setSelectedScreenshotIndex(null)}
+          onTouchStart={(e) => setTouchStartX(e.changedTouches[0].clientX)}
+          onTouchEnd={(e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+            if (zoomScale === 1) {
+              if (diff > 50) {
+                setZoomScale(1);
+                setSelectedScreenshotIndex(prev => (prev === gameData.screenshots.length - 1 ? 0 : prev + 1));
+              } else if (diff < -50) {
+                setZoomScale(1);
+                setSelectedScreenshotIndex(prev => (prev === 0 ? gameData.screenshots.length - 1 : prev - 1));
+              }
+            }
+          }}
         >
-          <div style={{ position: 'relative', maxWidth: '100%', maxHeight: '100%' }}>
-            <img 
-              src={selectedScreenshot} 
-              alt="Fullscreen" 
-              style={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: 'var(--radius-md)', boxShadow: '0 0 50px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)' }} 
-            />
-            <div style={{ position: 'absolute', bottom: '-40px', left: 0, right: 0, textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-              Tocca ovunque per chiudere
-            </div>
-          </div>
-          <button 
-            style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '44px', height: '44px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            onClick={(e) => { e.stopPropagation(); setSelectedScreenshot(null); }}
+          {/* Centered Image Wrapper */}
+          <div 
+            onClick={(e) => e.stopPropagation()} 
+            style={{ 
+              position: 'relative', 
+              display: 'inline-flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              transform: `scale(${zoomScale})`,
+              transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+              cursor: zoomScale > 1 ? 'zoom-out' : 'zoom-in',
+              maxWidth: '90%',
+              maxHeight: '90%'
+            }}
           >
-            <X size={24} />
-          </button>
+            <img 
+              src={gameData.screenshots[selectedScreenshotIndex]} 
+              alt={`Fullscreen ${selectedScreenshotIndex}`} 
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoomScale(prev => (prev === 1 ? 2.2 : 1));
+              }}
+              style={{ 
+                maxWidth: '100%', 
+                maxHeight: '80vh', 
+                borderRadius: 'var(--radius-md)', 
+                boxShadow: '0 0 50px rgba(0,0,0,0.8)', 
+                border: '1px solid rgba(255,255,255,0.08)',
+                userSelect: 'none',
+                pointerEvents: 'auto'
+              }} 
+            />
+            {zoomScale === 1 && (
+              <div style={{ marginTop: '16px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem', pointerEvents: 'none' }}>
+                Swipe laterale per scorrere • Tocca l'immagine per lo Zoom
+              </div>
+            )}
+          </div>
+
+          {/* Navigation Controls (Visible only when zoomScale is 1) */}
+          {zoomScale === 1 && (
+            <>
+              {/* Left Arrow Button */}
+              <button 
+                style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '56px', height: '56px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 20005, transition: 'background 0.2s' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomScale(1);
+                  setSelectedScreenshotIndex(prev => (prev === 0 ? gameData.screenshots.length - 1 : prev - 1));
+                }}
+                onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+              >
+                <ChevronLeft size={28} />
+              </button>
+
+              {/* Right Arrow Button */}
+              <button 
+                style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '56px', height: '56px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 20005, transition: 'background 0.2s' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomScale(1);
+                  setSelectedScreenshotIndex(prev => (prev === gameData.screenshots.length - 1 ? 0 : prev + 1));
+                }}
+                onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+              >
+                <ChevronRight size={28} />
+              </button>
+
+              {/* Top Controls: Zoom Toggle & Close */}
+              <div style={{ position: 'absolute', top: '20px', right: '20px', display: 'flex', gap: '12px', zIndex: 20005 }}>
+                {/* Manual Zoom Button */}
+                <button 
+                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setZoomScale(prev => (prev === 1 ? 2.2 : 1));
+                  }}
+                  onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                  onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                >
+                  <ZoomIn size={22} />
+                </button>
+
+                {/* Close Button */}
+                <button 
+                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
+                  onClick={(e) => { e.stopPropagation(); setSelectedScreenshotIndex(null); }}
+                  onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                  onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
+                >
+                  <X size={22} />
+                </button>
+              </div>
+
+              {/* Index Indicator */}
+              <div style={{ position: 'absolute', top: '24px', left: '50%', transform: 'translateX(-50%)', background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.1)', padding: '6px 16px', borderRadius: 'var(--radius-full)', fontSize: '0.9rem', color: 'var(--text-primary)', zIndex: 20005, fontWeight: '600' }}>
+                {selectedScreenshotIndex + 1} / {gameData.screenshots.length}
+              </div>
+            </>
+          )}
+
+          {/* Zoom Controls when zoomed in */}
+          {zoomScale > 1 && (
+            <div style={{ position: 'fixed', top: '20px', right: '20px', display: 'flex', gap: '12px', zIndex: 20005 }}>
+              <button 
+                style={{ background: 'rgba(0,0,0,0.8)', border: '1px solid var(--accent-primary)', color: 'white', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 15px rgba(0,0,0,0.5)' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setZoomScale(1);
+                }}
+              >
+                <ZoomOut size={22} />
+              </button>
+            </div>
+          )}
         </div>
       )}
 

@@ -7,6 +7,7 @@ import GameDetails from './pages/GameDetails';
 import SearchResults from './pages/SearchResults';
 import Favorites from './pages/Favorites';
 import ChangelogPopup from './components/ChangelogPopup';
+import UpdatePopup from './components/UpdatePopup';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import NotificationService from './services/NotificationService';
@@ -57,6 +58,7 @@ function App() {
     <Router>
       <SystemHandler />
       <ChangelogPopup />
+      <UpdatePopup />
       <div className="app-wrapper">
         <Navbar />
         <main className="main-content container">

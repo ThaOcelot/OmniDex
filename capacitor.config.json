@@ -6,5 +6,9 @@
     "CapacitorHttp": {
       "enabled": true
     }
+  },
+  "server": {
+    "url": "https://thaocelot.github.io/OmniDex/",
+    "allowNavigation": ["thaocelot.github.io"]
   }
 }
