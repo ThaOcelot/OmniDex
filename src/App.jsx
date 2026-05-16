@@ -53,9 +53,11 @@ function SystemHandler() {
   return null;
 }
 
+const basename = import.meta.env.DEV ? '/' : '/OmniDex';
+
 function App() {
   return (
-    <Router>
+    <Router basename={basename}>
       <SystemHandler />
       <ChangelogPopup />
       <UpdatePopup />
