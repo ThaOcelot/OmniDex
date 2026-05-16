@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import {
   Loader2, Heart, ExternalLink, Calendar, Gamepad, Users,
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen,
-  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, Gamepad2
+  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, Gamepad2, X
 } from 'lucide-react';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
