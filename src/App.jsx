@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import GameDetails from './pages/GameDetails';
 import SearchResults from './pages/SearchResults';
 import Favorites from './pages/Favorites';
+import ChangelogPopup from './components/ChangelogPopup';
 
 function BackButtonHandler() {
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ function App() {
   return (
     <Router>
       <BackButtonHandler />
+      <ChangelogPopup />
       <div className="app-wrapper">
         <Navbar />
         <main className="main-content container">

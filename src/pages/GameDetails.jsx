@@ -33,6 +33,7 @@ export default function GameDetails() {
   const [modalLoading, setModalLoading] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
+  const [selectedScreenshot, setSelectedScreenshot] = useState(null);
 
   useEffect(() => {
     if (modalLoading) {
@@ -443,7 +444,15 @@ export default function GameDetails() {
               <h3 style={{ marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Galleria Screenshot</h3>
               <div style={{ display: 'flex', gap: '15px', overflowX: 'auto', paddingBottom: '10px', scrollbarWidth: 'thin' }}>
                 {gameData.screenshots.map((s, i) => (
-                  <img key={i} src={s} alt={`Screenshot ${i}`} style={{ height: '200px', borderRadius: 'var(--radius-md)', objectFit: 'cover', border: '1px solid var(--glass-border)' }} />
+                  <img 
+                    key={i} 
+                    src={s} 
+                    alt={`Screenshot ${i}`} 
+                    onClick={() => setSelectedScreenshot(s)}
+                    style={{ height: '200px', borderRadius: 'var(--radius-md)', objectFit: 'cover', border: '1px solid var(--glass-border)', cursor: 'zoom-in', transition: 'transform 0.2s' }} 
+                    onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'}
+                    onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
+                  />
                 ))}
               </div>
             </div>
@@ -773,6 +782,37 @@ export default function GameDetails() {
           </div>
         ) : null}
       </Modal>
+
+      {/* Fullscreen Screenshot Viewer */}
+      {selectedScreenshot && (
+        <div 
+          className="animate-fade-in"
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.95)', zIndex: 20000,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '20px', cursor: 'zoom-out', backdropFilter: 'blur(10px)'
+          }}
+          onClick={() => setSelectedScreenshot(null)}
+        >
+          <div style={{ position: 'relative', maxWidth: '100%', maxHeight: '100%' }}>
+            <img 
+              src={selectedScreenshot} 
+              alt="Fullscreen" 
+              style={{ maxWidth: '100%', maxHeight: '90vh', borderRadius: 'var(--radius-md)', boxShadow: '0 0 50px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)' }} 
+            />
+            <div style={{ position: 'absolute', bottom: '-40px', left: 0, right: 0, textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+              Tocca ovunque per chiudere
+            </div>
+          </div>
+          <button 
+            style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '44px', height: '44px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            onClick={(e) => { e.stopPropagation(); setSelectedScreenshot(null); }}
+          >
+            <X size={24} />
+          </button>
+        </div>
+      )}
 
     </div>
   );
