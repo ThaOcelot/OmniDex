@@ -8,28 +8,44 @@ import SearchResults from './pages/SearchResults';
 import Favorites from './pages/Favorites';
 import ChangelogPopup from './components/ChangelogPopup';
 
-function BackButtonHandler() {
+import { LocalNotifications } from '@capacitor/local-notifications';
+import NotificationService from './services/NotificationService';
+
+function SystemHandler() {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    // Inizializza il checker periodico delle notizie per i preferiti
+    NotificationService.initNewsChecker();
+
+    // Gestore del tasto indietro di sistema
     const handleBackButton = async () => {
       await CapApp.addListener('backButton', (data) => {
         if (location.pathname === '/') {
-          // Se siamo in Home, esci dall'app
           CapApp.exitApp();
         } else {
-          // Altrimenti torna indietro nella cronologia dell'app
           navigate(-1);
         }
       });
     };
 
+    // Gestore del click/tap sulle notifiche
+    const handleNotificationTaps = async () => {
+      await LocalNotifications.addListener('localNotificationActionPerformed', (action) => {
+        const gameName = action.notification.extra?.gameName;
+        if (gameName) {
+          navigate(`/game/${encodeURIComponent(gameName)}`);
+        }
+      });
+    };
+
     handleBackButton();
+    handleNotificationTaps();
 
     return () => {
-      // La rimozione dei listener in Capacitor è asincrona
       CapApp.removeAllListeners();
+      LocalNotifications.removeAllListeners();
     };
   }, [location, navigate]);
 
@@ -39,7 +55,7 @@ function BackButtonHandler() {
 function App() {
   return (
     <Router>
-      <BackButtonHandler />
+      <SystemHandler />
       <ChangelogPopup />
       <div className="app-wrapper">
         <Navbar />

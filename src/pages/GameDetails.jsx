@@ -11,6 +11,7 @@ import NewsCard from '../components/NewsCard';
 import LoadingScreen from '../components/LoadingScreen';
 import Modal from '../components/Modal';
 import { LOADING_MESSAGES } from '../data/loadingMessages';
+import NotificationService from '../services/NotificationService';
 
 export default function GameDetails() {
   const { gameName } = useParams();
@@ -81,6 +82,8 @@ export default function GameDetails() {
         rating: gameData.rating
       });
       setIsFavorite(true);
+      // Inizializza l'ultima notizia per questo gioco preferito
+      NotificationService.initFavoriteLatestNews(gameData.id, gameData.title);
     }
   };
 
