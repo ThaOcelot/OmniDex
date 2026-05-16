@@ -53,7 +53,8 @@ function SystemHandler() {
   return null;
 }
 
-const basename = import.meta.env.DEV ? '/' : '/OmniDex';
+const isGitHubPages = window.location.hostname.includes('github.io');
+const basename = isGitHubPages ? '/OmniDex' : '/';
 
 function App() {
   return (
