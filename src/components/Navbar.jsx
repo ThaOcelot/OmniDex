@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Heart, User, Gamepad2 } from 'lucide-react';
+import { Search, Heart, Gamepad2 } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -48,9 +48,6 @@ export default function Navbar() {
         <div style={{ display: 'flex', gap: '15px' }}>
           <Link to="/favorites" className="btn-icon">
             <Heart size={20} />
-          </Link>
-          <Link to="/auth" className="btn-icon">
-            <User size={20} />
           </Link>
         </div>
       </div>
