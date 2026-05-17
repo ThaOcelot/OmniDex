@@ -3,7 +3,7 @@ import GeminiCloudService from './GeminiCloudService';
 import { db } from './db';
 
 const NEWS_PROXY = 'https://api.allorigins.win/raw?url=';
-const CACHE_VERSION = 10; // Bump per forzare rigenerazione con gemini-2.5-flash funzionante
+const CACHE_VERSION = 11; // Bump per forzare l'inversione corretta di Panoramica e Trama
 
 /**
  * Recupera contenuto testuale da Wikipedia in italiano.
@@ -151,8 +151,8 @@ class GameService {
       ...rawg,
       suggested,
       // Contenuti tradotti/generati in italiano
-      description: descriptionIt || rawg.descriptionRaw || '',
-      plot: plot || wikiContent || descriptionIt || rawg.descriptionRaw || '',
+      description: plot || wikiContent || descriptionIt || rawg.descriptionRaw || '',
+      plot: descriptionIt || rawg.descriptionRaw || '',
       gameplay: gameplay || '',
       protagonists: characters || [],
       trivia: trivia || [],
