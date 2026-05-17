@@ -40,17 +40,9 @@ export default function Home() {
         <span>Potenziato dall'IA</span>
       </div>
 
-      <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', marginBottom: '4px', fontWeight: '900', letterSpacing: '-0.03em', textShadow: '0 0 50px rgba(109, 40, 217, 0.3)' }}>
-        <span className="text-gradient">OmniDex</span>
-      </h1>
-      
-      <div style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', background: 'rgba(109, 40, 217, 0.08)', border: '1px solid rgba(109, 40, 217, 0.2)', padding: '4px 16px', borderRadius: 'var(--radius-full)', fontWeight: 'bold', marginBottom: '24px', display: 'inline-block' }}>
-        Versione {CHANGELOG.version} {CHANGELOG.stage}
-      </div>
-      
-      <h2 style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)', color: 'var(--text-primary)', marginBottom: '16px', fontWeight: '700' }}>
+      <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.8rem)', color: 'var(--text-primary)', marginBottom: '16px', fontWeight: '800', lineHeight: '1.2', letterSpacing: '-0.02em' }}>
         L'Enciclopedia Intelligente dei Videogiochi
-      </h2>
+      </h1>
       
       <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(1rem, 3vw, 1.15rem)', maxWidth: '650px', marginBottom: '40px', lineHeight: '1.6' }}>
         Il tuo hub local-first per esplorare in profondità qualsiasi titolo. Trova all'istante biografie dettagliate dei personaggi, approfondimenti sulle trame, analisi di gameplay e ultime notizie in tempo reale, tutto elaborato e sintetizzato dall'Intelligenza Artificiale.
