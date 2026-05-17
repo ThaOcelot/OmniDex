@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { App as CapApp } from '@capacitor/app';
 import Navbar from './components/Navbar';
@@ -8,6 +8,7 @@ import SearchResults from './pages/SearchResults';
 import Favorites from './pages/Favorites';
 import ChangelogPopup from './components/ChangelogPopup';
 import UpdatePopup from './components/UpdatePopup';
+import SettingsPopup from './components/SettingsPopup';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import NotificationService from './services/NotificationService';
@@ -62,11 +63,20 @@ const isGitHubPages = window.location.hostname.includes('github.io');
 const basename = isGitHubPages ? '/OmniDex' : '/';
 
 function App() {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenSettings = () => setIsSettingsOpen(true);
+    window.addEventListener('open-settings', handleOpenSettings);
+    return () => window.removeEventListener('open-settings', handleOpenSettings);
+  }, []);
+
   return (
     <Router basename={basename}>
       <SystemHandler />
       <ChangelogPopup />
       <UpdatePopup />
+      {isSettingsOpen && <SettingsPopup onClose={() => setIsSettingsOpen(false)} />}
       <div className="app-wrapper">
         <Navbar />
         <main className="main-content container">

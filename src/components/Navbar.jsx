@@ -1,10 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Heart, Gamepad2, Settings } from 'lucide-react';
 import { useState } from 'react';
-import SettingsPopup from './SettingsPopup';
 
 export default function Navbar() {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
@@ -52,7 +50,7 @@ export default function Navbar() {
             <Heart size={20} />
           </Link>
           <button 
-            onClick={() => setIsSettingsOpen(true)} 
+            onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))} 
             className="btn-icon" 
             style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)' }}
           >
@@ -60,7 +58,6 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      {isSettingsOpen && <SettingsPopup onClose={() => setIsSettingsOpen(false)} />}
     </nav>
   );
 }
