@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 import UpdateService from '../services/UpdateService';
+import NotificationService from '../services/NotificationService';
 
 export default function SettingsPopup({ onClose }) {
   const [theme, setTheme] = useState(() => {
@@ -186,8 +187,8 @@ export default function SettingsPopup({ onClose }) {
                 {checking ? 'Ricerca...' : 'Controlla'}
               </button>
               <button 
-                onClick={() => {
-                  window.dispatchEvent(new CustomEvent('simulate-update'));
+                onClick={async () => {
+                  await NotificationService.simulateNewsNotification();
                   onClose();
                 }}
                 style={{
@@ -209,7 +210,7 @@ export default function SettingsPopup({ onClose }) {
                 onMouseOver={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
                 onMouseOut={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'}
               >
-                Simula Notifica
+                Simula Notizia
               </button>
             </div>
           </div>

@@ -18,32 +18,12 @@ export default function UpdatePopup() {
 
     // Ritardo leggermente il check per non rallentare il caricamento iniziale
     const timer = setTimeout(checkUpdate, 3000);
-
-    const handleSimulate = () => {
-      setUpdateInfo({
-        hasUpdate: true,
-        buildTime: String(Date.now()),
-        commit: 'abc1234_simulated',
-        version: '0.1.6.0'
-      });
-      setShow(true);
-    };
-
-    window.addEventListener('simulate-update', handleSimulate);
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener('simulate-update', handleSimulate);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   const handleUpdate = () => {
     if (updateInfo) {
-      if (updateInfo.commit === 'abc1234_simulated') {
-        window.location.reload();
-      } else {
-        UpdateService.applyUpdate(updateInfo.buildTime);
-      }
+      UpdateService.applyUpdate(updateInfo.buildTime);
     }
   };
 

@@ -113,6 +113,91 @@ class NotificationService {
       console.warn("🔔 Error checking new news for favorites:", e);
     }
   }
+
+  /**
+   * Simula l'invio immediato di una notifica push nativa o fallback Web Browser
+   * per le notizie di un gioco preferito (o di esempio).
+   */
+  async simulateNewsNotification() {
+    // 1. Richiedi i permessi
+    const hasPermission = await this.requestPermissions();
+    if (!hasPermission) {
+      console.warn("🔔 Permessi di notifica non concessi.");
+    }
+
+    // 2. Trova un titolo di videogioco
+    let gameTitle = "GTA VI";
+    try {
+      const favorites = await db.getFavorites();
+      if (favorites && favorites.length > 0) {
+        // Seleziona un preferito a caso per renderlo più realistico
+        gameTitle = favorites[Math.floor(Math.random() * favorites.length)].title;
+      }
+    } catch (e) {
+      console.warn("🔔 Errore recupero preferiti per simulazione:", e);
+    }
+
+    // 3. Recupera una notizia per il titolo
+    let newsTitle = "In arrivo incredibili novità e dettagli inediti sul gameplay!";
+    try {
+      const news = await GameService.getGameNews(gameTitle);
+      if (news && news.length > 0) {
+        newsTitle = news[0].title;
+      }
+    } catch (e) {
+      console.warn(`🔔 Errore recupero notizie per ${gameTitle}:`, e);
+    }
+
+    // 4. Invia notifica Capacitor Locale su telefono
+    const notificationTitle = `Notizie fresche su ${gameTitle}! 🎮`;
+    const isNative = window.Capacitor?.isNativePlatform?.();
+
+    if (isNative) {
+      try {
+        await LocalNotifications.schedule({
+          notifications: [
+            {
+              id: Math.floor(Math.random() * 1000000),
+              title: notificationTitle,
+              body: newsTitle,
+              largeBody: newsTitle,
+              summaryText: `Nuovo update per ${gameTitle}`,
+              schedule: { at: new Date(Date.now() + 1000) }, // 1 secondo di ritardo
+              sound: 'default'
+            }
+          ]
+        });
+        console.log("🔔 Notifica nativa Capacitor pianificata.");
+        return true;
+      } catch (err) {
+        console.error("🔔 Fallimento invio notifica nativa:", err);
+      }
+    }
+
+    // Fallback Web Browser (Standard HTML5 Notifications)
+    if ('Notification' in window) {
+      if (Notification.permission === 'granted') {
+        new Notification(notificationTitle, {
+          body: newsTitle,
+          icon: '/favicon.ico'
+        });
+        return true;
+      } else if (Notification.permission !== 'denied') {
+        const permission = await Notification.requestPermission();
+        if (permission === 'granted') {
+          new Notification(notificationTitle, {
+            body: newsTitle,
+            icon: '/favicon.ico'
+          });
+          return true;
+        }
+      }
+    }
+
+    // Fallback definitivo per browser restrittivi o senza permessi concessi
+    alert(`[Notifica di Gioco]\n\n${notificationTitle}\n\n${newsTitle}`);
+    return true;
+  }
 }
 
 export default new NotificationService();
