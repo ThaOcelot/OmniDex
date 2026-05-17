@@ -2,7 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
+// In locale usa './', su GitHub Pages usa '/OmniDex/' (nome del repo)
 export default defineConfig({
-  base: './',
+  base: process.env.GITHUB_ACTIONS ? '/OmniDex/' : './',
   plugins: [react()],
 })
