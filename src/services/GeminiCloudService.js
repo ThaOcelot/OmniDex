@@ -73,7 +73,6 @@ async function askGemini(prompt, maxRetries = 2) {
   }
   return null;
 }
-
 class GeminiCloudService {
 
   /**
@@ -88,9 +87,12 @@ class GeminiCloudService {
     if (matches > 10) return description; // già in italiano
 
     return await askGemini(
-      `Traduci la seguente descrizione di un videogioco in ITALIANO professionale e scorrevole.
-Non aggiungere informazioni extra, non togliere nulla: traduci fedelmente tutto il testo.
-Mantieni i paragrafi separati con doppio a-capo.
+      `Traduci la seguente descrizione di un videogioco in ITALIANO professionale, naturale e scorrevole.
+REGOLE TASSATIVE:
+- Scrivi interamente ed esclusivamente in italiano.
+- Non lasciare nessuna frase o paragrafo in inglese.
+- Non aggiungere opinioni personali, mantieni intatto il significato originale.
+- Mantieni i paragrafi separati con doppio a-capo.
 
 TESTO DA TRADURRE:
 ${description.substring(0, 3000)}`
@@ -111,13 +113,13 @@ ${description.substring(0, 3000)}`
     return await askGemini(
       `Scrivi la TRAMA DETTAGLIATA del videogioco "${gameName}" in ITALIANO.
 
-ISTRUZIONI:
+ISTRUZIONI TASSATIVE:
+- Scrivi l'intera trama in italiano.
 - Minimo 300 parole, massimo 600 parole.
 - Descrivi l'ambientazione, il protagonista, l'universo di gioco e l'incipit narrativo.
 - Usa paragrafi ben strutturati, separati da doppio a-capo.
 - NON rivelare il finale (no spoiler).
 - Se il gioco non ha una trama lineare (sandbox, sportivo, puzzle), descrivi l'atmosfera, il contesto e l'esperienza narrativa.
-- Se il contesto è insufficiente, usa le tue conoscenze sul gioco per completare la descrizione.
 - Assicurati che il testo sia completo e non si interrompa a metà frase.
 
 CONTESTO DISPONIBILE:
@@ -136,16 +138,15 @@ ${context}`
     ].filter(Boolean).join('\n');
 
     return await askGemini(
-      `Scrivi un'analisi del GAMEPLAY del videogioco "${gameName}" in ITALIANO.
+      `Scrivi un'analisi approfondita del GAMEPLAY del videogioco "${gameName}" in ITALIANO.
 
-ISTRUZIONI:
+ISTRUZIONI TASSATIVE:
+- Scrivi ESCLUSIVAMENTE in lingua italiana.
 - Minimo 200 parole, massimo 450 parole.
 - Descrivi: meccaniche principali, sistema di combattimento o interazione, progressione del personaggio, modalità di gioco.
-- Se è un gioco multiplayer, descrivi le modalità competitive e cooperative.
-- Se è un gioco di ruolo, descrivi il sistema di sviluppo del personaggio.
+- Se è un gioco RPG o GDR, descrivi il sistema di sviluppo statistico o abilità.
 - Usa paragrafi separati da doppio a-capo.
 - Tono professionale da rivista videoludica italiana.
-- Se il contesto è insufficiente, usa le tue conoscenze sul gioco.
 
 CONTESTO:
 ${context}`
@@ -165,14 +166,13 @@ ${context}`
     const raw = await askGemini(
       `Elenca i PERSONAGGI PRINCIPALI del videogioco "${gameName}" in ITALIANO.
 
-ISTRUZIONI:
+ISTRUZIONI TASSATIVE:
 - Elenca da 3 a 8 personaggi principali (se esistono nel gioco).
 - Per ogni personaggio scrivi ESATTAMENTE in questo formato (una riga per personaggio):
   NOME_PERSONAGGIO|||RUOLO|||DESCRIZIONE_IN_ITALIANO
 - RUOLO può essere: Protagonista, Antagonista, Compagno, Personaggio Chiave, Mentore, Alleato, Deuteragonista.
 - DESCRIZIONE: 1-2 frasi in italiano con tratti distintivi del personaggio (aspetto, personalità, motivazioni).
-- Se il gioco non ha personaggi specifici (Tetris, giochi astratti, sportivi puri), rispondi SOLO con la parola: NESSUNO
-- NON aggiungere numerazione, trattini o altri formati oltre a quello indicato.
+- Se il gioco non ha personaggi specifici (Tetris, sportivi puri, puzzle), rispondi SOLO con la parola: NESSUNO
 
 CONTESTO:
 ${context}`
@@ -181,19 +181,68 @@ ${context}`
     if (!raw || raw.includes('NESSUNO') || raw.length < 20) return [];
 
     try {
-      return raw.split('\n')
-        .map(line => line.trim())
-        .filter(line => line.includes('|||'))
-        .map(line => {
+      const parsed = [];
+      const lines = raw.split('\n').map(line => line.trim()).filter(Boolean);
+      
+      for (let line of lines) {
+        if (line.includes('|||')) {
           const [name, role, ...descParts] = line.split('|||');
-          return {
+          parsed.push({
             name: name?.trim().replace(/^[\d.*\-–—]+\s*/, '') || '',
             role: role?.trim() || 'Personaggio',
             description: descParts.join('|||').trim() || ''
-          };
-        })
-        .filter(c => c.name.length > 1 && c.description.length > 5);
-    } catch {
+          });
+        } else {
+          // Parser di riserva ultra-resiliente per formati alternativi generati dall'IA
+          let name = '';
+          let role = 'Personaggio';
+          let description = '';
+          
+          // Rimuove numeri iniziali come "1. " o "- " o "• "
+          let cleanLine = line.replace(/^[\d.*\-–—•]+\s*/, '');
+          
+          if (cleanLine.includes(':')) {
+            const parts = cleanLine.split(':');
+            const leftSide = parts[0].trim();
+            description = parts.slice(1).join(':').trim();
+            
+            if (leftSide.includes('(') && leftSide.includes(')')) {
+              const roleMatch = leftSide.match(/\(([^)]+)\)/);
+              if (roleMatch) {
+                role = roleMatch[1].trim();
+                name = leftSide.replace(/\([^)]+\)/, '').trim();
+              }
+            } else if (leftSide.includes('-')) {
+              const subParts = leftSide.split('-');
+              name = subParts[0].trim();
+              role = subParts[1].trim();
+            } else {
+              name = leftSide;
+            }
+          } else if (cleanLine.includes(' - ')) {
+            const parts = cleanLine.split(' - ');
+            if (parts.length >= 3) {
+              name = parts[0].trim();
+              role = parts[1].trim();
+              description = parts.slice(2).join(' - ').trim();
+            } else if (parts.length === 2) {
+              name = parts[0].trim();
+              description = parts[1].trim();
+            }
+          }
+          
+          if (name && description && name.length > 1 && description.length > 5) {
+            parsed.push({ 
+              name: name.replace(/^[\d.*\-–—•]+\s*/, '').trim(), 
+              role: role.trim(), 
+              description: description.trim() 
+            });
+          }
+        }
+      }
+      return parsed;
+    } catch (e) {
+      console.warn("⚠️ Fallimento nel parsing dei personaggi:", e);
       return [];
     }
   }
@@ -205,14 +254,12 @@ ${context}`
     const raw = await askGemini(
       `Scrivi 5 CURIOSITÀ interessanti e verificabili sul videogioco "${gameName}" in ITALIANO.
 
-ISTRUZIONI:
+ISTRUZIONI TASSATIVE:
+- Scrivi ESCLUSIVAMENTE in lingua italiana.
 - Ogni curiosità su una riga separata.
 - Inizia ogni riga con un emoji pertinente.
-- Fatti reali: sviluppo del gioco, record di vendite, easter egg noti, impatto culturale, aneddoti storici.
-- Non inventare fatti falsi o non verificabili.
-- 1-2 frasi per curiosità, scritte in italiano corretto.
-- Se non hai abbastanza curiosità verificabili, scrivi solo quelle che conosci.
-
+- Fatti reali: sviluppo, record, easter egg, curiosità storiche.
+- 1-2 frasi per curiosità.
 CONTESTO:
 ${description.substring(0, 1000)}`
     );
