@@ -72,7 +72,7 @@ function App() {
   }, []);
 
   return (
-    <Router basename={basename}>
+    <Router>
       <SystemHandler />
       <ChangelogPopup />
       <UpdatePopup />
