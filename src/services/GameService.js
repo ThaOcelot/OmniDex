@@ -179,7 +179,7 @@ class GameService {
   async getGameNews(gameTitle) {
     if (!gameTitle) return [];
 
-    const cacheKey = `news_v4_${gameTitle}`; // Bump della cache per forzare il recupero delle notizie pulite e ottimizzate
+    const cacheKey = `news_v5_${gameTitle}`; // Bump della cache per includere anche i video e trailer ufficiali recenti
     const cached = await db.getNews(cacheKey);
     // Cache news per 2 ore
     if (cached?.content && cached.timestamp && (Date.now() - cached.timestamp < 7200000)) {
@@ -187,8 +187,8 @@ class GameService {
     }
 
     try {
-      // Usiamo le virgolette per forzare la corrispondenza esatta del titolo del videogioco ed evitare notizie spazzatura
-      const baseQuery = `"${gameTitle}" videogioco`;
+      // Usiamo le virgolette per il titolo e includiamo ricerche per video ufficiali, trailer o gameplay
+      const baseQuery = `"${gameTitle}" (videogioco OR video OR trailer OR gameplay)`;
       // Cerca prima le notizie dell'ultimo mese (ultimi 30 giorni)
       let searchQuery = `${baseQuery} when:30d`;
       let rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
