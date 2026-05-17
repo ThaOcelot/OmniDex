@@ -7,7 +7,7 @@ const isNative = window.Capacitor?.isNativePlatform?.();
 const getNewsFetchUrl = (rssUrl) => {
   return isNative ? rssUrl : `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
 };
-const CACHE_VERSION = 16; // Bump per arricchire i personaggi con le immagini da Wikipedia
+const CACHE_VERSION = 17; // Bump per invertire panoramica e trama
 
 /**
  * Recupera contenuto testuale completo da Wikipedia in italiano.
@@ -203,8 +203,8 @@ class GameService {
       ...rawg,
       suggested,
       // Contenuti tradotti/generati in italiano
-      description: descriptionIt || rawg.descriptionRaw || '',
-      plot: plot || wikiContent || '',
+      description: plot || wikiContent || '',
+      plot: descriptionIt || rawg.descriptionRaw || '',
       gameplay: gameplay || '',
       protagonists: characters || [],
       trivia: trivia || [],
