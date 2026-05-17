@@ -39,13 +39,16 @@ export default function Home() {
         <span>Potenziato dall'IA</span>
       </div>
 
-      <h1 style={{ fontSize: '4rem', marginBottom: '16px' }}>
-        Tutte le risposte sui tuoi <br/>
-        <span className="text-gradient">Giochi Preferiti</span>
+      <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', marginBottom: '8px', fontWeight: '900', letterSpacing: '-0.03em', textShadow: '0 0 50px rgba(109, 40, 217, 0.3)' }}>
+        <span className="text-gradient">OmniDex</span>
       </h1>
       
-      <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', marginBottom: '40px', lineHeight: '1.6' }}>
-        Cerca qualsiasi titolo, personaggio o console. La nostra intelligenza artificiale troverà le informazioni e le ultime notizie da fonti attendibili come IGN, Multiplayer.it e Reddit.
+      <h2 style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)', color: 'var(--text-primary)', marginBottom: '16px', fontWeight: '700' }}>
+        L'Enciclopedia Intelligente dei Videogiochi
+      </h2>
+      
+      <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(1rem, 3vw, 1.15rem)', maxWidth: '650px', marginBottom: '40px', lineHeight: '1.6' }}>
+        Il tuo hub local-first per esplorare in profondità qualsiasi titolo. Trova all'istante biografie dettagliate dei personaggi, approfondimenti sulle trame, analisi di gameplay e ultime notizie in tempo reale, tutto elaborato e sintetizzato dall'Intelligenza Artificiale.
       </p>
 
       <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', position: 'relative' }}>

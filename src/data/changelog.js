@@ -1,8 +1,9 @@
 export const CHANGELOG = {
-  version: "0.1.2",
+  version: "0.1.3",
   stage: "Beta",
   date: "17 Maggio 2026",
   changes: [
+    "🏠 Nuovo design premium per la Home Page con il nome dell'app 'OmniDex' e l'obiettivo in risalto.",
     "🖼️ Nuova galleria screenshot interattiva con scorrimento (swipe) e zoom capacitivo.",
     "🚀 Migrazione completa ad architettura Local-First (rimosso Firebase).",
     "🔔 Notifiche locali in tempo reale per le nuove notizie dei giochi preferiti.",
