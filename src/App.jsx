@@ -20,6 +20,11 @@ function SystemHandler() {
     // Inizializza il checker periodico delle notizie per i preferiti
     NotificationService.initNewsChecker();
 
+    // Ripristina il tema salvato (light/dark mode)
+    const savedTheme = localStorage.getItem('app_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.documentElement.style.filter = '';
+
     // Gestore del tasto indietro di sistema
     const handleBackButton = async () => {
       await CapApp.addListener('backButton', (data) => {

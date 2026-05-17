@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Sparkles } from 'lucide-react';
+import { CHANGELOG } from '../data/changelog';
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -39,9 +40,13 @@ export default function Home() {
         <span>Potenziato dall'IA</span>
       </div>
 
-      <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', marginBottom: '8px', fontWeight: '900', letterSpacing: '-0.03em', textShadow: '0 0 50px rgba(109, 40, 217, 0.3)' }}>
+      <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', marginBottom: '4px', fontWeight: '900', letterSpacing: '-0.03em', textShadow: '0 0 50px rgba(109, 40, 217, 0.3)' }}>
         <span className="text-gradient">OmniDex</span>
       </h1>
+      
+      <div style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', background: 'rgba(109, 40, 217, 0.08)', border: '1px solid rgba(109, 40, 217, 0.2)', padding: '4px 16px', borderRadius: 'var(--radius-full)', fontWeight: 'bold', marginBottom: '24px', display: 'inline-block' }}>
+        Versione {CHANGELOG.version} {CHANGELOG.stage}
+      </div>
       
       <h2 style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)', color: 'var(--text-primary)', marginBottom: '16px', fontWeight: '700' }}>
         L'Enciclopedia Intelligente dei Videogiochi
