@@ -3,6 +3,10 @@ import GeminiCloudService from './GeminiCloudService';
 import { db } from './db';
 
 const NEWS_PROXY = 'https://api.allorigins.win/raw?url=';
+const isNative = window.Capacitor?.isNativePlatform?.();
+const getNewsFetchUrl = (rssUrl) => {
+  return isNative ? rssUrl : `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
+};
 const CACHE_VERSION = 13; // Bump per forzare il recupero tramite il modello di nuova generazione Gemini 2.5 Flash
 
 /**
@@ -175,7 +179,7 @@ class GameService {
   async getGameNews(gameTitle) {
     if (!gameTitle) return [];
 
-    const cacheKey = `news_v3_${gameTitle}`; // Bump della cache per forzare il recupero delle notizie dell'ultimo mese
+    const cacheKey = `news_v4_${gameTitle}`; // Bump della cache per forzare il recupero delle notizie pulite e ottimizzate
     const cached = await db.getNews(cacheKey);
     // Cache news per 2 ore
     if (cached?.content && cached.timestamp && (Date.now() - cached.timestamp < 7200000)) {
@@ -183,13 +187,14 @@ class GameService {
     }
 
     try {
-      const baseQuery = `${gameTitle} videogioco`;
+      // Usiamo le virgolette per forzare la corrispondenza esatta del titolo del videogioco ed evitare notizie spazzatura
+      const baseQuery = `"${gameTitle}" videogioco`;
       // Cerca prima le notizie dell'ultimo mese (ultimi 30 giorni)
       let searchQuery = `${baseQuery} when:30d`;
       let rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
-      let proxyUrl = `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
+      let fetchUrl = getNewsFetchUrl(rssUrl);
 
-      let res = await fetch(proxyUrl);
+      let res = await fetch(fetchUrl);
       let text = '';
       let items = [];
 
@@ -205,8 +210,8 @@ class GameService {
         console.log(`ℹ️ Nessuna notizia dell'ultimo mese per "${gameTitle}". Ripiego sulla ricerca generica.`);
         searchQuery = baseQuery;
         rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
-        proxyUrl = `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
-        res = await fetch(proxyUrl);
+        fetchUrl = getNewsFetchUrl(rssUrl);
+        res = await fetch(fetchUrl);
         if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
         text = await res.text();
         const parser = new DOMParser();
@@ -216,10 +221,23 @@ class GameService {
 
       const news = items.slice(0, 8).map(item => {
         const pubDateText = item.querySelector("pubDate")?.textContent;
+        const source = item.querySelector("source")?.textContent || "Web";
+        const rawTitle = item.querySelector("title")?.textContent || "";
+        
+        // Rimuovi la ripetizione della fonte in fondo al titolo (es. "titolo - Multiplayer.it")
+        let cleanTitle = rawTitle;
+        if (rawTitle.includes(" - ")) {
+          const parts = rawTitle.split(" - ");
+          if (parts[parts.length - 1].toLowerCase().includes(source.toLowerCase()) || source.toLowerCase().includes(parts[parts.length - 1].toLowerCase())) {
+            parts.pop();
+            cleanTitle = parts.join(" - ");
+          }
+        }
+
         return {
-          title: item.querySelector("title")?.textContent || "",
+          title: cleanTitle,
           url: item.querySelector("link")?.textContent || "",
-          source: item.querySelector("source")?.textContent || "Web",
+          source: source,
           rawDate: pubDateText ? new Date(pubDateText).getTime() : 0,
           date: (() => {
             try {
