@@ -3,6 +3,30 @@ import GeminiCloudService from './GeminiCloudService';
 import { db } from './db';
 
 const NEWS_PROXY = 'https://api.allorigins.win/raw?url=';
+const CACHE_VERSION = 7; // Bump per rigenerare con gemini-2.0-flash funzionante
+
+/**
+ * Recupera contenuto testuale da Wikipedia in italiano.
+ * Usato per arricchire i prompt AI con dati reali verificati.
+ */
+async function fetchWikipediaIt(gameTitle) {
+  try {
+    const searchUrl = `https://it.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(gameTitle + ' videogioco')}&format=json&origin=*&srlimit=1`;
+    const searchRes = await fetch(searchUrl);
+    if (!searchRes.ok) return '';
+    const searchData = await searchRes.json();
+    const firstResult = searchData?.query?.search?.[0];
+    if (!firstResult) return '';
+
+    const summaryUrl = `https://it.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(firstResult.title)}`;
+    const summaryRes = await fetch(summaryUrl);
+    if (!summaryRes.ok) return '';
+    const summaryData = await summaryRes.json();
+    return summaryData?.extract || '';
+  } catch {
+    return '';
+  }
+}
 
 class GameService {
 
@@ -33,30 +57,65 @@ class GameService {
     if (!identifier) return null;
 
     // 1. Check Cache
-    const cacheKey = `game_v6_${identifier}`;
+    const cacheKey = `game_v${CACHE_VERSION}_${identifier}`;
     const cached = await db.getGame(cacheKey);
-    if (cached && cached._version === 6) {
+    if (cached && cached._version === CACHE_VERSION) {
       console.log("📦 Cache hit:", identifier);
       return cached;
     }
 
-    // 2. Fetch RAWG (tutti gli endpoint in parallelo)
-    console.log("📡 Fetching RAWG per:", identifier);
-    const rawg = await RAWGService.getGameDetails(identifier);
+    // 2. Fetch RAWG + Wikipedia in parallelo
+    console.log("📡 Fetching RAWG + Wikipedia per:", identifier);
+    const [rawg, wikiContent] = await Promise.all([
+      RAWGService.getGameDetails(identifier),
+      fetchWikipediaIt(gameTitle || String(identifier))
+    ]);
     if (!rawg) return null;
 
-    // 3. Generazione contenuti AI in italiano (in parallelo)
-    console.log("🤖 Generazione contenuti AI per:", rawg.title);
+    if (wikiContent) console.log("📖 Wikipedia trovata per:", rawg.title);
 
     const tagNames = rawg.tags?.map(t => t.name).slice(0, 15) || [];
     const platformNames = rawg.platforms?.map(p => p.name) || [];
+    const genreNames = rawg.genres || [];
 
-    // --- Workaround per Giochi Consigliati (visto che l'endpoint /suggested ufficiale ora richiede API a pagamento) ---
-    const genresStr = rawg.genres?.map(g => g.slug).join(',') || '';
+    // 3. Giochi consigliati per genere (endpoint /suggested richiede pagamento)
+    const genresStr = rawg.genres?.map(g => {
+      // genres in RAWG sono stringhe qui, ma RAWGService ritorna già i nomi
+      return g;
+    }).join(',') || '';
+
     let suggested = [];
-    if (genresStr) {
+    try {
+      // Usiamo gli slug dai tags originali
+      const rawgFull = await RAWGService.get('/games', {
+        genres: rawg.tags?.filter(t => ['action', 'rpg', 'shooter', 'adventure', 'puzzle',
+          'strategy', 'simulation', 'sports', 'racing', 'fighting', 'platformer']
+          .some(g => t.slug?.includes(g)))
+          .slice(0, 3).map(t => t.slug).join(',') || '',
+        page_size: 10,
+        ordering: '-rating'
+      });
+      suggested = rawgFull?.results?.map(s => ({
+        id: s.id,
+        name: s.name,
+        slug: s.slug,
+        released: s.released,
+        cover: s.background_image,
+        metacritic: s.metacritic,
+        rating: s.rating
+      })).filter(s => s.id !== rawg.id) || [];
+    } catch (e) {
+      console.warn("Impossibile caricare giochi consigliati:", e);
+    }
+
+    // Fallback generi per suggeriti
+    if (suggested.length === 0 && genreNames.length > 0) {
       try {
-        const similarData = await RAWGService.get('/games', { genres: genresStr, page_size: 10, ordering: '-rating' });
+        const similarData = await RAWGService.get('/games', {
+          genres: genreNames.slice(0, 2).join(','),
+          page_size: 10,
+          ordering: '-rating'
+        });
         suggested = similarData?.results?.map(s => ({
           id: s.id,
           name: s.name,
@@ -65,22 +124,21 @@ class GameService {
           cover: s.background_image,
           metacritic: s.metacritic,
           rating: s.rating
-        })) || [];
-        suggested = suggested.filter(s => s.id !== rawg.id);
-      } catch (e) {
-        console.warn("Impossibile caricare giochi consigliati:", e);
-      }
+        })).filter(s => s.id !== rawg.id) || [];
+      } catch { /* ignore */ }
     }
 
-    let [descriptionIt, plot, gameplay, characters, trivia] = [null, null, null, [], []];
+    // 4. Generazione contenuti AI in italiano
+    let descriptionIt = null, plot = null, gameplay = null, characters = [], trivia = [];
 
     if (GeminiCloudService.isAvailable()) {
+      console.log("🤖 Generazione AI per:", rawg.title);
       try {
         [descriptionIt, plot, gameplay, characters, trivia] = await Promise.all([
           GeminiCloudService.translateDescription(rawg.descriptionRaw),
-          GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, rawg.genres, tagNames),
-          GeminiCloudService.generateGameplay(rawg.title, rawg.genres, tagNames, platformNames),
-          GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw),
+          GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, genreNames, tagNames, wikiContent),
+          GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames),
+          GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw, wikiContent),
           GeminiCloudService.generateTrivia(rawg.title, rawg.descriptionRaw),
         ]);
       } catch (e) {
@@ -88,35 +146,36 @@ class GameService {
       }
     }
 
-    // 4. Componi il risultato finale
+    // 5. Componi il risultato finale
     const finalData = {
       ...rawg,
-      suggested: suggested,
-      // Contenuti tradotti/generati
+      suggested,
+      // Contenuti tradotti/generati in italiano
       description: descriptionIt || rawg.descriptionRaw || '',
-      plot: plot || descriptionIt || rawg.descriptionRaw || '',
+      plot: plot || wikiContent || descriptionIt || rawg.descriptionRaw || '',
       gameplay: gameplay || '',
       protagonists: characters || [],
       trivia: trivia || [],
       // Metadata
-      _version: 6,
+      _version: CACHE_VERSION,
       _cached: Date.now(),
       _aiGenerated: GeminiCloudService.isAvailable(),
+      _wikiUsed: !!wikiContent,
     };
 
-    // 5. Salva in cache
+    // 6. Salva in cache
     await db.setGame(cacheKey, finalData);
     console.log("✅ Dati completi pronti per:", rawg.title);
     return finalData;
   }
 
   /**
-   * Fetch notizie reali da Google News RSS
+   * Fetch notizie reali da Google News RSS in italiano
    */
   async getGameNews(gameTitle) {
     if (!gameTitle) return [];
 
-    const cacheKey = `news_${gameTitle}`;
+    const cacheKey = `news_v2_${gameTitle}`;
     const cached = await db.getNews(cacheKey);
     // Cache news per 2 ore
     if (cached?.content && cached.timestamp && (Date.now() - cached.timestamp < 7200000)) {
@@ -130,7 +189,7 @@ class GameService {
 
       const res = await fetch(proxyUrl);
       if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
-      
+
       const text = await res.text();
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(text, "text/xml");
@@ -147,7 +206,7 @@ class GameService {
             });
           } catch { return ''; }
         })(),
-        summary: null // Verrà generato on-demand
+        summary: null
       }));
 
       await db.setNews(cacheKey, news);
@@ -165,7 +224,7 @@ class GameService {
     if (!GeminiCloudService.isAvailable()) {
       return { summary: title };
     }
-    const summary = await GeminiCloudService.summarizeNews(title);
+    const summary = await GeminiCloudService.summarizeNews(title, url);
     return { summary: summary || title };
   }
 
