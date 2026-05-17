@@ -54,7 +54,8 @@ export default function SettingsPopup({ onClose }) {
         position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
         backgroundColor: 'rgba(0,0,0,0.6)', zIndex: 30000,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '20px', backdropFilter: 'blur(8px)'
+        padding: '16px', backdropFilter: 'blur(8px)',
+        boxSizing: 'border-box'
       }}
       onClick={onClose}
     >
@@ -62,41 +63,44 @@ export default function SettingsPopup({ onClose }) {
         onClick={e => e.stopPropagation()}
         className="glass-panel"
         style={{
-          width: '100%', maxWidth: '420px',
-          padding: '28px', borderRadius: 'var(--radius-lg)',
+          width: '92%', maxWidth: '380px',
+          padding: '20px', borderRadius: 'var(--radius-lg)',
           border: '1px solid var(--glass-border)',
           boxShadow: '0 20px 50px rgba(0,0,0,0.6)',
           background: 'var(--bg-secondary)',
-          position: 'relative'
+          position: 'relative',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          boxSizing: 'border-box'
         }}
       >
         {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: '800', margin: 0 }} className="text-gradient">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <h3 style={{ fontSize: '1.25rem', fontWeight: '800', margin: 0 }} className="text-gradient">
             Impostazioni
           </h3>
           <button 
-            style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
+            style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
             onClick={onClose}
             onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
             onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
         {/* Tema Scuro / Chiaro */}
-        <div style={{ marginBottom: '28px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', color: 'var(--text-primary)', fontWeight: '600' }}>
-            {theme === 'dark' ? <Moon size={18} color="var(--accent-primary)" /> : <Sun size={18} color="var(--accent-primary)" />}
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: 'var(--text-primary)', fontWeight: '600', fontSize: '0.95rem' }}>
+            {theme === 'dark' ? <Moon size={16} color="var(--accent-primary)" /> : <Sun size={16} color="var(--accent-primary)" />}
             <span>Tema dell'Applicazione</span>
           </div>
-          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.05)', borderRadius: 'var(--radius-full)', padding: '4px', border: '1px solid var(--glass-border)' }}>
+          <div style={{ display: 'flex', background: 'rgba(255, 255, 255, 0.05)', borderRadius: 'var(--radius-full)', padding: '3px', border: '1px solid var(--glass-border)', boxSizing: 'border-box' }}>
             <button 
               onClick={() => setTheme('dark')}
               style={{
                 flex: 1,
-                padding: '10px',
+                padding: '8px 12px',
                 borderRadius: 'var(--radius-full)',
                 border: 'none',
                 background: theme === 'dark' ? 'var(--accent-gradient)' : 'transparent',
@@ -106,18 +110,20 @@ export default function SettingsPopup({ onClose }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '8px',
+                gap: '6px',
+                fontSize: '0.85rem',
+                whiteSpace: 'nowrap',
                 transition: 'all 0.2s'
               }}
             >
-              <Moon size={16} />
+              <Moon size={14} />
               <span>Tema Scuro</span>
             </button>
             <button 
               onClick={() => setTheme('light')}
               style={{
                 flex: 1,
-                padding: '10px',
+                padding: '8px 12px',
                 borderRadius: 'var(--radius-full)',
                 border: 'none',
                 background: theme === 'light' ? 'var(--accent-gradient)' : 'transparent',
@@ -127,26 +133,28 @@ export default function SettingsPopup({ onClose }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '8px',
+                gap: '6px',
+                fontSize: '0.85rem',
+                whiteSpace: 'nowrap',
                 transition: 'all 0.2s'
               }}
             >
-              <Sun size={16} />
+              <Sun size={14} />
               <span>Tema Chiaro</span>
             </button>
           </div>
         </div>
 
         {/* Aggiornamenti */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '20px' }}>
-          <div style={{ color: 'var(--text-primary)', fontWeight: '600', marginBottom: '12px' }}>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px' }}>
+          <div style={{ color: 'var(--text-primary)', fontWeight: '600', marginBottom: '10px', fontSize: '0.95rem' }}>
             Aggiornamento Software
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', padding: '12px 16px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', padding: '10px 12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '12px', boxSizing: 'border-box' }}>
             <div>
-              <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Versione Installata</div>
-              <div style={{ fontWeight: 'bold', fontSize: '1rem', color: 'var(--text-primary)' }}>
-                v{CHANGELOG.version} <span style={{ color: 'white', fontSize: '0.8rem', background: 'var(--accent-gradient)', padding: '2px 8px', borderRadius: 'var(--radius-full)', marginLeft: '4px' }}>{CHANGELOG.stage}</span>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Versione Installata</div>
+              <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                v{CHANGELOG.version} <span style={{ color: 'white', fontSize: '0.75rem', background: 'var(--accent-gradient)', padding: '1px 6px', borderRadius: 'var(--radius-full)', marginLeft: '4px' }}>{CHANGELOG.stage}</span>
               </div>
             </div>
             <button 
@@ -156,36 +164,36 @@ export default function SettingsPopup({ onClose }) {
                 background: checking ? 'rgba(255,255,255,0.05)' : 'var(--accent-primary)',
                 color: 'white',
                 border: 'none',
-                padding: '8px 16px',
+                padding: '6px 12px',
                 borderRadius: 'var(--radius-full)',
-                fontSize: '0.85rem',
+                fontSize: '0.8rem',
                 fontWeight: 'bold',
                 cursor: checking ? 'not-allowed' : 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: '4px',
                 transition: 'background 0.2s'
               }}
               onMouseOver={e => !checking && (e.currentTarget.style.background = 'var(--accent-hover)')}
               onMouseOut={e => !checking && (e.currentTarget.style.background = 'var(--accent-primary)')}
             >
-              <RefreshCw size={14} className={checking ? 'spin-anim' : ''} />
+              <RefreshCw size={12} className={checking ? 'spin-anim' : ''} />
               {checking ? 'Ricerca...' : 'Cerca'}
             </button>
           </div>
 
           {/* Feedback Ricerca */}
           {checkResult === 'up_to_date' && (
-            <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#10B981', background: 'rgba(16,185,129,0.08)', padding: '10px 14px', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', border: '1px solid rgba(16,185,129,0.2)' }}>
-              <CheckCircle size={16} />
-              <span>OmniDex è già aggiornato alla versione più recente!</span>
+            <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', background: 'rgba(16,185,129,0.08)', padding: '8px 12px', borderRadius: 'var(--radius-md)', fontSize: '0.8rem', border: '1px solid rgba(16,185,129,0.2)' }}>
+              <CheckCircle size={14} />
+              <span>OmniDex è già all'ultima versione!</span>
             </div>
           )}
 
           {checkResult === 'update_found' && (
-            <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-primary)', background: 'rgba(109,40,217,0.08)', padding: '10px 14px', borderRadius: 'var(--radius-md)', fontSize: '0.9rem', border: '1px solid rgba(109,40,217,0.2)' }}>
-              <AlertTriangle size={16} />
-              <span>Nuovo aggiornamento trovato! Verrà mostrato il popup di conferma.</span>
+            <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-primary)', background: 'rgba(109,40,217,0.08)', padding: '8px 12px', borderRadius: 'var(--radius-md)', fontSize: '0.8rem', border: '1px solid rgba(109,40,217,0.2)' }}>
+              <AlertTriangle size={14} />
+              <span>Nuovo aggiornamento trovato!</span>
             </div>
           )}
         </div>
