@@ -3,7 +3,7 @@ import GeminiCloudService from './GeminiCloudService';
 import { db } from './db';
 
 const NEWS_PROXY = 'https://api.allorigins.win/raw?url=';
-const CACHE_VERSION = 8; // Bump per forzare rigenerazione dati vuoti causa limite concorrenza
+const CACHE_VERSION = 9; // Bump per forzare fetch con la nuova chiave API offuscata
 
 /**
  * Recupera contenuto testuale da Wikipedia in italiano.
