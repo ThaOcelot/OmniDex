@@ -1,59 +1,36 @@
 import { useState, useEffect } from 'react';
 import { ArrowUpCircle, RefreshCw, XCircle } from 'lucide-react';
+import UpdateService from '../services/UpdateService';
 
 export default function UpdatePopup() {
   const [show, setShow] = useState(false);
-  const [registration, setRegistration] = useState(null);
+  const [updateInfo, setUpdateInfo] = useState(null);
 
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      // Registra il Service Worker con scope assoluto dinamico per evitare blocchi a seconda della route
-      const isGitHubPages = window.location.hostname.includes('github.io');
-      const swUrl = isGitHubPages ? '/OmniDex/sw.js' : '/sw.js';
-      const swScope = isGitHubPages ? '/OmniDex/' : '/';
+    // Controllo aggiornamenti all'avvio dell'app
+    const checkUpdate = async () => {
+      const result = await UpdateService.checkForUpdate();
+      if (result.hasUpdate) {
+        setUpdateInfo(result);
+        setShow(true);
+      }
+    };
 
-      navigator.serviceWorker.register(swUrl, { scope: swScope }).then((reg) => {
-        setRegistration(reg);
-
-        // Se c'è già un worker in attesa, mostra subito il popup
-        if (reg.waiting) {
-          setShow(true);
-        }
-
-        // Ascolta futuri aggiornamenti
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // Nuovo aggiornamento disponibile ed installato in background
-              setShow(true);
-            }
-          });
-        });
-      }).catch((err) => {
-        console.warn('🔔 SW registration failed:', err);
-      });
-
-      // Ascolta il cambio del controller (attivazione del nuovo SW) e ricarica la pagina
-      let refreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-          refreshing = true;
-          window.location.reload();
-        }
-      });
-    }
+    // Ritardo leggermente il check per non rallentare il caricamento iniziale
+    const timer = setTimeout(checkUpdate, 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleUpdate = () => {
-    if (registration && registration.waiting) {
-      // Invia il messaggio al Service Worker in attesa di attivarsi
-      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+    if (updateInfo) {
+      UpdateService.applyUpdate(updateInfo.buildTime);
     }
-    setShow(false);
   };
 
   const handleReject = () => {
+    if (updateInfo) {
+      UpdateService.dismissUpdate(updateInfo.buildTime);
+    }
     setShow(false);
   };
 
@@ -109,7 +86,7 @@ export default function UpdatePopup() {
                 Aggiornamento Disponibile!
               </h3>
               <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                Una nuova versione di OmniDex è pronta con nuove feature e patch notes. Vuoi installarla ora?
+                Una nuova versione di OmniDex è pronta. Vuoi installarla ora? Riavvierà l'app in un attimo.
               </p>
             </div>
           </div>
@@ -148,7 +125,7 @@ export default function UpdatePopup() {
                 gap: '6px'
               }}
             >
-              <RefreshCw size={16} style={{ animation: 'spin 4s linear infinite' }} /> Aggiorna Ora
+              <RefreshCw size={16} /> Aggiorna Ora
             </button>
           </div>
         </div>

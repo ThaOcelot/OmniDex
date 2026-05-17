@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
+import UpdateService from '../services/UpdateService';
 
 export default function SettingsPopup({ onClose }) {
   const [theme, setTheme] = useState(() => {
@@ -8,6 +9,7 @@ export default function SettingsPopup({ onClose }) {
   });
   const [checking, setChecking] = useState(false);
   const [checkResult, setCheckResult] = useState('');
+  const [updateInfo, setUpdateInfo] = useState(null);
 
   // Sincronizza il tema con l'attributo data-theme del documento
   useEffect(() => {
@@ -18,35 +20,31 @@ export default function SettingsPopup({ onClose }) {
   const handleManualUpdateCheck = async () => {
     setChecking(true);
     setCheckResult('');
+    setUpdateInfo(null);
     
-    // Piccolo ritardo di 1.5 secondi per dare l'effetto scansione/ricerca
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Piccolo ritardo di 1 secondo per dare l'effetto scansione/ricerca
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if ('serviceWorker' in navigator) {
-      try {
-        const isGitHubPages = window.location.hostname.includes('github.io');
-        const swScope = isGitHubPages ? '/OmniDex/' : '/';
-        const registration = await navigator.serviceWorker.getRegistration(swScope);
-        if (registration) {
-          // Forza la ricerca di nuovi aggiornamenti sul Service Worker
-          await registration.update();
-          
-          if (registration.waiting) {
-            setCheckResult('update_found');
-          } else {
-            setCheckResult('up_to_date');
-          }
-        } else {
-          setCheckResult('up_to_date');
-        }
-      } catch (err) {
-        console.warn('Errore durante la ricerca degli aggiornamenti:', err);
+    try {
+      const result = await UpdateService.checkForUpdate();
+      if (result.hasUpdate) {
+        setCheckResult('update_found');
+        setUpdateInfo(result);
+      } else {
         setCheckResult('up_to_date');
       }
-    } else {
-      setCheckResult('up_to_date');
+    } catch (err) {
+      console.warn('Errore durante la ricerca degli aggiornamenti:', err);
+      setCheckResult('error');
+    } finally {
+      setChecking(false);
     }
-    setChecking(false);
+  };
+
+  const applyManualUpdate = () => {
+    if (updateInfo) {
+      UpdateService.applyUpdate(updateInfo.buildTime);
+    }
   };
 
   return (
@@ -193,9 +191,18 @@ export default function SettingsPopup({ onClose }) {
           )}
 
           {checkResult === 'update_found' && (
-            <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-primary)', background: 'rgba(109,40,217,0.08)', padding: '8px 12px', borderRadius: 'var(--radius-md)', fontSize: '0.8rem', border: '1px solid rgba(109,40,217,0.2)' }}>
-              <AlertTriangle size={14} />
-              <span>Nuovo aggiornamento trovato!</span>
+            <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(109,40,217,0.08)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(109,40,217,0.2)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-primary)', fontSize: '0.8rem' }}>
+                <AlertTriangle size={14} />
+                <span>Nuovo aggiornamento trovato!</span>
+              </div>
+              <button
+                onClick={applyManualUpdate}
+                className="btn-primary"
+                style={{ padding: '8px', fontSize: '0.8rem', borderRadius: 'var(--radius-md)' }}
+              >
+                Applica e Riavvia
+              </button>
             </div>
           )}
         </div>
