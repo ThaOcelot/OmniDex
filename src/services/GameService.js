@@ -7,7 +7,7 @@ const isNative = window.Capacitor?.isNativePlatform?.();
 const getNewsFetchUrl = (rssUrl) => {
   return isNative ? rssUrl : `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
 };
-const CACHE_VERSION = 17; // Bump per invertire panoramica e trama
+const CACHE_VERSION = 18; // Bump per validazione stringente nomi personaggi su Wikipedia
 
 /**
  * Recupera contenuto testuale completo da Wikipedia in italiano.
@@ -51,6 +51,14 @@ async function fetchCharacterImageWiki(characterName, gameTitle) {
     const searchData = await searchRes.json();
     const firstResult = searchData?.query?.search?.[0];
     if (!firstResult) return null;
+
+    // Validazione rigorosa: il titolo della pagina Wikipedia DEVE contenere il nome del personaggio
+    // Altrimenti Wikipedia potrebbe restituire la pagina generale del gioco o di un altro personaggio,
+    // causando la duplicazione della stessa immagine per personaggi diversi!
+    const charFirstName = characterName.split(' ')[0].toLowerCase().trim();
+    if (!firstResult.title.toLowerCase().includes(charFirstName)) {
+      return null;
+    }
 
     const imgUrl = `https://it.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(firstResult.title)}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
     const imgRes = await fetch(imgUrl);
