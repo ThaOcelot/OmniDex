@@ -3,7 +3,7 @@ import GeminiCloudService from './GeminiCloudService';
 import { db } from './db';
 
 const NEWS_PROXY = 'https://api.allorigins.win/raw?url=';
-const CACHE_VERSION = 7; // Bump per rigenerare con gemini-2.0-flash funzionante
+const CACHE_VERSION = 8; // Bump per forzare rigenerazione dati vuoti causa limite concorrenza
 
 /**
  * Recupera contenuto testuale da Wikipedia in italiano.
@@ -134,13 +134,13 @@ class GameService {
     if (GeminiCloudService.isAvailable()) {
       console.log("🤖 Generazione AI per:", rawg.title);
       try {
-        [descriptionIt, plot, gameplay, characters, trivia] = await Promise.all([
-          GeminiCloudService.translateDescription(rawg.descriptionRaw),
-          GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, genreNames, tagNames, wikiContent),
-          GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames),
-          GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw, wikiContent),
-          GeminiCloudService.generateTrivia(rawg.title, rawg.descriptionRaw),
-        ]);
+        // Le chiamate devono essere sequenziali per non attivare il limite di concorrenza 
+        // (HTTP 429 Too Many Requests) del piano gratuito di Gemini.
+        descriptionIt = await GeminiCloudService.translateDescription(rawg.descriptionRaw);
+        plot = await GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, genreNames, tagNames, wikiContent);
+        gameplay = await GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames);
+        characters = await GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw, wikiContent);
+        trivia = await GeminiCloudService.generateTrivia(rawg.title, rawg.descriptionRaw);
       } catch (e) {
         console.warn("🤖 AI generation partial failure:", e);
       }

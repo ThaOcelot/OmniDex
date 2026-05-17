@@ -148,7 +148,7 @@ export default function GameDetails() {
   };
 
   const tabs = [
-    { id: 'info', label: 'Panoramica', icon: <Info size={18} /> },
+    { id: 'info', label: 'Informazioni', icon: <Info size={18} /> },
     { id: 'story', label: 'Trama', icon: <BookOpen size={18} /> },
     { id: 'characters', label: 'Personaggi', icon: <Users size={18} /> },
     { id: 'gameplay', label: 'Gameplay', icon: <Zap size={18} /> },
@@ -191,6 +191,22 @@ export default function GameDetails() {
                 {gameData.genres?.map(g => (
                   <span key={g} style={{ background: 'rgba(109,40,217,0.2)', border: '1px solid rgba(109,40,217,0.4)', padding: '4px 14px', borderRadius: 'var(--radius-full)', fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: '600' }}>{g}</span>
                 ))}
+              </div>
+              
+              {/* Descrizione / Panoramica */}
+              <div style={{ fontSize: '1rem', lineHeight: '1.8', color: 'var(--text-secondary)', maxWidth: '800px', marginTop: '16px' }}>
+                <span dangerouslySetInnerHTML={formatText(
+                  typeof gameData.description === 'string' 
+                    ? (isDescriptionExpanded 
+                        ? gameData.description 
+                        : (gameData.description.length > 500 ? gameData.description.substring(0, 500) + '...' : gameData.description))
+                    : ''
+                )} />
+                {gameData.description?.length > 500 && (
+                  <span onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)} style={{ color: 'var(--accent-primary)', cursor: 'pointer', fontWeight: '600', marginLeft: '8px', borderBottom: '1px solid var(--accent-primary)' }}>
+                    {isDescriptionExpanded ? ' Mostra meno' : ' Leggi tutto'}
+                  </span>
+                )}
               </div>
 
             </div>
@@ -275,19 +291,6 @@ export default function GameDetails() {
       {/* Tab Content */}
       {activeTab === 'info' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-          
-          {/* Descrizione / Panoramica */}
-          {gameData.description && (
-            <div className="glass-panel" style={{ padding: '36px', gridColumn: '1 / -1' }}>
-              <h2 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}><Info size={22} color="var(--accent-primary)" /> Panoramica</h2>
-              <div style={{ fontSize: '1.05rem', lineHeight: '2', color: 'var(--text-secondary)' }}>
-                {gameData.description.split('\n').filter(p => p.trim()).map((para, i) => (
-                  <p key={i} style={{ marginBottom: '16px' }} dangerouslySetInnerHTML={formatText(para)} />
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Stats Card */}
           <div className="glass-panel" style={{ padding: '24px' }}>
             <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}><Zap size={16} /> Statistiche</h3>
