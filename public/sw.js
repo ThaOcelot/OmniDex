@@ -1,4 +1,4 @@
-const CACHE_NAME = 'omnidex-cache-v0.1.4-1778977300600';
+const CACHE_NAME = 'omnidex-cache-v0.1.4-1778977494428';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
