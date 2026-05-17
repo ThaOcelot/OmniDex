@@ -646,16 +646,19 @@ export default function GameDetails() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                 {gameData.protagonists.map((c, i) => (
                   <div key={i} className="glass-panel" onClick={() => handleCharacterClick(c)} 
-                    style={{ padding: '0', cursor: 'pointer', transition: 'all 0.2s ease', overflow: 'hidden' }}
+                    style={{ padding: '0', cursor: 'pointer', transition: 'all 0.2s ease', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
                     onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
                     onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'var(--glass-border)'; }}
                   >
-                    <div style={{ padding: '20px' }}>
+                    {c.imageUrl && (
+                      <div style={{ width: '100%', height: '220px', backgroundImage: `url(${c.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center top', borderBottom: '1px solid var(--glass-border)' }} />
+                    )}
+                    <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                         <h3 style={{ fontSize: '1.15rem', color: 'var(--text-primary)' }}>{c.name}</h3>
                         {c.role && <span style={{ background: 'rgba(109,40,217,0.15)', color: 'var(--accent-primary)', padding: '2px 10px', borderRadius: 'var(--radius-full)', fontSize: '0.7rem', fontWeight: '700', whiteSpace: 'nowrap' }}>{c.role}</span>}
                       </div>
-                      {c.description && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }} dangerouslySetInnerHTML={formatText(c.description)} />}
+                      {c.description && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6', flex: 1 }} dangerouslySetInnerHTML={formatText(c.description)} />}
                       <div style={{ marginTop: '14px', fontSize: '0.85rem', color: 'var(--accent-secondary)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         Approfondisci <ChevronRight size={14} />
                       </div>
