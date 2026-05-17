@@ -195,19 +195,26 @@ class GameService {
       const xmlDoc = parser.parseFromString(text, "text/xml");
       const items = Array.from(xmlDoc.querySelectorAll("item")).slice(0, 8);
 
-      const news = items.map(item => ({
-        title: item.querySelector("title")?.textContent || "",
-        url: item.querySelector("link")?.textContent || "",
-        source: item.querySelector("source")?.textContent || "Web",
-        date: (() => {
-          try {
-            return new Date(item.querySelector("pubDate")?.textContent).toLocaleDateString('it-IT', {
-              day: 'numeric', month: 'long', year: 'numeric'
-            });
-          } catch { return ''; }
-        })(),
-        summary: null
-      }));
+      const news = items.map(item => {
+        const pubDateText = item.querySelector("pubDate")?.textContent;
+        return {
+          title: item.querySelector("title")?.textContent || "",
+          url: item.querySelector("link")?.textContent || "",
+          source: item.querySelector("source")?.textContent || "Web",
+          rawDate: pubDateText ? new Date(pubDateText).getTime() : 0,
+          date: (() => {
+            try {
+              return new Date(pubDateText).toLocaleDateString('it-IT', {
+                day: 'numeric', month: 'long', year: 'numeric'
+              });
+            } catch { return ''; }
+          })(),
+          summary: null
+        };
+      });
+
+      // Ordina dalla più recente alla più vecchia
+      news.sort((a, b) => b.rawDate - a.rawDate);
 
       await db.setNews(cacheKey, news);
       return news;
