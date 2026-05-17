@@ -18,13 +18,15 @@ export default function Navbar() {
 
   return (
     <nav style={{ padding: '20px 0', borderBottom: '1px solid var(--glass-border)', background: 'var(--bg-glass)', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(12px)' }}>
-      <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Gamepad2 size={32} color="var(--accent-primary)" />
-          <span style={{ fontSize: '1.5rem', fontWeight: '800', letterSpacing: '-0.5px' }}>
-            <span className="text-gradient">Omni</span>Dex
-          </span>
-        </Link>
+      <div className="container" style={{ display: 'flex', justifyContent: isHomePage ? 'flex-end' : 'space-between', alignItems: 'center' }}>
+        {!isHomePage && (
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Gamepad2 size={32} color="var(--accent-primary)" />
+            <span style={{ fontSize: '1.5rem', fontWeight: '800', letterSpacing: '-0.5px' }}>
+              <span className="text-gradient">Omni</span>Dex
+            </span>
+          </Link>
+        )}
 
         {!isHomePage && (
           <form onSubmit={handleSearch} style={{ flex: 1, maxWidth: '400px', margin: '0 20px', position: 'relative' }}>

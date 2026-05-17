@@ -7,8 +7,12 @@ export default function UpdatePopup() {
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      // Registra il Service Worker
-      navigator.serviceWorker.register('./sw.js').then((reg) => {
+      // Registra il Service Worker con scope assoluto dinamico per evitare blocchi a seconda della route
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const swUrl = isGitHubPages ? '/OmniDex/sw.js' : '/sw.js';
+      const swScope = isGitHubPages ? '/OmniDex/' : '/';
+
+      navigator.serviceWorker.register(swUrl, { scope: swScope }).then((reg) => {
         setRegistration(reg);
 
         // Se c'è già un worker in attesa, mostra subito il popup

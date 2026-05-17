@@ -24,7 +24,9 @@ export default function SettingsPopup({ onClose }) {
 
     if ('serviceWorker' in navigator) {
       try {
-        const registration = await navigator.serviceWorker.getRegistration();
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        const swScope = isGitHubPages ? '/OmniDex/' : '/';
+        const registration = await navigator.serviceWorker.getRegistration(swScope);
         if (registration) {
           // Forza la ricerca di nuovi aggiornamenti sul Service Worker
           await registration.update();
