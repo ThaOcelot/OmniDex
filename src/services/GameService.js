@@ -175,7 +175,7 @@ class GameService {
   async getGameNews(gameTitle) {
     if (!gameTitle) return [];
 
-    const cacheKey = `news_v2_${gameTitle}`;
+    const cacheKey = `news_v3_${gameTitle}`; // Bump della cache per forzare il recupero delle notizie dell'ultimo mese
     const cached = await db.getNews(cacheKey);
     // Cache news per 2 ore
     if (cached?.content && cached.timestamp && (Date.now() - cached.timestamp < 7200000)) {
@@ -183,19 +183,38 @@ class GameService {
     }
 
     try {
-      const searchQuery = `${gameTitle} videogioco`;
-      const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
-      const proxyUrl = `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
+      const baseQuery = `${gameTitle} videogioco`;
+      // Cerca prima le notizie dell'ultimo mese (ultimi 30 giorni)
+      let searchQuery = `${baseQuery} when:30d`;
+      let rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
+      let proxyUrl = `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
 
-      const res = await fetch(proxyUrl);
-      if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
+      let res = await fetch(proxyUrl);
+      let text = '';
+      let items = [];
 
-      const text = await res.text();
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(text, "text/xml");
-      const items = Array.from(xmlDoc.querySelectorAll("item")).slice(0, 8);
+      if (res.ok) {
+        text = await res.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "text/xml");
+        items = Array.from(xmlDoc.querySelectorAll("item"));
+      }
 
-      const news = items.map(item => {
+      // Se non ci sono notizie negli ultimi 30 giorni, togli il filtro temporale per evitare un tab vuoto
+      if (items.length === 0) {
+        console.log(`ℹ️ Nessuna notizia dell'ultimo mese per "${gameTitle}". Ripiego sulla ricerca generica.`);
+        searchQuery = baseQuery;
+        rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
+        proxyUrl = `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
+        res = await fetch(proxyUrl);
+        if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
+        text = await res.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, "text/xml");
+        items = Array.from(xmlDoc.querySelectorAll("item"));
+      }
+
+      const news = items.slice(0, 8).map(item => {
         const pubDateText = item.querySelector("pubDate")?.textContent;
         return {
           title: item.querySelector("title")?.textContent || "",
