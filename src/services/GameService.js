@@ -7,7 +7,7 @@ const isNative = window.Capacitor?.isNativePlatform?.();
 const getNewsFetchUrl = (rssUrl) => {
   return isNative ? rssUrl : `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
 };
-const CACHE_VERSION = 13; // Bump per forzare il recupero tramite il modello di nuova generazione Gemini 2.5 Flash
+const CACHE_VERSION = 14; // Bump per riordinare correttamente la panoramica e la trama delle schede gioco
 
 /**
  * Recupera contenuto testuale da Wikipedia in italiano.
@@ -155,8 +155,8 @@ class GameService {
       ...rawg,
       suggested,
       // Contenuti tradotti/generati in italiano
-      description: plot || wikiContent || descriptionIt || rawg.descriptionRaw || '',
-      plot: descriptionIt || rawg.descriptionRaw || '',
+      description: descriptionIt || rawg.descriptionRaw || '',
+      plot: plot || wikiContent || '',
       gameplay: gameplay || '',
       protagonists: characters || [],
       trivia: trivia || [],
