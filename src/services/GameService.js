@@ -7,11 +7,11 @@ const isNative = window.Capacitor?.isNativePlatform?.();
 const getNewsFetchUrl = (rssUrl) => {
   return isNative ? rssUrl : `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
 };
-const CACHE_VERSION = 14; // Bump per riordinare correttamente la panoramica e la trama delle schede gioco
+const CACHE_VERSION = 15; // Bump per rigenerare i giochi con articoli Wikipedia completi e trame non tagliate
 
 /**
- * Recupera contenuto testuale da Wikipedia in italiano.
- * Usato per arricchire i prompt AI con dati reali verificati.
+ * Recupera contenuto testuale completo da Wikipedia in italiano.
+ * Usato per arricchire i prompt AI con dati reali completi ed evitare riassunti tagliati.
  */
 async function fetchWikipediaIt(gameTitle) {
   try {
@@ -22,11 +22,22 @@ async function fetchWikipediaIt(gameTitle) {
     const firstResult = searchData?.query?.search?.[0];
     if (!firstResult) return '';
 
-    const summaryUrl = `https://it.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(firstResult.title)}`;
-    const summaryRes = await fetch(summaryUrl);
-    if (!summaryRes.ok) return '';
-    const summaryData = await summaryRes.json();
-    return summaryData?.extract || '';
+    const sectionsUrl = `https://it.wikipedia.org/api/rest_v1/page/mobile-sections/${encodeURIComponent(firstResult.title)}`;
+    const sectionsRes = await fetch(sectionsUrl);
+    if (!sectionsRes.ok) return '';
+    const sectionsData = await sectionsRes.json();
+    
+    if (sectionsData?.lead) {
+      // Uniamo il testo della sezione principale e di tutte le sottosezioni
+      let fullText = sectionsData.lead.sections[0].text;
+      if (sectionsData.remaining?.sections) {
+        fullText += ' ' + sectionsData.remaining.sections.map(s => s.text).join(' ');
+      }
+      // Puliamo il codice HTML per estrarre solo il testo pulito
+      fullText = fullText.replace(/<[^>]*>/g, ' ').replace(/\s\s+/g, ' ').trim();
+      return fullText;
+    }
+    return '';
   } catch {
     return '';
   }
