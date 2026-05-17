@@ -87,6 +87,16 @@ function App() {
             <Route path="/favorites" element={<Favorites />} />
           </Routes>
         </main>
+        <footer className="app-footer" style={{ borderTop: '1px solid var(--glass-border)', marginTop: 'auto', padding: '24px 0' }}>
+          <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center' }}>
+            <div>
+              © {new Date().getFullYear()} <span style={{ fontWeight: '600', color: 'var(--text-secondary)' }}>OmniDex</span>. Tutti i diritti riservati.
+            </div>
+            <div style={{ fontSize: '0.78rem' }}>
+              Dati e immagini dei videogiochi forniti con orgoglio da <a href="https://rawg.io" target="_blank" rel="noreferrer" style={{ color: 'var(--accent-primary)', fontWeight: 'bold', textDecoration: 'underline' }}>RAWG</a>.
+            </div>
+          </div>
+        </footer>
       </div>
     </Router>
   );
