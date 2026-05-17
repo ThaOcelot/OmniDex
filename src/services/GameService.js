@@ -3,7 +3,7 @@ import GeminiCloudService from './GeminiCloudService';
 import { db } from './db';
 
 const NEWS_PROXY = 'https://api.allorigins.win/raw?url=';
-const CACHE_VERSION = 11; // Bump per forzare l'inversione corretta di Panoramica e Trama
+const CACHE_VERSION = 12; // Bump per forzare il recupero tramite il modello stabile gemini-flash-latest
 
 /**
  * Recupera contenuto testuale da Wikipedia in italiano.
