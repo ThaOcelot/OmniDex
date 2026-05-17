@@ -7,7 +7,7 @@ const isNative = window.Capacitor?.isNativePlatform?.();
 const getNewsFetchUrl = (rssUrl) => {
   return isNative ? rssUrl : `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
 };
-const CACHE_VERSION = 19; // Bump per fix tag HTML visibili + fix definitivo panoramica/trama
+const CACHE_VERSION = 20; // Bump per immagini personaggi via OpenVerse invece di Wikipedia
 
 /**
  * Recupera contenuto testuale completo da Wikipedia in italiano.
@@ -43,40 +43,6 @@ async function fetchWikipediaIt(gameTitle) {
   }
 }
 
-async function fetchCharacterImageWiki(characterName, gameTitle) {
-  try {
-    const searchUrl = `https://it.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(characterName + ' ' + gameTitle)}&format=json&origin=*&srlimit=1`;
-    const searchRes = await fetch(searchUrl);
-    if (!searchRes.ok) return null;
-    const searchData = await searchRes.json();
-    const firstResult = searchData?.query?.search?.[0];
-    if (!firstResult) return null;
-
-    // Validazione rigorosa: il titolo della pagina Wikipedia DEVE contenere il nome del personaggio
-    // Altrimenti Wikipedia potrebbe restituire la pagina generale del gioco o di un altro personaggio,
-    // causando la duplicazione della stessa immagine per personaggi diversi!
-    const charFirstName = characterName.split(' ')[0].toLowerCase().trim();
-    if (!firstResult.title.toLowerCase().includes(charFirstName)) {
-      return null;
-    }
-
-    const imgUrl = `https://it.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(firstResult.title)}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
-    const imgRes = await fetch(imgUrl);
-    if (!imgRes.ok) return null;
-    const imgData = await imgRes.json();
-    
-    const pages = imgData?.query?.pages;
-    if (pages) {
-      const pageId = Object.keys(pages)[0];
-      if (pages[pageId]?.thumbnail?.source) {
-        return pages[pageId].thumbnail.source;
-      }
-    }
-    return null;
-  } catch {
-    return null;
-  }
-}
 
 class GameService {
 
@@ -191,15 +157,6 @@ class GameService {
         gameplay = await GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames);
         characters = await GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw, wikiContent);
         
-        // Arricchisci i personaggi con immagini da Wikipedia in parallelo
-        if (characters && characters.length > 0) {
-          const enrichPromises = characters.map(async (char) => {
-            const img = await fetchCharacterImageWiki(char.name, rawg.title);
-            return { ...char, imageUrl: img };
-          });
-          characters = await Promise.all(enrichPromises);
-        }
-
         trivia = await GeminiCloudService.generateTrivia(rawg.title, rawg.descriptionRaw);
       } catch (e) {
         console.warn("🤖 AI generation partial failure:", e);
