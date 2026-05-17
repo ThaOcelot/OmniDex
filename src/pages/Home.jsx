@@ -7,7 +7,11 @@ import RAWGService from '../services/RAWGService';
 export default function Home() {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
-  const [trending, setTrending] = useState(['Helldivers 2', 'Final Fantasy VII Rebirth', "Dragon's Dogma 2"]);
+  const [trending, setTrending] = useState([
+    { id: 962471, name: 'Helldivers 2', slug: 'helldivers-2' },
+    { id: 796245, name: 'Final Fantasy VII Rebirth', slug: 'final-fantasy-vii-rebirth' },
+    { id: 624510, name: "Dragon's Dogma 2", slug: 'dragons-dogma-2' }
+  ]);
 
   useEffect(() => {
     const loadTrendingGames = async () => {
@@ -37,10 +41,15 @@ export default function Home() {
         });
 
         if (data && data.results && data.results.length > 0) {
-          const names = data.results.map(g => g.name).filter(Boolean).slice(0, 4);
-          if (names.length > 0) {
-            setTrending(names);
-            localStorage.setItem('trending_games', JSON.stringify(names));
+          const games = data.results.map(g => ({
+            id: g.id,
+            name: g.name,
+            slug: g.slug
+          })).filter(g => g.name && g.slug).slice(0, 4);
+
+          if (games.length > 0) {
+            setTrending(games);
+            localStorage.setItem('trending_games', JSON.stringify(games));
             localStorage.setItem('trending_last_updated', now.toString());
             return;
           }
@@ -135,15 +144,15 @@ export default function Home() {
       {/* Sezione Trending Dinamica */}
       <div style={{ marginTop: '60px', display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', color: 'var(--text-muted)' }}>
         <span>Trending:</span>
-        {trending.map((gameName, index) => (
+        {trending.map((game, index) => (
           <span 
             key={index} 
             style={{cursor: 'pointer', transition: 'color 0.3s'}} 
             onMouseOver={e=>e.target.style.color='var(--text-primary)'} 
             onMouseOut={e=>e.target.style.color='var(--text-muted)'} 
-            onClick={()=>navigate(`/game/${encodeURIComponent(gameName)}`)}
+            onClick={()=>navigate(`/game/${encodeURIComponent(game.name)}`, { state: { game: { id: game.id, slug: game.slug } } })}
           >
-            {gameName}
+            {game.name}
           </span>
         ))}
       </div>

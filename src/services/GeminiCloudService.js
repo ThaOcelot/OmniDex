@@ -1,8 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
-
 const SYSTEM_INSTRUCTION = `Sei l'Archivista di OmniDex, un'enciclopedia di videogiochi.
 REGOLE TASSATIVE:
 - Scrivi SEMPRE e SOLO in ITALIANO corretto e professionale.
@@ -14,14 +11,20 @@ REGOLE TASSATIVE:
 - Non inventare informazioni false. Se non conosci qualcosa, omettila.
 - Usa un tono enciclopedico ma coinvolgente.`;
 
+let currentKey = null;
+let genAI = null;
 let model = null;
 
 function getModel() {
-  if (!genAI) {
+  const activeKey = localStorage.getItem('user_gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY;
+  if (!activeKey) {
     console.warn('⚠️ Gemini API key non configurata');
     return null;
   }
-  if (!model) {
+
+  if (activeKey !== currentKey) {
+    currentKey = activeKey;
+    genAI = new GoogleGenerativeAI(activeKey);
     model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
       systemInstruction: SYSTEM_INSTRUCTION,
@@ -237,7 +240,8 @@ Se non hai informazioni sufficienti, fai un riassunto basato solo sul titolo.`
    * Verifica se il servizio è disponibile
    */
   isAvailable() {
-    return !!genAI;
+    const activeKey = localStorage.getItem('user_gemini_api_key') || import.meta.env.VITE_GEMINI_API_KEY;
+    return !!activeKey;
   }
 }
 

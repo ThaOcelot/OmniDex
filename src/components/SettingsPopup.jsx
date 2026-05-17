@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
+import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle, Key } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 
 export default function SettingsPopup({ onClose }) {
@@ -8,12 +8,29 @@ export default function SettingsPopup({ onClose }) {
   });
   const [checking, setChecking] = useState(false);
   const [checkResult, setCheckResult] = useState('');
+  
+  // Stato per la chiave API Gemini personalizzata
+  const [apiKey, setApiKey] = useState(() => {
+    return localStorage.getItem('user_gemini_api_key') || '';
+  });
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // Sincronizza il tema con l'attributo data-theme del documento
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('app_theme', theme);
   }, [theme]);
+
+  const handleSaveKey = () => {
+    const trimmed = apiKey.trim();
+    if (trimmed) {
+      localStorage.setItem('user_gemini_api_key', trimmed);
+    } else {
+      localStorage.removeItem('user_gemini_api_key');
+    }
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+  };
 
   const handleManualUpdateCheck = async () => {
     setChecking(true);
@@ -143,6 +160,56 @@ export default function SettingsPopup({ onClose }) {
               <span>Tema Chiaro</span>
             </button>
           </div>
+        </div>
+
+        {/* Configurazione Chiave API Gemini */}
+        <div style={{ marginBottom: '24px', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: 'var(--text-primary)', fontWeight: '600', fontSize: '0.95rem' }}>
+            <Key size={16} color="var(--accent-primary)" />
+            <span>Chiave API Gemini (IA)</span>
+          </div>
+          <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: '0 0 12px 0', lineHeight: '1.4' }}>
+            Inserisci la tua chiave API Google Gemini per attivare le traduzioni, le trame e le schede dei personaggi in italiano.
+          </p>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input 
+              type="password"
+              placeholder="Inserisci chiave AIzaSy..."
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+              style={{
+                flex: 1,
+                padding: '8px 12px',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--glass-border)',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: 'var(--text-primary)',
+                fontSize: '0.85rem',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
+            />
+            <button 
+              onClick={handleSaveKey}
+              className="btn-primary"
+              style={{
+                padding: '8px 16px',
+                borderRadius: 'var(--radius-md)',
+                fontSize: '0.8rem',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Salva
+            </button>
+          </div>
+          {saveSuccess && (
+            <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', marginTop: '8px', fontSize: '0.75rem' }}>
+              <CheckCircle size={12} />
+              <span>Chiave API salvata con successo!</span>
+            </div>
+          )}
         </div>
 
         {/* Aggiornamenti */}
