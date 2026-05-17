@@ -61,7 +61,7 @@ export default function SearchResults() {
           </h1>
         </div>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-          {results.length > 0 ? `Trovati ${results.length} giochi monumentali.` : 'Nessun gioco trovato negli archivi.'}
+          {results.length > 0 ? `Trovati ${results.length} giochi.` : 'Nessun gioco trovato negli archivi.'}
         </p>
       </div>
 

@@ -696,7 +696,7 @@ export default function GameDetails() {
             ))
           ) : (
             <div className="glass-panel" style={{ padding: '40px', textAlign: 'center', gridColumn: '1 / -1' }}>
-              <p style={{ color: 'var(--text-muted)' }}>Nessuna notizia monumentale trovata per questo titolo.</p>
+              <p style={{ color: 'var(--text-muted)' }}>Nessuna notizia trovata per questo titolo.</p>
             </div>
           )}
         </div>

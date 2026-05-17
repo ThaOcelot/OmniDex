@@ -51,7 +51,7 @@ export default function Home() {
       <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', position: 'relative' }}>
         <input
           type="text"
-          placeholder="Cerca il gioco (es. The Witcher, GTA)..."
+          placeholder=""
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           style={{

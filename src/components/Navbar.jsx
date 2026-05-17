@@ -39,7 +39,7 @@ export default function Navbar() {
           <form onSubmit={handleSearch} style={{ flex: 1, maxWidth: '400px', margin: '0 20px', position: 'relative' }}>
             <input
               type="text"
-              placeholder="Cerca il gioco..."
+              placeholder="cerca..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
