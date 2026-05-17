@@ -157,7 +157,13 @@ export default function GameDetails() {
 
   const formatText = (text) => {
     if (!text) return { __html: '' };
-    const html = text
+    // Prima rimuoviamo i tag HTML grezzi (es. <br>, <p>, <b> da RAWG)
+    // poi applichiamo le conversioni markdown di Gemini
+    const stripped = text
+      .replace(/<br\s*\/?>/gi, '\n')      // <br> → a-capo
+      .replace(/<\/p>/gi, '\n')          // </p> → a-capo
+      .replace(/<[^>]+>/g, '');           // rimuovi tutti gli altri tag HTML
+    const html = stripped
       .replace(/###?\s+/g, '')
       .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
       .replace(/\*(.*?)\*/g, '<i>$1</i>')
@@ -193,16 +199,16 @@ export default function GameDetails() {
                 ))}
               </div>
               
-              {/* Descrizione / Panoramica */}
+              {/* Descrizione / Panoramica — usa plot (traduzione RAWG, la panoramica ufficiale) */}
               <div style={{ fontSize: '1rem', lineHeight: '1.8', color: 'var(--text-secondary)', maxWidth: '800px', marginTop: '16px' }}>
                 <span dangerouslySetInnerHTML={formatText(
-                  typeof gameData.description === 'string' 
+                  typeof gameData.plot === 'string' 
                     ? (isDescriptionExpanded 
-                        ? gameData.description 
-                        : (gameData.description.length > 500 ? gameData.description.substring(0, 500) + '...' : gameData.description))
+                        ? gameData.plot 
+                        : (gameData.plot.length > 500 ? gameData.plot.substring(0, 500) + '...' : gameData.plot))
                     : ''
                 )} />
-                {gameData.description?.length > 500 && (
+                {gameData.plot?.length > 500 && (
                   <span onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)} style={{ color: 'var(--accent-primary)', cursor: 'pointer', fontWeight: '600', marginLeft: '8px', borderBottom: '1px solid var(--accent-primary)' }}>
                     {isDescriptionExpanded ? ' Mostra meno' : ' Leggi tutto'}
                   </span>
@@ -626,9 +632,9 @@ export default function GameDetails() {
       {activeTab === 'story' && (
         <div className="glass-panel animate-fade-in" style={{ padding: '36px' }}>
           <h2 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}><BookOpen size={22} color="var(--accent-primary)" /> Trama</h2>
-          {gameData.plot ? (
+          {gameData.description ? (
             <div style={{ fontSize: '1.05rem', lineHeight: '2', color: 'var(--text-secondary)' }}>
-              {gameData.plot.split('\n').filter(p => p.trim()).map((para, i) => (
+              {gameData.description.split('\n').filter(p => p.trim()).map((para, i) => (
                 <p key={i} style={{ marginBottom: '16px' }} dangerouslySetInnerHTML={formatText(para)} />
               ))}
             </div>

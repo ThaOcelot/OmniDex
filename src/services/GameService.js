@@ -7,7 +7,7 @@ const isNative = window.Capacitor?.isNativePlatform?.();
 const getNewsFetchUrl = (rssUrl) => {
   return isNative ? rssUrl : `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
 };
-const CACHE_VERSION = 18; // Bump per validazione stringente nomi personaggi su Wikipedia
+const CACHE_VERSION = 19; // Bump per fix tag HTML visibili + fix definitivo panoramica/trama
 
 /**
  * Recupera contenuto testuale completo da Wikipedia in italiano.
@@ -210,9 +210,11 @@ class GameService {
     const finalData = {
       ...rawg,
       suggested,
-      // Contenuti tradotti/generati in italiano
-      description: plot || wikiContent || '',
-      plot: descriptionIt || rawg.descriptionRaw || '',
+      // MAPPING DEFINITIVO:
+      // description = trama narrativa AI (generata da Gemini + Wikipedia) → va nella TAB "Trama"
+      // plot        = descrizione ufficiale tradotta (da RAWG, panoramica del gioco) → appare nell'HEADER hero
+      description: plot || wikiContent || '',          // trama AI → tab Trama
+      plot: descriptionIt || rawg.descriptionRaw || '', // panoramica RAWG → hero header
       gameplay: gameplay || '',
       protagonists: characters || [],
       trivia: trivia || [],
