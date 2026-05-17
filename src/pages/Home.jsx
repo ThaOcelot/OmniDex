@@ -1,11 +1,63 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Sparkles } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
+import RAWGService from '../services/RAWGService';
 
 export default function Home() {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
+  const [trending, setTrending] = useState(['Helldivers 2', 'Final Fantasy VII Rebirth', "Dragon's Dogma 2"]);
+
+  useEffect(() => {
+    const loadTrendingGames = async () => {
+      try {
+        const cached = localStorage.getItem('trending_games');
+        const lastUpdated = localStorage.getItem('trending_last_updated');
+        const now = Date.now();
+        const oneWeek = 7 * 24 * 60 * 60 * 1000;
+
+        // Se abbiamo i dati in cache e risalgono a meno di una settimana fa, usiamoli!
+        if (cached && lastUpdated && (now - parseInt(lastUpdated, 10) < oneWeek)) {
+          setTrending(JSON.parse(cached));
+          return;
+        }
+
+        // Altrimenti interroghiamo RAWG per ottenere i trend delle ultime 40 giornate
+        const today = new Date();
+        const lastMonth = new Date(today.getTime() - 40 * 24 * 60 * 60 * 1000);
+        const todayStr = today.toISOString().split('T')[0];
+        const lastMonthStr = lastMonth.toISOString().split('T')[0];
+
+        console.log("📡 Aggiornamento settimanale dei giochi in trend...");
+        const data = await RAWGService.get('/games', {
+          dates: `${lastMonthStr},${todayStr}`,
+          ordering: '-added',
+          page_size: 4
+        });
+
+        if (data && data.results && data.results.length > 0) {
+          const names = data.results.map(g => g.name).filter(Boolean).slice(0, 4);
+          if (names.length > 0) {
+            setTrending(names);
+            localStorage.setItem('trending_games', JSON.stringify(names));
+            localStorage.setItem('trending_last_updated', now.toString());
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Errore nel caricamento dei giochi in trend:', err);
+      }
+      
+      // Fallback in caso di assenza di rete o errore
+      const cached = localStorage.getItem('trending_games');
+      if (cached) {
+        setTrending(JSON.parse(cached));
+      }
+    };
+
+    loadTrendingGames();
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -23,6 +75,7 @@ export default function Home() {
       minHeight: '80vh',
       textAlign: 'center'
     }}>
+      {/* Badge Versione e IA */}
       <div style={{
         display: 'inline-flex',
         alignItems: 'center',
@@ -37,25 +90,20 @@ export default function Home() {
         fontSize: '0.9rem'
       }}>
         <Sparkles size={16} />
-        <span>Potenziato dall'IA</span>
+        <span>Potenziato dall'IA • v{CHANGELOG.version}</span>
       </div>
 
-      <h1 style={{ fontSize: 'clamp(3.5rem, 8vw, 5.5rem)', marginBottom: '4px', fontWeight: '900', letterSpacing: '-0.03em', textShadow: '0 0 50px rgba(109, 40, 217, 0.3)' }}>
-        <span className="text-gradient">OmniDex</span>
+      {/* Obiettivo dell'app (Titolo principale ora che OmniDex è solo in Navbar) */}
+      <h1 style={{ fontSize: 'clamp(2rem, 6vw, 3rem)', color: 'var(--text-primary)', marginBottom: '20px', fontWeight: '900', letterSpacing: '-0.02em', maxWidth: '800px', lineHeight: '1.2' }}>
+        L'Enciclopedia Intelligente dei <br/>
+        <span className="text-gradient">Videogiochi</span>
       </h1>
-      
-      <div style={{ fontSize: '0.9rem', color: 'var(--accent-primary)', background: 'rgba(109, 40, 217, 0.08)', border: '1px solid rgba(109, 40, 217, 0.2)', padding: '4px 16px', borderRadius: 'var(--radius-full)', fontWeight: 'bold', marginBottom: '24px', display: 'inline-block' }}>
-        Versione {CHANGELOG.version} {CHANGELOG.stage}
-      </div>
-      
-      <h2 style={{ fontSize: 'clamp(1.4rem, 4vw, 2rem)', color: 'var(--text-primary)', marginBottom: '16px', fontWeight: '700' }}>
-        L'Enciclopedia Intelligente dei Videogiochi
-      </h2>
       
       <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(1rem, 3vw, 1.15rem)', maxWidth: '650px', marginBottom: '40px', lineHeight: '1.6' }}>
         Il tuo hub local-first per esplorare in profondità qualsiasi titolo. Trova all'istante biografie dettagliate dei personaggi, approfondimenti sulle trame, analisi di gameplay e ultime notizie in tempo reale, tutto elaborato e sintetizzato dall'Intelligenza Artificiale.
       </p>
 
+      {/* Modulo di ricerca centrale */}
       <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', position: 'relative' }}>
         <input
           type="text"
@@ -84,11 +132,20 @@ export default function Home() {
         </button>
       </form>
       
-      <div style={{ marginTop: '60px', display: 'flex', gap: '20px', color: 'var(--text-muted)' }}>
+      {/* Sezione Trending Dinamica */}
+      <div style={{ marginTop: '60px', display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', color: 'var(--text-muted)' }}>
         <span>Trending:</span>
-        <span style={{cursor: 'pointer', transition: 'color 0.3s'}} onMouseOver={e=>e.target.style.color='var(--text-primary)'} onMouseOut={e=>e.target.style.color='var(--text-muted)'} onClick={()=>navigate('/game/Helldivers 2')}>Helldivers 2</span>
-        <span style={{cursor: 'pointer', transition: 'color 0.3s'}} onMouseOver={e=>e.target.style.color='var(--text-primary)'} onMouseOut={e=>e.target.style.color='var(--text-muted)'} onClick={()=>navigate('/game/Final Fantasy VII Rebirth')}>FFVII Rebirth</span>
-        <span style={{cursor: 'pointer', transition: 'color 0.3s'}} onMouseOver={e=>e.target.style.color='var(--text-primary)'} onMouseOut={e=>e.target.style.color='var(--text-muted)'} onClick={()=>navigate('/game/Dragons Dogma 2')}>Dragon's Dogma 2</span>
+        {trending.map((gameName, index) => (
+          <span 
+            key={index} 
+            style={{cursor: 'pointer', transition: 'color 0.3s'}} 
+            onMouseOver={e=>e.target.style.color='var(--text-primary)'} 
+            onMouseOut={e=>e.target.style.color='var(--text-muted)'} 
+            onClick={()=>navigate(`/game/${encodeURIComponent(gameName)}`)}
+          >
+            {gameName}
+          </span>
+        ))}
       </div>
     </div>
   );
