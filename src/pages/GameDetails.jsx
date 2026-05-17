@@ -471,7 +471,7 @@ export default function GameDetails() {
             <div className="glass-panel" style={{ padding: '24px', gridColumn: '1 / -1' }}>
               <h3 style={{ marginBottom: '14px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>💡 Lo sapevi?</h3>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {gameData.trivia.map((t, i) => <li key={i} style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>{t}</li>)}
+                {gameData.trivia.map((t, i) => <li key={i} style={{ fontSize: '0.95rem', lineHeight: '1.6', color: 'var(--text-secondary)' }} dangerouslySetInnerHTML={formatText(t)} />)}
               </ul>
             </div>
           )}
