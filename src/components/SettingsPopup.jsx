@@ -150,36 +150,68 @@ export default function SettingsPopup({ onClose }) {
           <div style={{ color: 'var(--text-primary)', fontWeight: '600', marginBottom: '10px', fontSize: '0.95rem' }}>
             Aggiornamento Software
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.03)', padding: '10px 12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '12px', boxSizing: 'border-box' }}>
-            <div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Versione Installata</div>
-              <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--text-primary)' }}>
-                v{CHANGELOG.version} <span style={{ color: 'white', fontSize: '0.75rem', background: 'var(--accent-gradient)', padding: '1px 6px', borderRadius: 'var(--radius-full)', marginLeft: '4px' }}>{CHANGELOG.stage}</span>
+          <div style={{ background: 'rgba(255,255,255,0.03)', padding: '12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.05)', marginBottom: '12px', boxSizing: 'border-box' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Versione Installata</div>
+                <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                  v{CHANGELOG.version} <span style={{ color: 'white', fontSize: '0.75rem', background: 'var(--accent-gradient)', padding: '1px 6px', borderRadius: 'var(--radius-full)', marginLeft: '4px' }}>{CHANGELOG.stage}</span>
+                </div>
               </div>
             </div>
-            <button 
-              disabled={checking}
-              onClick={handleManualUpdateCheck}
-              style={{
-                background: checking ? 'rgba(255,255,255,0.05)' : 'var(--accent-primary)',
-                color: 'white',
-                border: 'none',
-                padding: '6px 12px',
-                borderRadius: 'var(--radius-full)',
-                fontSize: '0.8rem',
-                fontWeight: 'bold',
-                cursor: checking ? 'not-allowed' : 'pointer',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                transition: 'background 0.2s'
-              }}
-              onMouseOver={e => !checking && (e.currentTarget.style.background = 'var(--accent-hover)')}
-              onMouseOut={e => !checking && (e.currentTarget.style.background = 'var(--accent-primary)')}
-            >
-              <RefreshCw size={12} className={checking ? 'spin-anim' : ''} />
-              {checking ? 'Ricerca...' : 'Cerca'}
-            </button>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button 
+                disabled={checking}
+                onClick={handleManualUpdateCheck}
+                style={{
+                  flex: 1,
+                  background: checking ? 'rgba(255,255,255,0.05)' : 'var(--accent-primary)',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 12px',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold',
+                  cursor: checking ? 'not-allowed' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  transition: 'background 0.2s'
+                }}
+                onMouseOver={e => !checking && (e.currentTarget.style.background = 'var(--accent-hover)')}
+                onMouseOut={e => !checking && (e.currentTarget.style.background = 'var(--accent-primary)')}
+              >
+                <RefreshCw size={12} className={checking ? 'spin-anim' : ''} />
+                {checking ? 'Ricerca...' : 'Controlla'}
+              </button>
+              <button 
+                onClick={() => {
+                  window.dispatchEvent(new CustomEvent('simulate-update'));
+                  onClose();
+                }}
+                style={{
+                  flex: 1,
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: '1px solid var(--glass-border)',
+                  color: 'var(--text-primary)',
+                  padding: '8px 12px',
+                  borderRadius: 'var(--radius-full)',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '4px',
+                  transition: 'all 0.2s'
+                }}
+                onMouseOver={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'}
+                onMouseOut={e => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'}
+              >
+                Simula Notifica
+              </button>
+            </div>
           </div>
 
           {/* Feedback Ricerca */}
