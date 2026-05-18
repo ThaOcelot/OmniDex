@@ -215,6 +215,8 @@ a {
 .main-content {
   flex: 1;
   overflow-x: hidden;
+  /* Clearance per la barra di ricerca flottante in basso */
+  padding-bottom: 88px;
 }
 
 h1, h2, h3 {

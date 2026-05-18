@@ -10,6 +10,7 @@ import Upcoming from './pages/Upcoming';
 import ChangelogPopup from './components/ChangelogPopup';
 import UpdatePopup from './components/UpdatePopup';
 import SettingsPopup from './components/SettingsPopup';
+import FloatingSearchBar from './components/FloatingSearchBar';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import NotificationService from './services/NotificationService';
@@ -80,6 +81,7 @@ function App() {
       {isSettingsOpen && <SettingsPopup onClose={() => setIsSettingsOpen(false)} />}
       <div className="app-wrapper">
         <Navbar />
+        <FloatingSearchBar />
         <main className="main-content container">
           <Routes>
             <Route path="/" element={<Home />} />
