@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Heart, Gamepad2, Settings } from 'lucide-react';
+import { Search, Heart, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { CHANGELOG } from '../data/changelog';
 
@@ -24,7 +24,11 @@ export default function Navbar() {
         {/* Logo OmniDex sempre visibile con Versione sotto */}
         <Link to="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textDecoration: 'none', color: 'inherit' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Gamepad2 size={28} color="var(--accent-primary)" />
+            <img 
+              src="/logo.png" 
+              alt="OmniDex Logo" 
+              style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
+            />
             <span style={{ fontSize: '1.4rem', fontWeight: '800', letterSpacing: '-0.5px', lineHeight: '1.1' }}>
               <span className="text-gradient">Omni</span>Dex
             </span>

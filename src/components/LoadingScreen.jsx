@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Gamepad2 } from 'lucide-react';
 import { LOADING_MESSAGES } from '../data/loadingMessages';
 
 export default function LoadingScreen({ title, subtitle }) {
@@ -42,7 +41,11 @@ export default function LoadingScreen({ title, subtitle }) {
       padding: '20px'
     }}>
       <div className="dynamic-loader" style={{ marginBottom: '40px' }}>
-        <Gamepad2 size={80} color="var(--accent-primary)" />
+        <img 
+          src="/logo.png" 
+          alt="OmniDex Logo" 
+          style={{ width: '80px', height: '80px', objectFit: 'contain' }} 
+        />
       </div>
       
       {title && (

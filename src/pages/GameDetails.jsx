@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import {
   Loader2, Heart, ExternalLink, Calendar, Gamepad, Users,
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen,
-  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, Gamepad2, X, ChevronLeft, ZoomIn, ZoomOut
+  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut
 } from 'lucide-react';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
@@ -717,7 +717,11 @@ export default function GameDetails() {
         {modalLoading ? (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px', textAlign: 'center' }}>
             <div className="dynamic-loader">
-              <Gamepad2 size={48} color="var(--accent-primary)" />
+              <img 
+                src="/logo.png" 
+                alt="OmniDex Logo" 
+                style={{ width: '48px', height: '48px', objectFit: 'contain' }} 
+              />
             </div>
             <p style={{ marginTop: '24px', color: 'var(--text-secondary)', fontStyle: 'italic', maxWidth: '300px' }}>
               "{loadingMessage}"
@@ -759,7 +763,11 @@ export default function GameDetails() {
         {modalLoading ? (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0 40px', textAlign: 'center' }}>
             <div className="dynamic-loader">
-              <Gamepad2 size={48} color="var(--accent-primary)" />
+              <img 
+                src="/logo.png" 
+                alt="OmniDex Logo" 
+                style={{ width: '48px', height: '48px', objectFit: 'contain' }} 
+              />
             </div>
             <p style={{ marginTop: '24px', color: 'var(--text-secondary)', fontStyle: 'italic', maxWidth: '400px' }}>
               "{loadingMessage}"
