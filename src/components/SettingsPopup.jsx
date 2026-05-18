@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle } from 'lucide-react';
+import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle, ShieldCheck, Info } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 import UpdateService from '../services/UpdateService';
 import NotificationService from '../services/NotificationService';
@@ -206,6 +206,33 @@ export default function SettingsPopup({ onClose }) {
               </button>
             </div>
           )}
+        </div>
+
+        {/* Info & Privacy */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px', marginTop: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)', fontWeight: '600', marginBottom: '12px', fontSize: '0.95rem' }}>
+            <Info size={16} color="var(--accent-primary)" />
+            <span>Informazioni su OmniDex</span>
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px 12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.04)', boxSizing: 'border-box' }}>
+              <strong style={{ color: 'var(--text-primary)', display: 'block', marginBottom: '4px' }}>Obiettivo del Progetto</strong>
+              OmniDex nasce come l'enciclopedia definitiva per gli appassionati di videogiochi. Il nostro scopo è fornire un accesso rapido, fluido e completo a dettagli, trame, notizie e curiosità su oltre 500.000 giochi, sfruttando il database di RAWG.
+            </div>
+
+            <div style={{ background: 'rgba(16,185,129,0.03)', padding: '10px 12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(16,185,129,0.1)', boxSizing: 'border-box' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#10B981', fontWeight: 'bold', marginBottom: '4px' }}>
+                <ShieldCheck size={14} />
+                <span>Tutela della Privacy</span>
+              </div>
+              Ci impegniamo al massimo per la tua privacy: **non raccogliamo, non tracciamo e non condividiamo alcun dato personale**. I tuoi giochi preferiti sono salvati esclusivamente in locale sulla memoria del tuo dispositivo.
+            </div>
+
+            <div style={{ padding: '0 4px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              Progetto indipendente e senza scopo di lucro. Dati di gioco gentilmente offerti dalle API di RAWG.
+            </div>
+          </div>
         </div>
       </div>
     </div>
