@@ -93,7 +93,8 @@ export default function Home() {
             fontWeight: '700', fontSize: '1rem', cursor: discovering ? 'not-allowed' : 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
             transition: 'all 0.3s ease',
-            animation: !discovering ? 'pulse-glow 3s ease-in-out infinite' : 'none',
+            boxShadow: discovering ? 'none' : '0 0 0 0 rgba(109,40,217,0)',
+            animation: !discovering ? 'subtle-glow 3s ease-in-out infinite' : 'none',
           }}
           onMouseOver={e => { if (!discovering) { e.currentTarget.style.background = 'rgba(109,40,217,0.18)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}}
           onMouseOut={e => { e.currentTarget.style.background = 'rgba(109,40,217,0.08)'; e.currentTarget.style.borderColor = 'rgba(109,40,217,0.4)'; }}

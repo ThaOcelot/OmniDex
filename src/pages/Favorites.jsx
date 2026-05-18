@@ -212,9 +212,9 @@ export default function Favorites() {
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
           {filtered.map(game => (
-            <div key={game.id} className="glass-panel" style={{ overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div key={game.id} className="glass-panel" style={{ overflow: 'visible', display: 'flex', flexDirection: 'column', position: 'relative' }}>
               <div
-                style={{ height: '160px', width: '100%', background: `url(${game.cover}) center/cover no-repeat`, borderBottom: '1px solid var(--glass-border)', cursor: 'pointer', position: 'relative' }}
+                style={{ height: '160px', width: '100%', overflow: 'hidden', borderRadius: 'var(--radius-md) var(--radius-md) 0 0', background: `url(${game.cover}) center/cover no-repeat`, borderBottom: '1px solid var(--glass-border)', cursor: 'pointer', position: 'relative' }}
                 onClick={() => navigate(`/game/${encodeURIComponent(game.title)}`, { state: { game: { id: game.id } } })}
               />
               <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }}>

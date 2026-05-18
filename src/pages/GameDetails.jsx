@@ -1,9 +1,9 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Loader2, Heart, ExternalLink, Calendar, Gamepad, Users,
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen,
-  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2
+  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2, Sparkles
 } from 'lucide-react';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
@@ -39,6 +39,10 @@ export default function GameDetails() {
   const [selectedScreenshotIndex, setSelectedScreenshotIndex] = useState(null);
   const [zoomScale, setZoomScale] = useState(1);
   const [touchStartX, setTouchStartX] = useState(0);
+  const [trivia, setTrivia] = useState(null);
+  const [triviaLoading, setTriviaLoading] = useState(false);
+  const [parallaxY, setParallaxY] = useState(0);
+  const heroRef = useRef(null);
 
   useEffect(() => {
     if (modalLoading) {
@@ -176,8 +180,22 @@ export default function GameDetails() {
     { id: 'story', label: 'Trama', icon: <BookOpen size={18} /> },
     { id: 'characters', label: 'Personaggi', icon: <Users size={18} /> },
     { id: 'gameplay', label: 'Gameplay', icon: <Zap size={18} /> },
-    { id: 'news', label: 'Notizie', icon: <Calendar size={18} /> }
+    { id: 'news', label: 'Notizie', icon: <Calendar size={18} /> },
+    { id: 'trivia', label: 'Trivia', icon: <Sparkles size={18} /> },
   ];
+
+  const handleTriviaTab = useCallback(async () => {
+    if (trivia || triviaLoading || !gameData) return;
+    setTriviaLoading(true);
+    try {
+      const result = await GameService.getGameTrivia(gameData.title);
+      setTrivia(result);
+    } catch (e) {
+      setTrivia([{ fact: 'Impossibile caricare i trivia al momento. Riprova più tardi.' }]);
+    } finally {
+      setTriviaLoading(false);
+    }
+  }, [trivia, triviaLoading, gameData]);
 
   const formatText = (text) => {
     if (!text) return { __html: '' };
@@ -207,9 +225,27 @@ export default function GameDetails() {
         <ArrowLeft size={18} /> Torna ai risultati
       </button>
 
-      {/* Hero Header */}
-      <div className="glass-panel" style={{ padding: 'clamp(20px, 5vw, 40px)', position: 'relative', overflow: 'hidden', marginBottom: '30px', width: '100%' }}>
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(109,40,217,0.25) 0%, rgba(236,72,153,0.1) 100%)', zIndex: 0 }} />
+      {/* Hero Header con Parallax */}
+      <div
+        ref={heroRef}
+        className="glass-panel"
+        style={{ padding: 'clamp(20px, 5vw, 40px)', position: 'relative', overflow: 'hidden', marginBottom: '30px', width: '100%' }}
+        onScroll={e => setParallaxY(e.target.scrollTop * 0.3)}
+      >
+        {/* Cover con effetto parallax */}
+        {gameData.cover && (
+          <div style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundImage: `url(${gameData.cover})`,
+            backgroundSize: 'cover',
+            backgroundPosition: `center ${parallaxY}px`,
+            transform: `translateY(${parallaxY * 0.4}px) scale(1.1)`,
+            filter: 'blur(2px) brightness(0.25)',
+            zIndex: 0,
+            transition: 'transform 0.05s linear',
+          }} />
+        )}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(109,40,217,0.35) 0%, rgba(236,72,153,0.15) 100%)', zIndex: 0 }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <div className="hero-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -306,7 +342,7 @@ export default function GameDetails() {
       {/* Tabs */}
       <div className="tabs-container" style={{ display: 'flex', gap: '8px', marginBottom: '28px', overflowX: 'auto', paddingBottom: '4px' }}>
         {tabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+          <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.id === 'trivia') handleTriviaTab(); }}
             className="tab-btn"
             style={{
               display: 'flex', alignItems: 'center', gap: '6px',
@@ -736,7 +772,55 @@ export default function GameDetails() {
         </div>
       )}
 
-      {/* Modale Personaggio */}
+      {/* Tab Trivia — Easter Egg & Curiosità */}
+      {activeTab === 'trivia' && (
+        <div className="glass-panel animate-fade-in" style={{ padding: '36px' }}>
+          <h2 style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Sparkles size={22} color="var(--accent-primary)" /> Trivia & Easter Egg
+          </h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '24px' }}>
+            Curiosità, retroscena e segreti nascosti generati dall'AI.
+          </p>
+          {triviaLoading ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px', gap: '16px' }}>
+              <div className="dynamic-loader">
+                <img src={logoUrl} alt="OmniDex" style={{ width: '48px', height: '48px', objectFit: 'contain' }} />
+              </div>
+              <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>Sto scavando negli archivi segreti...</p>
+            </div>
+          ) : trivia ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {trivia.map((item, i) => (
+                <div key={i} style={{
+                  display: 'flex', gap: '16px', alignItems: 'flex-start',
+                  background: 'rgba(255,255,255,0.03)', padding: '16px 18px',
+                  borderRadius: 'var(--radius-md)', border: '1px solid var(--glass-border)',
+                  lineHeight: '1.7'
+                }}>
+                  <span style={{
+                    flexShrink: 0, width: '28px', height: '28px', borderRadius: '50%',
+                    background: 'var(--accent-gradient)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '0.8rem', fontWeight: '800', color: 'white', marginTop: '1px'
+                  }}>{i + 1}</span>
+                  <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.95rem' }}
+                    dangerouslySetInnerHTML={formatText(item.fact || item)} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <button
+              className="btn-primary"
+              style={{ margin: '20px auto', display: 'flex' }}
+              onClick={handleTriviaTab}
+            >
+              <Sparkles size={16} /> Genera Trivia con AI
+            </button>
+          )}
+        </div>
+      )}
+
+
       <Modal 
         isOpen={!!selectedCharacter} 
         onClose={() => setSelectedCharacter(null)}

@@ -304,6 +304,28 @@ class GameService {
     }
   }
 
+  /**
+   * Trivia & Easter Egg on-demand per il tab Trivia.
+   * Restituisce i trivia dalla cache del gioco se disponibili,
+   * altrimenti li genera al volo con l'AI.
+   */
+  async getGameTrivia(gameTitle) {
+    if (!GeminiCloudService.isAvailable()) {
+      return [{ fact: 'Il servizio AI non è disponibile. Controlla la connessione.' }];
+    }
+    try {
+      const raw = await GeminiCloudService.generateTrivia(gameTitle, '');
+      if (!Array.isArray(raw) || raw.length === 0) {
+        return [{ fact: 'Nessun trivia disponibile per questo titolo.' }];
+      }
+      // generateTrivia ritorna stringhe — le mappiamo in { fact }
+      return raw.map(item => typeof item === 'string' ? { fact: item } : item);
+    } catch (e) {
+      console.warn('Trivia generation failed:', e);
+      return [{ fact: 'Impossibile generare i trivia al momento.' }];
+    }
+  }
+
   async setModelInstalled() { }
 }
 
