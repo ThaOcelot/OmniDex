@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Trash2, BarChart2, ChevronDown, ChevronUp, Star, Target, CheckCircle } from 'lucide-react';
+import { User, Trash2, BarChart2, ChevronDown, ChevronUp, Star } from 'lucide-react';
 import { db } from '../services/db';
 import HapticService from '../services/HapticService';
 import { getQuizStats } from '../services/QuizService';
@@ -243,7 +243,7 @@ export default function Favorites() {
 
       {favorites.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-secondary)' }}>
-          <Heart size={48} style={{ margin: '0 auto 20px', opacity: 0.5 }} />
+          <User size={48} style={{ margin: '0 auto 20px', opacity: 0.3 }} />
           <p style={{ fontSize: '1.2rem' }}>Non hai ancora aggiunto giochi ai preferiti.</p>
         </div>
       ) : filtered.length === 0 ? (
