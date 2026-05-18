@@ -119,6 +119,20 @@ export default function GameDetails() {
 
 
 
+  // handleTriviaTab definito QUI (prima dei return condizionali) per rispettare le Rules of Hooks
+  const handleTriviaTab = useCallback(async () => {
+    if (trivia || triviaLoading || !gameData) return;
+    setTriviaLoading(true);
+    try {
+      const result = await GameService.getGameTrivia(gameData.title);
+      setTrivia(result);
+    } catch (e) {
+      setTrivia([{ fact: 'Impossibile caricare i trivia al momento. Riprova più tardi.' }]);
+    } finally {
+      setTriviaLoading(false);
+    }
+  }, [trivia, triviaLoading, gameData]);
+
   if (loading) {
     return <LoadingScreen title={`Sto costruendo l'enciclopedia di ${decodedName}...`} subtitle="Potrebbe volerci qualche secondo, stiamo raccogliendo tonnellate di dati." />;
   }
@@ -184,18 +198,6 @@ export default function GameDetails() {
     { id: 'trivia', label: 'Trivia', icon: <Sparkles size={18} /> },
   ];
 
-  const handleTriviaTab = useCallback(async () => {
-    if (trivia || triviaLoading || !gameData) return;
-    setTriviaLoading(true);
-    try {
-      const result = await GameService.getGameTrivia(gameData.title);
-      setTrivia(result);
-    } catch (e) {
-      setTrivia([{ fact: 'Impossibile caricare i trivia al momento. Riprova più tardi.' }]);
-    } finally {
-      setTriviaLoading(false);
-    }
-  }, [trivia, triviaLoading, gameData]);
 
   const formatText = (text) => {
     if (!text) return { __html: '' };
