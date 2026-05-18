@@ -1,9 +1,9 @@
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Loader2, Heart, ExternalLink, Calendar, Gamepad, Users,
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen,
-  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2, Sparkles
+  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2
 } from 'lucide-react';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
@@ -39,8 +39,6 @@ export default function GameDetails() {
   const [selectedScreenshotIndex, setSelectedScreenshotIndex] = useState(null);
   const [zoomScale, setZoomScale] = useState(1);
   const [touchStartX, setTouchStartX] = useState(0);
-  const [trivia, setTrivia] = useState(null);
-  const [triviaLoading, setTriviaLoading] = useState(false);
   const [parallaxY, setParallaxY] = useState(0);
   const heroRef = useRef(null);
 
@@ -119,20 +117,7 @@ export default function GameDetails() {
 
 
 
-  // handleTriviaTab definito QUI (prima dei return condizionali) per rispettare le Rules of Hooks
-  const handleTriviaTab = useCallback(async () => {
-    if (trivia || triviaLoading || !gameData) return;
-    setTriviaLoading(true);
-    try {
-      const result = await GameService.getGameTrivia(gameData.title);
-      setTrivia(result);
-    } catch (e) {
-      setTrivia([{ fact: 'Impossibile caricare i trivia al momento. Riprova più tardi.' }]);
-    } finally {
-      setTriviaLoading(false);
-    }
-  }, [trivia, triviaLoading, gameData]);
-
+  // ─── Early returns ──────────────────────────────────────────────────────────
   if (loading) {
     return <LoadingScreen title={`Sto costruendo l'enciclopedia di ${decodedName}...`} subtitle="Potrebbe volerci qualche secondo, stiamo raccogliendo tonnellate di dati." />;
   }
@@ -195,7 +180,6 @@ export default function GameDetails() {
     { id: 'characters', label: 'Personaggi', icon: <Users size={18} /> },
     { id: 'gameplay', label: 'Gameplay', icon: <Zap size={18} /> },
     { id: 'news', label: 'Notizie', icon: <Calendar size={18} /> },
-    { id: 'trivia', label: 'Trivia', icon: <Sparkles size={18} /> },
   ];
 
 
@@ -344,7 +328,7 @@ export default function GameDetails() {
       {/* Tabs */}
       <div className="tabs-container" style={{ display: 'flex', gap: '8px', marginBottom: '28px', overflowX: 'auto', paddingBottom: '4px' }}>
         {tabs.map(tab => (
-          <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.id === 'trivia') handleTriviaTab(); }}
+          <button key={tab.id} onClick={() => setActiveTab(tab.id)}
             className="tab-btn"
             style={{
               display: 'flex', alignItems: 'center', gap: '6px',
