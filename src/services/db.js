@@ -6,9 +6,8 @@ const NEWS_STORE = 'newsCache';
 
 const FAV_STORE = 'favoritesCache';
 
-const dbPromise = openDB(DB_NAME, 36, {
+const dbPromise = openDB(DB_NAME, 37, {
   upgrade(db, oldVersion) {
-    // Pulisci le vecchie cache alla nuova versione
     if (db.objectStoreNames.contains(STORE_NAME)) {
       db.deleteObjectStore(STORE_NAME);
     }
@@ -79,5 +78,20 @@ export const db = {
     } catch (e) {
       return false;
     }
-  }
+  },
+
+  // === Backlog Status ===
+  // Valori validi: 'backlog' | 'playing' | 'completed' | 'dropped'
+  async updateStatus(id, status) {
+    const database = await dbPromise;
+    const existing = await database.get(FAV_STORE, id);
+    if (!existing) return false;
+    return database.put(FAV_STORE, { ...existing, status });
+  },
+
+  async getByStatus(status) {
+    const database = await dbPromise;
+    const all = await database.getAll(FAV_STORE);
+    return all.filter(g => g.status === status);
+  },
 };

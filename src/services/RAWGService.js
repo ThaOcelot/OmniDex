@@ -206,6 +206,49 @@ class RAWGService {
     if (!html) return "";
     return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
   }
+
+  /**
+   * Gioco casuale — pesca da una pagina random del catalogo RAWG
+   */
+  async getRandomGame() {
+    const randomPage = Math.floor(Math.random() * 300) + 1;
+    const data = await this.get("/games", {
+      page: randomPage,
+      page_size: 1,
+      ordering: '-added',
+      metacritic: '60,100',
+    });
+    return data?.results?.[0] || null;
+  }
+
+  /**
+   * Giochi in uscita nei prossimi 30 giorni
+   */
+  async getUpcomingGames() {
+    const today = new Date();
+    const future = new Date();
+    future.setDate(today.getDate() + 60);
+    const fmt = d => d.toISOString().split('T')[0];
+    const data = await this.get("/games", {
+      dates: `${fmt(today)},${fmt(future)}`,
+      ordering: 'released',
+      page_size: 20,
+    });
+    return data?.results || [];
+  }
+
+  /**
+   * Ricerca con filtri avanzati
+   */
+  async searchGamesFiltered(query, filters = {}) {
+    const params = { search: query, page_size: 20 };
+    if (filters.platforms) params.platforms = filters.platforms;
+    if (filters.genres)    params.genres    = filters.genres;
+    if (filters.dates)     params.dates     = filters.dates;
+    if (filters.metacritic) params.metacritic = filters.metacritic;
+    const data = await this.get("/games", params);
+    return data?.results || [];
+  }
 }
 
 export default new RAWGService();

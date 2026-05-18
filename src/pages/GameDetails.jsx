@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import {
   Loader2, Heart, ExternalLink, Calendar, Gamepad, Users,
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen,
-  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut
+  Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2
 } from 'lucide-react';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
@@ -12,6 +12,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import Modal from '../components/Modal';
 import { LOADING_MESSAGES } from '../data/loadingMessages';
 import NotificationService from '../services/NotificationService';
+import HapticService from '../services/HapticService';
 import logoUrl from '../assets/logo.png';
 
 export default function GameDetails() {
@@ -77,16 +78,38 @@ export default function GameDetails() {
     if (isFavorite) {
       await db.removeFavorite(gameData.id);
       setIsFavorite(false);
+      await HapticService.light();
     } else {
       await db.addFavorite({
         id: gameData.id,
         title: gameData.title,
         cover: gameData.cover,
-        rating: gameData.rating
+        rating: gameData.rating,
+        genres: gameData.genres || [],
+        status: 'backlog',
       });
       setIsFavorite(true);
-      // Inizializza l'ultima notizia per questo gioco preferito
+      await HapticService.success();
       NotificationService.initFavoriteLatestNews(gameData.id, gameData.title);
+    }
+  };
+
+  const handleShare = async () => {
+    await HapticService.medium();
+    try {
+      const { Share } = await import('@capacitor/share');
+      await Share.share({
+        title: gameData.title,
+        text: `Scopri ${gameData.title} su OmniDex — l'enciclopedia intelligente dei videogiochi!`,
+        url: `https://thaocelot.github.io/OmniDex/#/game/${encodeURIComponent(gameData.title)}`,
+        dialogTitle: `Condividi ${gameData.title}`,
+      });
+    } catch {
+      // Fallback per browser: copia negli appunti
+      try {
+        await navigator.clipboard.writeText(`https://thaocelot.github.io/OmniDex/#/game/${encodeURIComponent(gameData.title)}`);
+        alert('Link copiato negli appunti!');
+      } catch { /* niente */ }
     }
   };
 
@@ -221,6 +244,10 @@ export default function GameDetails() {
               <button className="btn-icon" onClick={handleToggleFavorite}
                 style={{ color: isFavorite ? 'var(--accent-secondary)' : 'var(--text-primary)', border: `1px solid ${isFavorite ? 'var(--accent-secondary)' : 'var(--glass-border)'}` }}>
                 <Heart fill={isFavorite ? 'var(--accent-secondary)' : 'none'} />
+              </button>
+              <button className="btn-icon" onClick={handleShare}
+                style={{ color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }} title="Condividi">
+                <Share2 size={18} />
               </button>
               {gameData.metacritic && (
                 <div style={{ textAlign: 'center', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)', borderRadius: 'var(--radius-sm)', padding: '8px 14px' }}>

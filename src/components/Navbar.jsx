@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Search, Heart, Settings } from 'lucide-react';
+import { Search, Heart, Settings, Calendar } from 'lucide-react';
 import { useState } from 'react';
 import { CHANGELOG } from '../data/changelog';
 import logoUrl from '../assets/logo.png';
@@ -63,8 +63,11 @@ export default function Navbar() {
           </form>
         )}
 
-        <div style={{ display: 'flex', gap: '15px' }}>
-          <Link to="/favorites" className="btn-icon">
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+          <Link to="/upcoming" className="btn-icon" title="Uscite in arrivo">
+            <Calendar size={20} />
+          </Link>
+          <Link to="/favorites" className="btn-icon" title="Preferiti">
             <Heart size={20} />
           </Link>
           <button 

@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import GameDetails from './pages/GameDetails';
 import SearchResults from './pages/SearchResults';
 import Favorites from './pages/Favorites';
+import Upcoming from './pages/Upcoming';
 import ChangelogPopup from './components/ChangelogPopup';
 import UpdatePopup from './components/UpdatePopup';
 import SettingsPopup from './components/SettingsPopup';
@@ -85,6 +86,7 @@ function App() {
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/game/:gameName" element={<GameDetails />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/upcoming" element={<Upcoming />} />
           </Routes>
         </main>
         <footer className="app-footer" style={{ borderTop: '1px solid var(--glass-border)', marginTop: 'auto', padding: '24px 0' }}>
