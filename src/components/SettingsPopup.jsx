@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle, ShieldCheck, Info } from 'lucide-react';
+import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle, ShieldCheck, Info, Mail } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 import UpdateService from '../services/UpdateService';
 import NotificationService from '../services/NotificationService';
@@ -227,6 +227,14 @@ export default function SettingsPopup({ onClose }) {
                 <span>Tutela della Privacy</span>
               </div>
               Ci impegniamo al massimo per la tua privacy: **non raccogliamo, non tracciamo e non condividiamo alcun dato personale**. I tuoi giochi preferiti sono salvati esclusivamente in locale sulla memoria del tuo dispositivo.
+            </div>
+
+            <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px 12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.04)', boxSizing: 'border-box' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--text-primary)', fontWeight: 'bold', marginBottom: '4px' }}>
+                <Mail size={14} color="var(--accent-primary)" />
+                <span>Contatti e Supporto</span>
+              </div>
+              Per qualsiasi feedback, richiesta di funzionalità o segnalazione di bug, puoi scrivere direttamente all'indirizzo email: <a href="mailto:thaocelot@gmail.com" style={{ color: 'var(--accent-primary)', textDecoration: 'none', fontWeight: 'bold' }}>thaocelot@gmail.com</a>.
             </div>
 
             <div style={{ padding: '0 4px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
