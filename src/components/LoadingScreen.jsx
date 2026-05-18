@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import logoUrl from '../assets/logo.png';
+import { loadQuizState, saveQuizState } from '../services/QuizService';
 
 // ─── 50 Domande di Gaming ─────────────────────────────────────────────────────
 const ALL_QUIZ = [
@@ -56,7 +57,6 @@ const ALL_QUIZ = [
 ];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-const LS_KEY = 'omnidex_quiz_state';
 
 function getWeekNumber() {
   const now = new Date();
@@ -75,22 +75,7 @@ function seededShuffle(arr, seed) {
   return a; // ritorna gli indici mescolati
 }
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch {}
-  return null;
-}
 
-function saveState(state) {
-  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
-}
-
-export function getQuizStats() {
-  const s = loadState();
-  return s?.stats || { correct: 0, total: 0 };
-}
 
 // ─── Componente ───────────────────────────────────────────────────────────────
 export default function LoadingScreen({ title, subtitle }) {
@@ -102,9 +87,8 @@ export default function LoadingScreen({ title, subtitle }) {
 
   // Stato persistente: viste questa settimana + statistiche totali
   const [quizState, setQuizState] = useState(() => {
-    const saved = loadState();
+    const saved = loadQuizState();
     const savedWeek = saved?.week;
-    // Se siamo in una nuova settimana, azzera le domande viste ma conserva le stats
     if (saved && savedWeek === week) return saved;
     return { week, seen: [], stats: saved?.stats || { correct: 0, total: 0 } };
   });
@@ -136,7 +120,7 @@ export default function LoadingScreen({ title, subtitle }) {
       },
     };
     setQuizState(newState);
-    saveState(newState);
+    saveQuizState(newState);
     setSelected(idx);
     setRevealed(true);
   }, [revealed, transitioning, quiz, currentQ, quizState, week]);

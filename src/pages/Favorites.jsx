@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { User, Trash2, BarChart2, ChevronDown, ChevronUp, Star, Target, CheckCircle } from 'lucide-react';
 import { db } from '../services/db';
 import HapticService from '../services/HapticService';
-import { getQuizStats } from '../components/LoadingScreen';
+import { getQuizStats } from '../services/QuizService';
 
 const STATUS_CONFIG = {
   all:       { label: 'Tutti',       emoji: '🎮', color: 'var(--accent-primary)' },
