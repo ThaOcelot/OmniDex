@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle, ShieldCheck, Info, Mail } from 'lucide-react';
+import { X, Sun, Moon, RefreshCw, CheckCircle, AlertTriangle, ShieldCheck, Info, Mail, List } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 import UpdateService from '../services/UpdateService';
 import NotificationService from '../services/NotificationService';
@@ -206,6 +206,22 @@ export default function SettingsPopup({ onClose }) {
               </button>
             </div>
           )}
+        </div>
+
+        {/* Changelog */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '16px', marginTop: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-primary)', fontWeight: '600', marginBottom: '12px', fontSize: '0.95rem' }}>
+            <List size={16} color="var(--accent-primary)" />
+            <span>Novità di questa versione</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {CHANGELOG.changes.map((change, i) => (
+              <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.5', padding: '8px 10px', background: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                <span style={{ flexShrink: 0, marginTop: '1px' }}>•</span>
+                <span>{change}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Info & Privacy */}
