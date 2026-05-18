@@ -1,25 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Search, X } from 'lucide-react';
 
 /**
- * Barra di ricerca flottante in basso — visibile solo fuori dalla Home.
- * Collassata mostra solo un pill con icona; espansa si allarga in un campo di testo.
+ * Barra di ricerca flottante in basso.
+ * Collassata: pill larga con placeholder visibile.
+ * Espansa: campo di testo attivo con tastiera aperta.
  */
 export default function FloatingSearchBar() {
   const [expanded, setExpanded] = useState(false);
   const [query, setQuery] = useState('');
+  const inputRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Nascosta sulla Home
   const isHome = location.pathname === '/';
 
-  // Chiude la barra quando si cambia pagina
+  // Chiude quando si cambia pagina
   useEffect(() => {
     setExpanded(false);
     setQuery('');
   }, [location.pathname]);
+
+  // Focus automatico quando si espande
+  useEffect(() => {
+    if (expanded) inputRef.current?.focus();
+  }, [expanded]);
 
   if (isHome) return null;
 
@@ -40,11 +46,7 @@ export default function FloatingSearchBar() {
         left: '50%',
         transform: 'translateX(-50%)',
         zIndex: 500,
-        display: 'flex',
-        justifyContent: 'center',
-        // Larghezza animata con transizione
-        width: expanded ? 'min(92vw, 520px)' : '56px',
-        transition: 'width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        width: 'min(92vw, 480px)',
       }}
     >
       <form
@@ -53,47 +55,35 @@ export default function FloatingSearchBar() {
           width: '100%',
           display: 'flex',
           alignItems: 'center',
-          background: 'var(--bg-secondary)',
-          border: '1px solid',
-          borderColor: expanded ? 'var(--accent-primary)' : 'var(--glass-border)',
+          gap: '10px',
+          background: expanded
+            ? 'var(--bg-secondary)'
+            : 'rgba(109, 40, 217, 0.92)',
+          border: '1.5px solid',
+          borderColor: expanded ? 'var(--accent-primary)' : 'transparent',
           borderRadius: 'var(--radius-full)',
           boxShadow: expanded
-            ? '0 8px 40px rgba(109,40,217,0.35), 0 2px 12px rgba(0,0,0,0.5)'
-            : '0 4px 24px rgba(0,0,0,0.4)',
-          overflow: 'hidden',
-          backdropFilter: 'blur(16px)',
-          transition: 'border-color 0.25s, box-shadow 0.25s',
-          height: '52px',
+            ? '0 8px 40px rgba(109,40,217,0.4), 0 2px 16px rgba(0,0,0,0.5)'
+            : '0 6px 28px rgba(109,40,217,0.5), 0 2px 12px rgba(0,0,0,0.4)',
+          backdropFilter: 'blur(20px)',
+          padding: '0 8px 0 18px',
+          height: '54px',
+          cursor: expanded ? 'text' : 'pointer',
+          transition: 'background 0.25s, border-color 0.25s, box-shadow 0.25s',
         }}
+        onClick={() => !expanded && setExpanded(true)}
       >
-        {/* Tasto icona lente — apre/chiude */}
-        <button
-          type={expanded ? 'submit' : 'button'}
-          onClick={() => !expanded && setExpanded(true)}
-          style={{
-            flexShrink: 0,
-            width: '52px',
-            height: '52px',
-            border: 'none',
-            background: expanded ? 'var(--accent-gradient)' : 'transparent',
-            color: expanded ? 'white' : 'var(--accent-primary)',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 'var(--radius-full)',
-            transition: 'background 0.3s',
-            flexShrink: 0,
-          }}
-          aria-label="Cerca"
-        >
-          <Search size={20} />
-        </button>
+        {/* Icona lente */}
+        <Search
+          size={20}
+          color={expanded ? 'var(--accent-primary)' : 'rgba(255,255,255,0.85)'}
+          style={{ flexShrink: 0, transition: 'color 0.25s' }}
+        />
 
-        {/* Input — visibile solo quando espanso */}
-        {expanded && (
+        {/* Input / Placeholder */}
+        {expanded ? (
           <input
-            autoFocus
+            ref={inputRef}
             type="text"
             placeholder="Cerca un gioco..."
             value={query}
@@ -105,37 +95,55 @@ export default function FloatingSearchBar() {
               color: 'var(--text-primary)',
               fontSize: '1rem',
               outline: 'none',
-              padding: '0 8px',
               minWidth: 0,
             }}
           />
+        ) : (
+          <span style={{
+            flex: 1,
+            fontSize: '1rem',
+            fontWeight: '600',
+            color: 'rgba(255,255,255,0.9)',
+            letterSpacing: '0.01em',
+            userSelect: 'none',
+          }}>
+            Cerca un gioco...
+          </span>
         )}
 
-        {/* Tasto chiudi — visibile solo quando espanso */}
-        {expanded && (
+        {/* Tasto azione destra */}
+        {expanded ? (
           <button
             type="button"
-            onClick={() => { setExpanded(false); setQuery(''); }}
+            onClick={(e) => { e.stopPropagation(); setExpanded(false); setQuery(''); }}
             style={{
-              flexShrink: 0,
-              width: '40px',
-              height: '40px',
-              border: 'none',
-              background: 'transparent',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '50%',
-              marginRight: '6px',
-              transition: 'color 0.2s',
+              flexShrink: 0, width: '36px', height: '36px',
+              border: 'none', background: 'rgba(255,255,255,0.06)',
+              color: 'var(--text-muted)', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              borderRadius: '50%', transition: 'color 0.2s, background 0.2s',
             }}
-            onMouseOver={e => e.currentTarget.style.color = 'var(--text-primary)'}
-            onMouseOut={e => e.currentTarget.style.color = 'var(--text-muted)'}
+            onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = 'var(--text-primary)'; }}
+            onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
             aria-label="Chiudi ricerca"
           >
-            <X size={16} />
+            <X size={15} />
+          </button>
+        ) : (
+          <button
+            type="submit"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              flexShrink: 0, height: '38px', padding: '0 18px',
+              border: 'none', background: 'rgba(255,255,255,0.2)',
+              color: 'white', fontWeight: '700', fontSize: '0.85rem',
+              cursor: 'pointer', borderRadius: 'var(--radius-full)',
+              transition: 'background 0.2s',
+            }}
+            onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.3)'}
+            onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+          >
+            Cerca
           </button>
         )}
       </form>
