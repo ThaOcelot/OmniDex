@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Heart, Settings, Calendar } from 'lucide-react';
+import { User, Settings, Calendar } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 import logoUrl from '../assets/logo.png';
 
@@ -32,8 +32,8 @@ export default function Navbar() {
           <Link to="/upcoming" className="btn-icon" title="Uscite in arrivo">
             <Calendar size={20} />
           </Link>
-          <Link to="/favorites" className="btn-icon" title="Preferiti">
-            <Heart size={20} />
+          <Link to="/favorites" className="btn-icon" title="Profilo & Preferiti">
+            <User size={20} />
           </Link>
           <button 
             onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))} 

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, Trash2, BarChart2, ChevronDown, ChevronUp, Star } from 'lucide-react';
+import { User, Trash2, BarChart2, ChevronDown, ChevronUp, Star, Target, CheckCircle } from 'lucide-react';
 import { db } from '../services/db';
 import HapticService from '../services/HapticService';
+import { getQuizStats } from '../components/LoadingScreen';
 
 const STATUS_CONFIG = {
   all:       { label: 'Tutti',       emoji: '🎮', color: 'var(--accent-primary)' },
@@ -162,16 +163,56 @@ export default function Favorites() {
     ? favorites
     : favorites.filter(g => (g.status || 'backlog') === activeFilter);
 
+  const quizStats = getQuizStats();
+  const quizPct = quizStats.total > 0 ? Math.round((quizStats.correct / quizStats.total) * 100) : null;
+
   return (
     <div className="animate-fade-in">
+      {/* Header profilo */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '15px' }}>
-        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>I tuoi <span className="text-gradient">Preferiti</span></h1>
+        <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}><span className="text-gradient">Profilo</span></h1>
         <button
           onClick={() => setShowStats(v => !v)}
           style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', padding: '8px 14px', cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}
         >
           <BarChart2 size={14} /> Statistiche {showStats ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
         </button>
+      </div>
+
+      {/* Card Quiz Stats */}
+      <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+        <div style={{ background: 'var(--accent-gradient)', borderRadius: '50%', width: '54px', height: '54px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <User size={26} color="white" />
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em', marginBottom: '6px' }}>🎮 Quiz Gaming — Risultati Totali</div>
+          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--accent-primary)' }}>{quizStats.total}</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Risposte</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '1.8rem', fontWeight: '800', color: '#10B981' }}>{quizStats.correct}</div>
+              <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Corrette</div>
+            </div>
+            {quizPct !== null && (
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '1.8rem', fontWeight: '800', color: quizPct >= 70 ? '#10B981' : quizPct >= 40 ? '#f59e0b' : '#ef4444' }}>
+                  {quizPct}%
+                </div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Precisione</div>
+              </div>
+            )}
+            {quizStats.total === 0 && (
+              <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.88rem' }}>
+                Apri un gioco per rispondere al tuo primo quiz! 🎯
+              </span>
+            )}
+          </div>
+        </div>
+        <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', borderLeft: '1px solid var(--glass-border)', paddingLeft: '16px', lineHeight: '1.6', flexShrink: 0 }}>
+          🗓 Nuove domande<br />ogni lunedì
+        </div>
       </div>
 
       {/* Stats Panel */}
