@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Search, Heart, Settings } from 'lucide-react';
 import { useState } from 'react';
 import { CHANGELOG } from '../data/changelog';
+import logoUrl from '../assets/logo.png';
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -25,7 +26,7 @@ export default function Navbar() {
         <Link to="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textDecoration: 'none', color: 'inherit' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <img 
-              src="/logo.png" 
+              src={logoUrl} 
               alt="OmniDex Logo" 
               style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
             />

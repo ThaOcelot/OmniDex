@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { LOADING_MESSAGES } from '../data/loadingMessages';
+import logoUrl from '../assets/logo.png';
 
 export default function LoadingScreen({ title, subtitle }) {
   const [messageIndex, setMessageIndex] = useState(0);
@@ -42,7 +43,7 @@ export default function LoadingScreen({ title, subtitle }) {
     }}>
       <div className="dynamic-loader" style={{ marginBottom: '40px' }}>
         <img 
-          src="/logo.png" 
+          src={logoUrl} 
           alt="OmniDex Logo" 
           style={{ width: '80px', height: '80px', objectFit: 'contain' }} 
         />

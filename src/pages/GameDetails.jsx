@@ -12,6 +12,7 @@ import LoadingScreen from '../components/LoadingScreen';
 import Modal from '../components/Modal';
 import { LOADING_MESSAGES } from '../data/loadingMessages';
 import NotificationService from '../services/NotificationService';
+import logoUrl from '../assets/logo.png';
 
 export default function GameDetails() {
   const { gameName } = useParams();
@@ -718,7 +719,7 @@ export default function GameDetails() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '40px', textAlign: 'center' }}>
             <div className="dynamic-loader">
               <img 
-                src="/logo.png" 
+                src={logoUrl} 
                 alt="OmniDex Logo" 
                 style={{ width: '48px', height: '48px', objectFit: 'contain' }} 
               />
@@ -764,7 +765,7 @@ export default function GameDetails() {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px 0 40px', textAlign: 'center' }}>
             <div className="dynamic-loader">
               <img 
-                src="/logo.png" 
+                src={logoUrl} 
                 alt="OmniDex Logo" 
                 style={{ width: '48px', height: '48px', objectFit: 'contain' }} 
               />
