@@ -42,6 +42,12 @@ export default function GameDetails() {
   const [parallaxY, setParallaxY] = useState(0);
   const heroRef = useRef(null);
 
+  // Report AI States
+  const [reportAIData, setReportAIData] = useState(null);
+  const [reportReason, setReportReason] = useState('inaccurate');
+  const [reportComment, setReportComment] = useState('');
+  const [reportSubmitted, setReportSubmitted] = useState(false);
+
   useEffect(() => {
     if (modalLoading) {
       const msg = LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
@@ -143,6 +149,22 @@ export default function GameDetails() {
       </div>
     );
   }
+
+  const handleOpenReportAI = (section, gameTitle) => {
+    setReportAIData({ section, gameTitle });
+    setReportReason('inaccurate');
+    setReportComment('');
+    setReportSubmitted(false);
+  };
+
+  const handleCloseReportAI = () => {
+    setReportAIData(null);
+  };
+
+  const handleSubmitReportAI = async () => {
+    await HapticService.medium();
+    setReportSubmitted(true);
+  };
 
   const handleCharacterClick = async (character) => {
     setSelectedCharacter(character);
@@ -681,7 +703,17 @@ export default function GameDetails() {
 
       {activeTab === 'story' && (
         <div className="glass-panel animate-fade-in" style={{ padding: '36px' }}>
-          <h2 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}><BookOpen size={22} color="var(--accent-primary)" /> Trama</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+            <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}><BookOpen size={22} color="var(--accent-primary)" /> Trama</h2>
+            <button 
+              onClick={() => handleOpenReportAI('Trama', gameData.title)} 
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', padding: '4px 12px', fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+              onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.color = 'var(--danger)'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+            >
+              <AlertTriangle size={12} /> Segnala Contenuto IA
+            </button>
+          </div>
           {gameData.description ? (
             <div style={{ fontSize: '1.05rem', lineHeight: '2', color: 'var(--text-secondary)' }}>
               {gameData.description.split('\n').filter(p => p.trim()).map((para, i) => (
@@ -731,7 +763,17 @@ export default function GameDetails() {
 
       {activeTab === 'gameplay' && (
         <div className="glass-panel animate-fade-in" style={{ padding: '36px' }}>
-          <h2 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}><Zap size={22} color="var(--accent-primary)" /> Gameplay & Meccaniche</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
+            <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}><Zap size={22} color="var(--accent-primary)" /> Gameplay & Meccaniche</h2>
+            <button 
+              onClick={() => handleOpenReportAI('Gameplay', gameData.title)} 
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', padding: '4px 12px', fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+              onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.color = 'var(--danger)'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+            >
+              <AlertTriangle size={12} /> Segnala Contenuto IA
+            </button>
+          </div>
           {gameData.gameplay ? (
             <div style={{ fontSize: '1.05rem', lineHeight: '2', color: 'var(--text-secondary)' }}>
               {gameData.gameplay.split('\n').filter(p => p.trim()).map((para, i) => (
@@ -761,9 +803,19 @@ export default function GameDetails() {
       {/* Tab Trivia — Easter Egg & Curiosità */}
       {activeTab === 'trivia' && (
         <div className="glass-panel animate-fade-in" style={{ padding: '36px' }}>
-          <h2 style={{ marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Sparkles size={22} color="var(--accent-primary)" /> Trivia & Easter Egg
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px', flexWrap: 'wrap', gap: '10px' }}>
+            <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Sparkles size={22} color="var(--accent-primary)" /> Trivia & Easter Egg
+            </h2>
+            <button 
+              onClick={() => handleOpenReportAI('Trivia', gameData.title)} 
+              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', padding: '4px 12px', fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+              onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.color = 'var(--danger)'; }}
+              onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+            >
+              <AlertTriangle size={12} /> Segnala Contenuto IA
+            </button>
+          </div>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '24px' }}>
             Curiosità, retroscena e segreti nascosti generati dall'AI.
           </p>
@@ -828,9 +880,19 @@ export default function GameDetails() {
         ) : characterDeepDive ? (
           <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ background: 'rgba(255,255,255,0.03)', padding: '24px', borderRadius: 'var(--radius-md)', border: '1px solid var(--glass-border)' }}>
-              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Users size={16} /> Biografia & Dettagli
-              </h4>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+                <h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Users size={16} /> Biografia & Dettagli
+                </h4>
+                <button 
+                  onClick={() => handleOpenReportAI(`Personaggio: ${selectedCharacter.name}`, gameData.title)} 
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', padding: '3px 10px', fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', transition: 'all 0.2s' }}
+                  onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.color = 'var(--danger)'; }}
+                  onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+                >
+                  <AlertTriangle size={10} /> Segnala IA
+                </button>
+              </div>
               <div style={{ fontSize: '1.05rem', lineHeight: '1.8', color: 'var(--text-primary)' }}>
                 {characterDeepDive.description?.split('\n').map((p, i) => p.trim() && (
                   <p key={i} style={{ marginBottom: '15px' }} dangerouslySetInnerHTML={formatText(p)} />
@@ -873,7 +935,17 @@ export default function GameDetails() {
           </div>
         ) : newsSummary ? (
           <div className="animate-fade-in">
-            <h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '12px' }}>Riassunto generato dall'IA</h4>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
+              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', margin: 0 }}>Riassunto generato dall'IA</h4>
+              <button 
+                onClick={() => handleOpenReportAI(`Riassunto Notizia: ${selectedNews.title}`, gameData.title)} 
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', padding: '3px 10px', fontSize: '0.7rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', transition: 'all 0.2s' }}
+                onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.color = 'var(--danger)'; }}
+                onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+              >
+                <AlertTriangle size={10} /> Segnala IA
+              </button>
+            </div>
             <p style={{ fontSize: '1.1rem', lineHeight: '1.8', color: 'var(--text-primary)', marginBottom: '30px' }} dangerouslySetInnerHTML={formatText(newsSummary.summary)} />
             
             <a 
@@ -1047,6 +1119,160 @@ export default function GameDetails() {
           )}
         </div>
       )}
+
+      {/* Modale Segnalazione Contenuto IA */}
+      <Modal 
+        isOpen={!!reportAIData} 
+        onClose={handleCloseReportAI}
+        title="Segnala Contenuto IA"
+      >
+        {reportAIData && (
+          <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px', color: 'var(--text-primary)' }}>
+            {!reportSubmitted ? (
+              <>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', margin: 0 }}>
+                  Ci impegniamo a offrire informazioni accurate e sicure. Se ritieni che il testo generato automaticamente per la sezione <strong>{reportAIData.section}</strong> di <strong>{reportAIData.gameTitle}</strong> sia errato, offensivo o non conforme, compila questa segnalazione.
+                </p>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Motivo della Segnalazione</label>
+                  <select 
+                    value={reportReason} 
+                    onChange={e => setReportReason(e.target.value)}
+                    style={{
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid var(--glass-border)',
+                      borderRadius: 'var(--radius-md)',
+                      color: 'var(--text-primary)',
+                      padding: '12px',
+                      fontSize: '0.95rem',
+                      fontFamily: 'inherit',
+                      outline: 'none'
+                    }}
+                  >
+                    <option value="inaccurate" style={{ background: 'var(--bg-secondary)' }}>Contenuto non accurato o inventato (Allucinazione)</option>
+                    <option value="offensive" style={{ background: 'var(--bg-secondary)' }}>Contenuto offensivo, inappropriato o dannoso</option>
+                    <option value="other" style={{ background: 'var(--bg-secondary)' }}>Altro (specifica nei dettagli)</option>
+                  </select>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <label style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Dettagli Aggiuntivi</label>
+                  <textarea 
+                    value={reportComment}
+                    onChange={e => setReportComment(e.target.value)}
+                    placeholder="Descrivi brevemente cosa c'è di sbagliato nel testo generato..."
+                    rows={4}
+                    style={{
+                      background: 'rgba(255,255,255,0.05)',
+                      border: '1px solid var(--glass-border)',
+                      borderRadius: 'var(--radius-md)',
+                      color: 'var(--text-primary)',
+                      padding: '12px',
+                      fontSize: '0.95rem',
+                      fontFamily: 'inherit',
+                      outline: 'none',
+                      resize: 'vertical'
+                    }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', marginTop: '10px' }}>
+                  <button 
+                    onClick={handleCloseReportAI}
+                    style={{
+                      flex: 1,
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'var(--text-primary)',
+                      border: '1px solid var(--glass-border)',
+                      borderRadius: 'var(--radius-full)',
+                      padding: '12px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      fontSize: '0.95rem',
+                      transition: 'background 0.2s'
+                    }}
+                    onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+                    onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                  >
+                    Annulla
+                  </button>
+                  <button 
+                    onClick={handleSubmitReportAI}
+                    className="btn-primary"
+                    style={{
+                      flex: 1,
+                      padding: '12px',
+                      borderRadius: 'var(--radius-full)',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      fontSize: '0.95rem'
+                    }}
+                  >
+                    Invia Segnalazione
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '20px 0' }}>
+                <div style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '50%',
+                  background: 'rgba(16,185,129,0.1)',
+                  border: '2px solid var(--success)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  color: 'var(--success)'
+                }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Segnalazione Inviata!</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '24px', maxWidth: '400px', margin: '0 auto 24px' }}>
+                  Grazie per la tua segnalazione. Esamineremo attentamente questo contenuto generato da IA per migliorarne l'accuratezza.
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <a
+                    href={`mailto:thaocelot@gmail.com?subject=${encodeURIComponent(`Segnalazione Contenuto IA - ${reportAIData.gameTitle} (${reportAIData.section})`)}&body=${encodeURIComponent(`Segnalazione da OmniDex\n\nGioco: ${reportAIData.gameTitle}\nSezione: ${reportAIData.section}\nMotivo: ${reportReason === 'inaccurate' ? 'Non accurato/allucinazione' : reportReason === 'offensive' ? 'Offensivo/inappropriato' : 'Altro'}\nDettagli:\n${reportComment}`)}`}
+                    style={{
+                      background: 'var(--accent-primary)',
+                      color: 'white',
+                      padding: '12px 24px',
+                      borderRadius: 'var(--radius-full)',
+                      textDecoration: 'none',
+                      fontWeight: 'bold',
+                      fontSize: '0.95rem',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                    onClick={handleCloseReportAI}
+                  >
+                    Invia dettagli via Email <ExternalLink size={16} />
+                  </a>
+                  <button 
+                    onClick={handleCloseReportAI}
+                    style={{
+                      background: 'transparent',
+                      color: 'var(--text-muted)',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontSize: '0.85rem',
+                      padding: '8px',
+                      textDecoration: 'underline'
+                    }}
+                  >
+                    Chiudi finestra
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
 
     </div>
   );

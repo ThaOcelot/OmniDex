@@ -243,6 +243,16 @@ export default function SettingsPopup({ onClose }) {
                 <span>Tutela della Privacy</span>
               </div>
               Ci impegniamo al massimo per la tua privacy: **non raccogliamo, non tracciamo e non condividiamo alcun dato personale**. I tuoi giochi preferiti sono salvati esclusivamente in locale sulla memoria del tuo dispositivo.
+              <div style={{ marginTop: '8px', fontSize: '0.75rem', borderTop: '1px solid rgba(16,185,129,0.15)', paddingTop: '6px' }}>
+                <a 
+                  href="https://thaocelot.github.io/OmniDex/privacy.html" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  style={{ color: '#10B981', textDecoration: 'underline', fontWeight: 'bold', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                >
+                  Leggi l'Informativa completa
+                </a>
+              </div>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px 12px', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.04)', boxSizing: 'border-box' }}>

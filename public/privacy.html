@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informativa sulla Privacy - OmniDex</title>
+    <!-- Google Fonts: Outfit per un look moderno ed elegante -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #131b2e;
+            --accent-primary: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 750px;
+            width: 100%;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 24px;
+        }
+
+        .logo {
+            font-size: 2.25rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 8px 0;
+            letter-spacing: -1px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .last-update {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 32px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--accent-primary);
+            padding-left: 12px;
+        }
+
+        p, li {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight-box {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px dashed rgba(139, 92, 246, 0.25);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 24px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        a {
+            color: #d946ef;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #a78bfa;
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 40px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 24px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 16px 8px;
+            }
+            .container {
+                padding: 24px 16px;
+            }
+            .logo {
+                font-size: 1.8rem;
+            }
+            h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="logo">OmniDex</div>
+        <h1>Informativa sulla Privacy</h1>
+        <div class="last-update">Ultimo aggiornamento: 18 Maggio 2026</div>
+    </header>
+
+    <main>
+        <p>Benvenuto su <strong>OmniDex</strong> ("noi", "nostro/a" o "l'Applicazione"). Rispettiamo profondamente la privacy dei nostri utenti e ci impegniamo a proteggerla in ogni momento. Questa Informativa sulla Privacy descrive il modo in cui gestiamo le informazioni relative all'utilizzo della nostra applicazione mobile per Android.</p>
+
+        <div class="highlight-box">
+            <p>🛡️ OmniDex adotta un approccio rigoroso "Privacy by Design": <strong>NON raccogliamo, non tracciamo, non memorizziamo e non condividiamo alcun dato personale o di identificazione dell'utente sui nostri server.</strong></p>
+        </div>
+
+        <h2>1. Raccolta delle Informazioni</h2>
+        <p>OmniDex non richiede la registrazione di un account né la trasmissione di dati personali per poter essere utilizzata. Non raccogliamo dati identificativi quali nome, indirizzo email, numero di telefono, indirizzo IP o coordinate geografiche precise.</p>
+
+        <h2>2. Dati Memorizzati sul Dispositivo</h2>
+        <p>Per offrirti funzionalità utili e personalizzate, alcune informazioni vengono salvate <strong>esclusivamente in locale</strong> nella memoria del tuo dispositivo Android (tramite tecnologie come IndexedDB e localStorage):</p>
+        <ul>
+            <li><strong>Giochi Preferiti:</strong> I videogiochi che decidi di salvare tra i preferiti vengono memorizzati solo sul tuo dispositivo.</li>
+            <li><strong>Statistiche di Gioco e Quiz:</strong> I punteggi e le performance relative ai quiz di gioco settimanali sono archiviati in locale per visualizzare le tue statistiche personali.</li>
+            <li><strong>Impostazioni dell'App:</strong> Scelte come la selezione del tema grafico (Scuro/Chiaro) vengono salvate sul dispositivo per preservare le tue preferenze al successivo avvio.</li>
+        </ul>
+        <p>Questi dati non vengono trasmessi a server remoti e rimangono sotto il tuo pieno ed esclusivo controllo. Puoi cancellarli in qualsiasi momento svuotando la cache o i dati dell'applicazione direttamente dalle impostazioni di sistema del tuo dispositivo Android.</p>
+
+        <h2>3. Utilizzo della Connessione a Internet</h2>
+        <p>L'applicazione richiede il permesso di accesso a Internet (<code>android.permission.INTERNET</code>) esclusivamente per le seguenti finalità in tempo reale:</p>
+        <ul>
+            <li><strong>Ricerca e Dettagli dei Giochi:</strong> L'app interroga le API pubbliche di <strong>RAWG</strong> per fornirti schede informative complete su oltre 500.000 giochi.</li>
+            <li><strong>Generazione di Contenuti IA:</strong> L'app si connette alle API di <strong>Google Gemini</strong> (o utilizza il modello on-device Gemini Nano del tuo dispositivo, a seconda della disponibilità) per elaborare traduzioni in italiano di descrizioni di videogiochi, curiosità storiche e analisi approfondite.</li>
+            <li><strong>News videoludiche:</strong> L'app recupera feed RSS aggiornati per mostrare le ultime notizie del settore dei videogiochi.</li>
+        </ul>
+
+        <h2>4. Servizi di Terze Parti</h2>
+        <p>Quando l'app effettua richieste a internet per caricare contenuti, tali richieste sono indirizzate a servizi esterni affidabili che adottano le proprie politiche sulla privacy. Ti invitiamo a consultare le informative sulla privacy di tali fornitori:</p>
+        <ul>
+            <li><a href="https://rawg.io/apidocs" target="_blank" rel="noreferrer">RAWG API Terms & Privacy</a></li>
+            <li><a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Google Privacy & Terms (per le API Gemini)</a></li>
+        </ul>
+
+        <h2>5. Diritti degli Utenti (GDPR e CCPA)</h2>
+        <p>Poiché non raccogliamo né conserviamo alcun dato personale su server centralizzati, non siamo in grado di visualizzare, modificare o eliminare i tuoi dati su richiesta. L'utente esercita il controllo assoluto sui propri dati in locale. Hai il diritto di eliminare tutti i dati archiviati localmente disinstallando l'applicazione o cancellando i dati dell'app dalle impostazioni del sistema operativo Android.</p>
+
+        <h2>6. Modifiche alla presente Informativa</h2>
+        <p>Potremmo aggiornare periodicamente la presente Informativa sulla Privacy per adeguarla a modifiche legislative, aggiornamenti tecnici o nuove linee guida degli store. Qualsiasi modifica sarà pubblicata su questa pagina con l'indicazione della data dell'ultimo aggiornamento.</p>
+
+        <h2>7. Contatti e Supporto</h2>
+        <p>Per qualsiasi domanda o chiarimento in merito alla presente informativa o al funzionamento dell'applicazione, puoi contattarci direttamente via email all'indirizzo del nostro sviluppatore:</p>
+        <p>✉️ Email: <a href="mailto:thaocelot@gmail.com">thaocelot@gmail.com</a></p>
+    </main>
+
+    <footer>
+        <p>© 2026 OmniDex. Progetto enciclopedico indipendente e senza scopo di lucro.</p>
+    </footer>
+</div>
+
+</body>
+</html>
