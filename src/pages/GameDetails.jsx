@@ -2,7 +2,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import {
   Loader2, Heart, ExternalLink, Calendar, Gamepad, Users,
-  AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen,
+  AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen, Sparkles, Lock,
   Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2
 } from 'lucide-react';
 import GameService from '../services/GameService';
@@ -13,6 +13,9 @@ import Modal from '../components/Modal';
 import { LOADING_MESSAGES } from '../data/loadingMessages';
 import NotificationService from '../services/NotificationService';
 import HapticService from '../services/HapticService';
+import IAPService from '../services/IAPService';
+import AdService from '../services/AdService';
+import FirebaseService from '../services/FirebaseService';
 import logoUrl from '../assets/logo.png';
 
 export default function GameDetails() {
@@ -42,11 +45,30 @@ export default function GameDetails() {
   const [parallaxY, setParallaxY] = useState(0);
   const heroRef = useRef(null);
 
+  // Ultra AI States
+  const [tier, setTier] = useState(IAPService.getTier());
+  const [compatibility, setCompatibility] = useState(null);
+  const [loadingCompatibility, setLoadingCompatibility] = useState(false);
+  const [previousSummary, setPreviousSummary] = useState(null);
+  const [loadingPrevious, setLoadingPrevious] = useState(false);
+
+  useEffect(() => {
+    return IAPService.subscribe((t) => setTier(t));
+  }, []);
+
   // Report AI States
   const [reportAIData, setReportAIData] = useState(null);
   const [reportReason, setReportReason] = useState('inaccurate');
   const [reportComment, setReportComment] = useState('');
   const [reportSubmitted, setReportSubmitted] = useState(false);
+
+  // Rewarded Ads States
+  const [loadingAd, setLoadingAd] = useState(false);
+
+  // Character Voting States
+  const [characterVotes, setCharacterVotes] = useState({ votes: {}, totalVotes: 0 });
+  const [userVote, setUserVote] = useState(null);
+  const [votesLoading, setVotesLoading] = useState(false);
 
   useEffect(() => {
     if (modalLoading) {
@@ -56,6 +78,10 @@ export default function GameDetails() {
   }, [modalLoading]);
 
   const decodedName = decodeURIComponent(gameName);
+
+  // Deep-link da notifica: apre direttamente la notizia specifica che ha generato la notifica
+  const openNewsUrl = location.state?.openNewsUrl || null;
+  const openNewsTitle = location.state?.openNewsTitle || null;
 
   const fetchData = async () => {
     setLoading(true);
@@ -77,9 +103,67 @@ export default function GameDetails() {
     }
   };
 
+  const handleRegenerate = async () => {
+    if (!gameData) return;
+    setLoading(true);
+    try {
+      const gameId = location.state?.game?.id || gameData.id;
+      const info = await GameService.getGameDetails(gameId, decodedName, true);
+      if (info) {
+        setGameData(info);
+        const isFav = await db.isFavorite(info.id);
+        setIsFavorite(isFav);
+      }
+    } catch (err) {
+      console.error("❌ Error regenerating data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, [gameName]);
+
+  // Quando le notizie si caricano e c'è un deep-link da notifica, apri quella notizia
+  useEffect(() => {
+    if (!openNewsUrl || newsData.length === 0) return;
+
+    // Switcha al tab notizie
+    setActiveTab('news');
+
+    // Cerca la notizia specifica nella lista caricata
+    const targetNews = newsData.find(n => n.url === openNewsUrl);
+    const newsToOpen = targetNews || {
+      title: openNewsTitle || 'Notizia',
+      url: openNewsUrl,
+      source: '',
+      date: '',
+      summary: null
+    };
+
+    // Simula il click sulla notizia per aprire il modal con il riassunto AI
+    const fakeEvent = { preventDefault: () => {} };
+    handleNewsClick(newsToOpen, fakeEvent);
+  }, [newsData, openNewsUrl]);
+
+  // Caricamento dei voti dei personaggi quando si apre il tab
+  useEffect(() => {
+    if (activeTab === 'characters' && gameData?.id) {
+      setVotesLoading(true);
+      // Carica il voto salvato in locale
+      const savedVote = localStorage.getItem(`voted_chars_${gameData.id}`);
+      if (savedVote) {
+        setUserVote(savedVote);
+      }
+      
+      // Carica i voti globali
+      FirebaseService.getCharacterVotes(gameData.id).then(data => {
+        setCharacterVotes(data);
+        setVotesLoading(false);
+      });
+    }
+  }, [activeTab, gameData?.id]);
 
   const handleToggleFavorite = async () => {
     if (!gameData) return;
@@ -163,21 +247,27 @@ export default function GameDetails() {
 
   const handleSubmitReportAI = async () => {
     await HapticService.medium();
+    
+    // Costruisci il template precompilato dell'email
+    const subject = `Segnalazione Contenuto IA - ${reportAIData.gameTitle} (${reportAIData.section})`;
+    const body = `Segnalazione da OmniDex\n\nGioco: ${reportAIData.gameTitle}\nSezione: ${reportAIData.section}\nMotivo: ${reportReason === 'inaccurate' ? 'Non accurato/allucinazione' : reportReason === 'offensive' ? 'Offensivo/inappropriato' : 'Altro'}\nDettagli:\n${reportComment}`;
+    const mailtoUrl = `mailto:thaocelot@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    try {
+      if (window.Capacitor?.isNativePlatform?.()) {
+        window.open(mailtoUrl, '_system');
+      } else {
+        window.location.href = mailtoUrl;
+      }
+    } catch (e) {
+      console.warn("🔔 Impossibile aprire il client email:", e);
+    }
+    
     setReportSubmitted(true);
   };
 
-  const handleCharacterClick = async (character) => {
-    setSelectedCharacter(character);
-    setCharacterDeepDive(null);
-    setModalLoading(true);
-    try {
-      const data = await GameService.getCharacterDeepDive(gameData.title, character.name);
-      setCharacterDeepDive(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setModalLoading(false);
-    }
+  const handleCharacterClick = (character) => {
+    navigate(`/character/${encodeURIComponent(character.name)}`);
   };
 
   const handleNewsClick = async (news, e) => {
@@ -194,6 +284,88 @@ export default function GameDetails() {
     } finally {
       setModalLoading(false);
     }
+  };
+
+  const handleCompatibilityCheck = async () => {
+    if (tier !== 'ultra') {
+      window.dispatchEvent(new CustomEvent('open-settings'));
+      return;
+    }
+    setLoadingCompatibility(true);
+    try {
+      const res = await GameService.analyzeCompatibility(gameData.title, typeof gameData.plot === 'string' ? gameData.plot : '');
+      setCompatibility(res);
+    } catch (e) {
+      console.error(e);
+      setCompatibility({ score: 50, reason: "Errore durante l'analisi." });
+    } finally {
+      setLoadingCompatibility(false);
+    }
+  };
+
+  const handlePreviousSummary = async () => {
+    if (tier !== 'ultra') {
+      window.dispatchEvent(new CustomEvent('open-settings'));
+      return;
+    }
+    setLoadingPrevious(true);
+    try {
+      const res = await GameService.summarizePreviousGames(gameData.title);
+      setPreviousSummary(res);
+    } catch (e) {
+      console.error(e);
+      setPreviousSummary("Impossibile recuperare il riassunto in questo momento.");
+    } finally {
+      setLoadingPrevious(false);
+    }
+  };
+
+  const handleWatchAdForTokens = async () => {
+    setLoadingAd(true);
+    await AdService.showRewardedAd(
+      () => {
+        // Premiato!
+        setLoadingAd(false);
+        IAPService.addExtraAiToken();
+        // Aggiorna lo stato localmente per ricaricare i dati o rimuovere il blocco
+        setGameData(prev => ({ ...prev, _aiLimitReached: false }));
+        // Ricarica i dati per sicurezza o solo il tab corrente
+        fetchData(); 
+      },
+      (errorMsg) => {
+        setLoadingAd(false);
+        if (errorMsg) alert(errorMsg);
+      }
+    );
+  };
+
+  const handleVoteCharacter = async (e, characterName) => {
+    e.stopPropagation(); // Evita di aprire il deep dive del personaggio
+    if (!gameData || userVote === characterName) return;
+    
+    await HapticService.medium();
+    
+    const previousVote = userVote;
+    
+    // Aggiorna lo stato ottimisticamente
+    setUserVote(characterName);
+    localStorage.setItem(`voted_chars_${gameData.id}`, characterName);
+    
+    setCharacterVotes(prev => {
+      const newVotes = { ...prev.votes };
+      if (previousVote && newVotes[previousVote] > 0) {
+        newVotes[previousVote] -= 1;
+      }
+      newVotes[characterName] = (newVotes[characterName] || 0) + 1;
+      
+      return {
+        votes: newVotes,
+        totalVotes: previousVote ? prev.totalVotes : prev.totalVotes + 1
+      };
+    });
+
+    // Invia al server
+    await FirebaseService.voteCharacter(gameData.id, characterName, previousVote);
   };
 
   const tabs = [
@@ -255,8 +427,8 @@ export default function GameDetails() {
         )}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(109,40,217,0.35) 0%, rgba(236,72,153,0.15) 100%)', zIndex: 0 }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
-          <div className="hero-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px' }}>
-            <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="hero-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: 0, minWidth: '280px' }}>
               <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3.5rem)', marginBottom: '8px', lineHeight: 1.1, wordBreak: 'break-word', overflowWrap: 'break-word' }}>{gameData.title}</h1>
               {gameData.originalTitle && gameData.originalTitle !== gameData.title && (
                 <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '12px', fontStyle: 'italic', wordBreak: 'break-word' }}>{gameData.originalTitle}</p>
@@ -324,7 +496,10 @@ export default function GameDetails() {
             {gameData.releaseDate && (
               <div>
                 <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase' }}>Uscita</div>
-                <div style={{ fontWeight: '600', marginTop: '4px' }}>{gameData.releaseDate}</div>
+                <div style={{ fontWeight: '600', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {gameData.releaseDate}
+                  {gameData.tba && <span style={{ background: 'var(--danger)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '0.65rem' }}>TBA</span>}
+                </div>
               </div>
             )}
             {gameData.esrb && (
@@ -344,6 +519,42 @@ export default function GameDetails() {
           <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
             Questo contenuto è un'espansione. Il gioco base è: <strong onClick={() => navigate(`/game/${encodeURIComponent(gameData.parentGames[0].name)}`, { state: { game: { id: gameData.parentGames[0].id } } })} style={{ color: 'var(--text-primary)', cursor: 'pointer', textDecoration: 'underline' }}>{gameData.parentGames[0].name}</strong>
           </span>
+        </div>
+      )}
+
+      {/* Matchmaker AI Banner */}
+      {!gameData._aiLimitReached && (
+        <div className="glass-panel" style={{ padding: '16px 20px', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'linear-gradient(to right, rgba(0, 242, 254, 0.05), rgba(79, 172, 254, 0.05))', borderLeft: '3px solid #00f2fe' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Sparkles size={20} color="#00f2fe" />
+              <strong style={{ color: 'var(--text-primary)', fontSize: '1rem' }}>Matchmaker AI</strong>
+            </div>
+            {!compatibility && !loadingCompatibility && (
+              <button 
+                onClick={handleCompatibilityCheck}
+                style={{ background: 'rgba(0, 242, 254, 0.1)', border: '1px solid #00f2fe', color: '#00f2fe', padding: '6px 14px', borderRadius: 'var(--radius-full)', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+              >
+                Analizza Compatibilità
+                {tier !== 'ultra' && <Lock size={12} />}
+              </button>
+            )}
+          </div>
+          {loadingCompatibility && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+              <Loader2 size={16} className="spin" /> Analisi della tua raccolta in corso...
+            </div>
+          )}
+          {compatibility && (
+            <div className="animate-fade-in" style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
+              <div style={{ position: 'relative', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.3)', borderRadius: '50%', border: `3px solid ${compatibility.score >= 80 ? '#10b981' : compatibility.score >= 50 ? '#f59e0b' : '#ef4444'}` }}>
+                <strong style={{ fontSize: '1.2rem', color: 'var(--text-primary)' }}>{compatibility.score}%</strong>
+              </div>
+              <div style={{ flex: 1, minWidth: '200px', fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                {compatibility.reason}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -369,25 +580,15 @@ export default function GameDetails() {
       {/* Tab Content */}
       {activeTab === 'info' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
-          {/* Stats Card */}
-          <div className="glass-panel" style={{ padding: '24px' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}><Zap size={16} /> Statistiche</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
-              <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Playtime</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: '700' }}>{gameData.playtime}h</div>
-              </div>
-              <div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Obiettivi</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: '700' }}>{gameData.achievementsCount}</div>
-              </div>
-            </div>
-          </div>
+
 
           {/* Valutazioni / Ratings */}
           {gameData.ratings?.length > 0 && (
             <div className="glass-panel" style={{ padding: '24px', gridColumn: '1 / -1' }}>
-              <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}><Star size={16} /> Valutazioni Giocatori</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '10px' }}>
+                <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: 0, color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}><Star size={16} /> Valutazioni Giocatori</h3>
+                {gameData.reviewsCount > 0 && <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{gameData.reviewsCount} recensioni testuali</span>}
+              </div>
               <div style={{ display: 'flex', height: '12px', borderRadius: 'var(--radius-full)', overflow: 'hidden', marginBottom: '16px' }}>
                 {gameData.ratings.map((r, i) => {
                   const colors = { exceptional: '#10b981', recommended: '#3b82f6', meh: '#f59e0b', skip: '#ef4444' };
@@ -474,16 +675,18 @@ export default function GameDetails() {
           )}
 
           {/* Platforms Card */}
-          <div className="glass-panel" style={{ padding: '24px' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}><Gamepad size={16} /> Piattaforme</h3>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              {gameData.platforms?.map(p => (
-                <span key={p.name} style={{ background: 'rgba(255,255,255,0.06)', padding: '4px 12px', borderRadius: 'var(--radius-full)', fontSize: '0.9rem' }}>
-                  {p.name}
-                </span>
-              ))}
+          {gameData.platforms?.length > 0 && (
+            <div className="glass-panel" style={{ padding: '24px' }}>
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase' }}><Gamepad size={16} /> Piattaforme</h3>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {gameData.platforms.map(p => (
+                  <span key={p.platform?.id || p.id || (typeof p === 'string' ? p : Math.random())} style={{ background: 'rgba(255,255,255,0.06)', padding: '4px 12px', borderRadius: 'var(--radius-full)', fontSize: '0.9rem' }}>
+                    {p.platform?.name || p.name || (typeof p === 'string' ? p : 'Sconosciuta')}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* System Requirements */}
           {gameData.platforms?.find(p => p.slug === 'pc' && p.requirements && (p.requirements.minimum || p.requirements.recommended)) && (
@@ -525,17 +728,22 @@ export default function GameDetails() {
           )}
 
           {/* Gallery Card */}
-          {gameData.screenshots?.length > 0 && (
+          {(gameData.screenshots?.length > 0 || gameData.clip) && (
             <div className="glass-panel" style={{ padding: '24px', gridColumn: '1 / -1' }}>
-              <h3 style={{ marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Galleria Screenshot</h3>
+              <h3 style={{ marginBottom: '16px', color: 'var(--text-muted)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Galleria</h3>
               <div style={{ display: 'flex', gap: '15px', overflowX: 'auto', paddingBottom: '10px', scrollbarWidth: 'thin' }}>
-                {gameData.screenshots.map((s, i) => (
+                {gameData.clip && (
+                  <video controls poster={gameData.clipPreview} style={{ height: '200px', borderRadius: 'var(--radius-md)', objectFit: 'cover', border: '1px solid var(--glass-border)', flexShrink: 0 }}>
+                    <source src={gameData.clip} type="video/mp4" />
+                  </video>
+                )}
+                {gameData.screenshots?.map((s, i) => (
                   <img 
                     key={i} 
                     src={s} 
                     alt={`Screenshot ${i}`} 
                     onClick={() => { setSelectedScreenshotIndex(i); setZoomScale(1); }}
-                    style={{ height: '200px', borderRadius: 'var(--radius-md)', objectFit: 'cover', border: '1px solid var(--glass-border)', cursor: 'zoom-in', transition: 'transform 0.2s' }} 
+                    style={{ height: '200px', borderRadius: 'var(--radius-md)', objectFit: 'cover', border: '1px solid var(--glass-border)', cursor: 'zoom-in', transition: 'transform 0.2s', flexShrink: 0 }} 
                     onMouseOver={e => e.currentTarget.style.transform = 'scale(1.02)'}
                     onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
                   />
@@ -701,19 +909,69 @@ export default function GameDetails() {
         </div>
       )}
 
-      {activeTab === 'story' && (
-        <div className="glass-panel animate-fade-in" style={{ padding: '36px' }}>
+      {['story', 'characters', 'gameplay', 'trivia'].includes(activeTab) && gameData._aiLimitReached ? (
+        <div className="glass-panel animate-fade-in" style={{ padding: '60px 20px', textAlign: 'center', gridColumn: '1 / -1' }}>
+          <div style={{ fontSize: '3.5rem', marginBottom: '20px', filter: 'drop-shadow(0 0 20px rgba(0, 242, 254, 0.4))' }}>💎</div>
+          <h2 style={{ marginBottom: '16px', color: 'var(--text-primary)', fontSize: '1.8rem' }}>Limite Giornaliero Raggiunto</h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', maxWidth: '500px', margin: '0 auto 24px' }}>
+            Hai esaurito le tue analisi gratuite per oggi. Passa al piano <strong style={{ color: '#00f2fe' }}>Ultra</strong> per sbloccare richieste illimitate e accedere a <b>Gemini 2.5 Pro</b>, oppure guarda una pubblicità per sbloccare +1 analisi.
+          </p>
+          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button 
+              className="btn-primary" 
+              style={{ padding: '14px 28px', fontSize: '1.1rem', fontWeight: 'bold', background: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)', color: '#002538', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)' }}
+              onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))}
+            >
+              Scopri OmniDex Ultra
+            </button>
+            {tier === 'free' && (
+              <button 
+                onClick={handleWatchAdForTokens}
+                disabled={loadingAd}
+                style={{ padding: '14px 28px', fontSize: '1.1rem', fontWeight: 'bold', background: 'rgba(255,255,255,0.05)', color: 'var(--text-primary)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', cursor: loadingAd ? 'wait' : 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+              >
+                {loadingAd ? <Loader2 size={20} className="spin" /> : '📺 Guarda Pubblicità (+1)'}
+              </button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <>
+          {activeTab === 'story' && (
+            <div className="glass-panel animate-fade-in" style={{ padding: '36px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
             <h2 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}><BookOpen size={22} color="var(--accent-primary)" /> Trama</h2>
-            <button 
-              onClick={() => handleOpenReportAI('Trama', gameData.title)} 
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', padding: '4px 12px', fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
-              onMouseOver={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; e.currentTarget.style.color = 'var(--danger)'; }}
-              onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
-            >
-              <AlertTriangle size={12} /> Segnala Contenuto IA
-            </button>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button 
+                onClick={handlePreviousSummary} 
+                style={{ background: 'rgba(0,242,254,0.1)', border: '1px solid #00f2fe', borderRadius: 'var(--radius-full)', padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', color: '#00f2fe', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+              >
+                <Sparkles size={14} /> Cosa è successo prima? {tier !== 'ultra' && <Lock size={12} />}
+              </button>
+              <button 
+                onClick={() => handleOpenReportAI('Trama', gameData.title)} 
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', padding: '4px 12px', fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+              >
+                <AlertTriangle size={12} /> Segnala Contenuto IA
+              </button>
+            </div>
           </div>
+          
+          {loadingPrevious && (
+            <div style={{ padding: '20px', background: 'rgba(0,242,254,0.05)', borderLeft: '3px solid #00f2fe', borderRadius: '4px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
+              <Loader2 size={18} className="spin" /> Generazione riassunto saga in corso...
+            </div>
+          )}
+          
+          {previousSummary && (
+            <div className="animate-fade-in" style={{ padding: '20px', background: 'rgba(0,242,254,0.05)', borderLeft: '3px solid #00f2fe', borderRadius: '4px', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#00f2fe', fontWeight: 'bold' }}>
+                <BookOpen size={16} /> Riassunto Precedenti
+                <button onClick={() => setPreviousSummary(null)} style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={16}/></button>
+              </div>
+              <div style={{ fontSize: '0.95rem', lineHeight: '1.8', color: 'var(--text-secondary)' }} dangerouslySetInnerHTML={formatText(previousSummary)} />
+            </div>
+          )}
           {gameData.description ? (
             <div style={{ fontSize: '1.05rem', lineHeight: '2', color: 'var(--text-secondary)' }}>
               {gameData.description.split('\n').filter(p => p.trim()).map((para, i) => (
@@ -721,7 +979,12 @@ export default function GameDetails() {
               ))}
             </div>
           ) : (
-            <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Trama non disponibile per questo titolo.</p>
+            <div style={{ textAlign: 'center', padding: '40px 20px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px dashed var(--glass-border)' }}>
+              <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '20px' }}>Trama non disponibile per questo titolo.</p>
+              <button onClick={handleRegenerate} className="btn-primary" style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Sparkles size={18} /> Rigenera con IA
+              </button>
+            </div>
           )}
         </div>
       )}
@@ -744,18 +1007,85 @@ export default function GameDetails() {
                         {c.role && <span style={{ background: 'rgba(109,40,217,0.15)', color: 'var(--accent-primary)', padding: '2px 10px', borderRadius: 'var(--radius-full)', fontSize: '0.7rem', fontWeight: '700', whiteSpace: 'nowrap' }}>{c.role}</span>}
                       </div>
                       {c.description && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6' }} dangerouslySetInnerHTML={formatText(c.description)} />}
-                      <div style={{ marginTop: '14px', fontSize: '0.85rem', color: 'var(--accent-secondary)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        Approfondisci <ChevronRight size={14} />
+                      
+                      <div style={{ marginTop: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                        <div style={{ fontSize: '0.85rem', color: 'var(--accent-secondary)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                          Approfondisci <ChevronRight size={14} />
+                        </div>
+                        
+                        {/* Vote System */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} onClick={e => e.stopPropagation()}>
+                          {votesLoading ? (
+                            <Loader2 size={16} className="spin" />
+                          ) : (
+                            <>
+                              <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                                {characterVotes.totalVotes > 0 
+                                  ? `${Math.round(((characterVotes.votes[c.name] || 0) / characterVotes.totalVotes) * 100)}%` 
+                                  : '0%'}
+                              </div>
+                              <button 
+                                onClick={(e) => handleVoteCharacter(e, c.name)}
+                                disabled={userVote === c.name}
+                                className={userVote === c.name ? '' : 'btn-primary'}
+                                style={userVote === c.name ? {
+                                  background: 'rgba(255,255,255,0.05)',
+                                  color: 'var(--text-muted)',
+                                  border: '1px solid var(--glass-border)',
+                                  padding: '6px 12px', borderRadius: 'var(--radius-full)', fontSize: '0.8rem',
+                                  cursor: 'default', display: 'flex', alignItems: 'center', gap: '6px'
+                                } : {
+                                  padding: '6px 14px', borderRadius: 'var(--radius-full)', fontSize: '0.8rem',
+                                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px',
+                                  boxShadow: '0 2px 10px rgba(139,92,246,0.3)'
+                                }}
+                              >
+                                <Trophy size={14} />
+                                {userVote === c.name ? 'Hai Votato' : 'Vota'}
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
+                      
+                      {/* Progress Bar */}
+                      {!votesLoading && characterVotes.totalVotes > 0 && (
+                        <div style={{ marginTop: '10px', height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                          <div style={{ 
+                            height: '100%', 
+                            background: 'var(--accent-primary)', 
+                            width: `${((characterVotes.votes[c.name] || 0) / characterVotes.totalVotes) * 100}%`,
+                            transition: 'width 0.5s ease'
+                          }} />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}>
+                <button 
+                  onClick={handleRegenerate} 
+                  className="btn-primary" 
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}
+                  onMouseOver={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
+                  onMouseOut={e => { e.currentTarget.style.color = 'var(--text-secondary)'; e.currentTarget.style.borderColor = 'var(--glass-border)'; }}
+                >
+                  <Sparkles size={16} /> Personaggi incompleti? Rigenera Dati con IA
+                </button>
               </div>
             </div>
           ) : (
             <div className="glass-panel" style={{ padding: '40px', textAlign: 'center' }}>
               <User size={48} style={{ margin: '0 auto 16px', color: 'var(--text-muted)' }} />
-              <p style={{ color: 'var(--text-muted)', fontSize: '1rem' }}>Nessun personaggio disponibile per questo titolo.</p>
+              <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '20px' }}>Nessun personaggio disponibile per questo titolo.</p>
+              <button 
+                onClick={handleRegenerate} 
+                className="btn-primary" 
+                style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0 auto' }}
+              >
+                <Sparkles size={16} /> Estrai Personaggi con IA
+              </button>
             </div>
           )}
         </div>
@@ -781,7 +1111,12 @@ export default function GameDetails() {
               ))}
             </div>
           ) : (
-            <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Analisi gameplay non disponibile per questo titolo.</p>
+            <div style={{ textAlign: 'center', padding: '40px 20px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px dashed var(--glass-border)' }}>
+              <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '20px' }}>Analisi gameplay non disponibile per questo titolo.</p>
+              <button onClick={handleRegenerate} className="btn-primary" style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Sparkles size={18} /> Rigenera con IA
+              </button>
+            </div>
           )}
         </div>
       )}
@@ -856,6 +1191,8 @@ export default function GameDetails() {
             </button>
           )}
         </div>
+      )}
+      </>
       )}
 
 
@@ -1229,40 +1566,20 @@ export default function GameDetails() {
                 }}>
                   <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6L9 17l-5-5"/></svg>
                 </div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Segnalazione Inviata!</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '24px', maxWidth: '400px', margin: '0 auto 24px' }}>
-                  Grazie per la tua segnalazione. Esamineremo attentamente questo contenuto generato da IA per migliorarne l'accuratezza.
+                <h3 style={{ fontSize: '1.25rem', marginBottom: '8px' }}>Client Email Aperto!</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '24px', maxWidth: '400px', margin: '0 auto 24px', lineHeight: '1.5' }}>
+                  Abbiamo avviato l'applicazione email con la segnalazione precompilata. Invia l'email per recapitarla direttamente a <strong>thaocelot@gmail.com</strong>.
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <a
-                    href={`mailto:thaocelot@gmail.com?subject=${encodeURIComponent(`Segnalazione Contenuto IA - ${reportAIData.gameTitle} (${reportAIData.section})`)}&body=${encodeURIComponent(`Segnalazione da OmniDex\n\nGioco: ${reportAIData.gameTitle}\nSezione: ${reportAIData.section}\nMotivo: ${reportReason === 'inaccurate' ? 'Non accurato/allucinazione' : reportReason === 'offensive' ? 'Offensivo/inappropriato' : 'Altro'}\nDettagli:\n${reportComment}`)}`}
-                    style={{
-                      background: 'var(--accent-primary)',
-                      color: 'white',
-                      padding: '12px 24px',
-                      borderRadius: 'var(--radius-full)',
-                      textDecoration: 'none',
-                      fontWeight: 'bold',
-                      fontSize: '0.95rem',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                    onClick={handleCloseReportAI}
-                  >
-                    Invia dettagli via Email <ExternalLink size={16} />
-                  </a>
                   <button 
                     onClick={handleCloseReportAI}
+                    className="btn-primary"
                     style={{
-                      background: 'transparent',
-                      color: 'var(--text-muted)',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontSize: '0.85rem',
-                      padding: '8px',
-                      textDecoration: 'underline'
+                      padding: '12px 24px',
+                      borderRadius: 'var(--radius-full)',
+                      fontWeight: 'bold',
+                      fontSize: '0.95rem',
+                      cursor: 'pointer'
                     }}
                   >
                     Chiudi finestra

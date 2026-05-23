@@ -7,19 +7,27 @@ import GameDetails from './pages/GameDetails';
 import SearchResults from './pages/SearchResults';
 import Favorites from './pages/Favorites';
 import Upcoming from './pages/Upcoming';
-import ChangelogPopup from './components/ChangelogPopup';
-import UpdatePopup from './components/UpdatePopup';
+import CharacterDetails from './pages/CharacterDetails';
 import SettingsPopup from './components/SettingsPopup';
 import FloatingSearchBar from './components/FloatingSearchBar';
+import AdBanner from './components/AdBanner';
+import WelcomePopup from './components/WelcomePopup';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import NotificationService from './services/NotificationService';
+import IAPService from './services/IAPService';
+import AdService from './services/AdService';
 
 function SystemHandler() {
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    // Inizializza i servizi di monetizzazione (Acquisti ed Annunci)
+    IAPService.init();
+    AdService.init();
+
     // Inizializza il checker periodico delle notizie per i preferiti
     NotificationService.initNewsChecker();
 
@@ -42,9 +50,16 @@ function SystemHandler() {
     // Gestore del click/tap sulle notifiche
     const handleNotificationTaps = async () => {
       await LocalNotifications.addListener('localNotificationActionPerformed', (action) => {
-        const gameName = action.notification.extra?.gameName;
+        const { gameName, gameId, newsUrl, newsTitle } = action.notification.extra || {};
         if (gameName) {
-          navigate(`/game/${encodeURIComponent(gameName)}`);
+          navigate(`/game/${encodeURIComponent(gameName)}`, {
+            state: {
+              game: gameId ? { id: gameId } : undefined,
+              // Se la notifica ha una notizia specifica, la passiamo per aprirla direttamente
+              openNewsUrl: newsUrl || null,
+              openNewsTitle: newsTitle || null,
+            }
+          });
         }
       });
     };
@@ -73,23 +88,39 @@ function App() {
     return () => window.removeEventListener('open-settings', handleOpenSettings);
   }, []);
 
+  const [isPro, setIsPro] = useState(IAPService.isPro());
+  const [bannerHeight, setBannerHeight] = useState(60);
+
+  useEffect(() => {
+    const unsub = IAPService.subscribe((status) => setIsPro(status));
+    return unsub;
+  }, []);
+
+  useEffect(() => {
+    const handleBannerHeight = (e) => setBannerHeight(e.detail || 60);
+    window.addEventListener('ad-banner-height', handleBannerHeight);
+    return () => window.removeEventListener('ad-banner-height', handleBannerHeight);
+  }, []);
+
   return (
     <Router>
       <SystemHandler />
-      <ChangelogPopup />
-      <UpdatePopup />
+      <WelcomePopup />
       {isSettingsOpen && <SettingsPopup onClose={() => setIsSettingsOpen(false)} />}
-      <div className="app-wrapper">
+      <div className="app-wrapper" style={{ paddingBottom: isPro ? '0' : `${bannerHeight}px` }}>
         <Navbar />
         <FloatingSearchBar />
         <main className="main-content container">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/search/:query" element={<SearchResults />} />
-            <Route path="/game/:gameName" element={<GameDetails />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/upcoming" element={<Upcoming />} />
-          </Routes>
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/search/:query" element={<SearchResults />} />
+              <Route path="/game/:gameName" element={<GameDetails />} />
+              <Route path="/character/:characterName" element={<CharacterDetails />} />
+              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/upcoming" element={<Upcoming />} />
+            </Routes>
+          </ErrorBoundary>
         </main>
         <footer className="app-footer" style={{ borderTop: '1px solid var(--glass-border)', marginTop: 'auto', padding: '24px 0' }}>
           <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '0.85rem', textAlign: 'center' }}>
@@ -101,6 +132,7 @@ function App() {
             </div>
           </div>
         </footer>
+        <AdBanner />
       </div>
     </Router>
   );

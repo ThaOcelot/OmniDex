@@ -1,20 +1,59 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Sparkles, Shuffle, X, Star } from 'lucide-react';
+import { Search, Sparkles, Shuffle, X, Star, Lock } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 import RAWGService from '../services/RAWGService';
+import IAPService from '../services/IAPService';
+import { db } from '../services/db';
 
 export default function Home() {
   const [query, setQuery] = useState('');
+  const [searchType, setSearchType] = useState('game'); // 'game' | 'character'
+  const [aiMode, setAiMode] = useState(false);
+  const [tier, setTier] = useState(IAPService.getTier());
   const [discovering, setDiscovering] = useState(false);
   const [discoveredGame, setDiscoveredGame] = useState(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    return IAPService.subscribe((t) => setTier(t));
+  }, []);
+
   const handleSearch = (e) => {
     e.preventDefault();
-    if (query.trim()) {
-      navigate(`/search/${encodeURIComponent(query.trim())}`);
+    if (!query.trim()) return;
+
+    if (searchType === 'character') {
+      if (tier !== 'ultra') {
+        window.dispatchEvent(new CustomEvent('open-settings'));
+        return;
+      }
+      navigate(`/character/${encodeURIComponent(query.trim())}`);
+      return;
     }
+
+    if (aiMode && tier !== 'ultra') {
+      window.dispatchEvent(new CustomEvent('open-settings'));
+      return;
+    }
+    
+    navigate(`/search/${encodeURIComponent(query.trim())}${aiMode ? '?ai=true' : ''}`);
+  };
+
+  const handlePersonalizedSuggestions = async () => {
+    if (tier !== 'ultra') {
+      window.dispatchEvent(new CustomEvent('open-settings'));
+      return;
+    }
+    const favorites = await db.getFavorites();
+    if (favorites.length === 0) {
+      alert("🎮 Aggiungi prima qualche gioco ai preferiti per permettere all'IA di capire i tuoi gusti!");
+      return;
+    }
+    // Prende i primi 5-6 preferiti come campione
+    const favTitles = favorites.slice(0, 6).map(f => f.title).join(', ');
+    const prompt = `Consigliami dei nuovi giochi che potrebbero piacermi, considerando che ho amato giocare a questi titoli: ${favTitles}. Non consigliarmi quelli che ho già citato.`;
+    navigate(`/search/${encodeURIComponent(prompt)}?ai=true`);
   };
 
   const handleDiscover = async () => {
@@ -58,29 +97,114 @@ export default function Home() {
         Il tuo hub local-first per esplorare in profondità qualsiasi titolo. Trova all'istante biografie dettagliate dei personaggi, approfondimenti sulle trame, analisi di gameplay e ultime notizie in tempo reale.
       </p>
 
-      <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', position: 'relative' }}>
-        <input
-          type="text"
-          placeholder=""
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          style={{
-            width: '100%', padding: '20px 24px', paddingLeft: '60px',
-            borderRadius: 'var(--radius-full)', border: '2px solid rgba(255, 255, 255, 0.1)',
-            background: 'var(--bg-glass)', color: 'var(--text-primary)', fontSize: '1.2rem',
-            outline: 'none', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', transition: 'all 0.3s ease'
-          }}
-          onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
-          onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
-        />
-        <Search size={24} color="var(--text-secondary)" style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)' }} />
-        <button type="submit" className="btn-primary" style={{ position: 'absolute', right: '10px', top: '10px', bottom: '10px', padding: '0 24px' }}>
-          Cerca
-        </button>
+      <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ position: 'relative', width: '100%' }}>
+          <input
+            type="text"
+            placeholder={searchType === 'character' ? "Cerca un personaggio..." : (aiMode ? "Es: Voglio un gioco nello spazio lungo 20 ore..." : "Cerca un videogioco...")}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            style={{
+              width: '100%', padding: '20px 24px', paddingLeft: '56px',
+              borderRadius: 'var(--radius-full)', border: '2px solid rgba(255, 255, 255, 0.1)',
+              background: 'var(--bg-glass)', color: 'var(--text-primary)', fontSize: '1.2rem',
+              outline: 'none', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', transition: 'all 0.3s ease'
+            }}
+            onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
+            onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+          />
+          <div style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Search size={20} color="var(--text-secondary)" />
+            <div style={{ width: '1px', height: '24px', background: 'rgba(255,255,255,0.2)', marginLeft: '4px' }}></div>
+          </div>
+          <button type="submit" className="btn-primary" style={{ position: 'absolute', right: '10px', top: '10px', bottom: '10px', padding: '0 24px' }}>
+            Cerca
+          </button>
+        </div>
+        
+        {/* Toggles Container */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
+          
+          {/* Toggle Type */}
+          <div style={{
+            display: 'flex', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-full)', border: '1px solid var(--glass-border)', overflow: 'hidden'
+          }}>
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); setSearchType('game'); }}
+              style={{
+                padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', border: 'none',
+                background: searchType === 'game' ? 'var(--accent-primary)' : 'transparent',
+                color: searchType === 'game' ? 'white' : 'var(--text-secondary)',
+                transition: 'all 0.2s'
+              }}
+            >
+              Giochi
+            </button>
+            <button
+              type="button"
+              onClick={(e) => { e.preventDefault(); setSearchType('character'); }}
+              style={{
+                padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', border: 'none',
+                background: searchType === 'character' ? '#00f2fe' : 'transparent',
+                color: searchType === 'character' ? '#002538' : 'var(--text-secondary)',
+                transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '4px'
+              }}
+            >
+              Personaggi {tier !== 'ultra' && <Lock size={12} />}
+            </button>
+          </div>
+
+          {/* Toggle Modalità Sommelier */}
+          {searchType === 'game' && (
+            <button 
+              type="button"
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAiMode(!aiMode); }}
+              style={{ 
+                display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', 
+                fontSize: '0.85rem', fontWeight: 'bold', width: 'fit-content',
+                color: aiMode ? '#00f2fe' : 'var(--text-secondary)',
+                background: aiMode ? 'rgba(0, 242, 254, 0.1)' : 'var(--bg-glass)',
+                border: aiMode ? '1px solid #00f2fe' : '1px solid var(--glass-border)',
+                borderRadius: 'var(--radius-full)',
+                padding: '6px 14px',
+                transition: 'all 0.2s ease',
+                boxShadow: aiMode ? '0 0 10px rgba(0, 242, 254, 0.2)' : 'var(--shadow-glass)'
+              }}
+            >
+              <Sparkles size={14} color={aiMode ? "#00f2fe" : "currentColor"} />
+              Sommelier AI
+              {tier !== 'ultra' && <Lock size={12} style={{ marginLeft: '4px' }} />}
+            </button>
+          )}
+        </div>
       </form>
 
-      {/* Discovery Button */}
-      <div style={{ marginTop: '24px', width: '100%', maxWidth: '600px' }}>
+
+
+      {/* Pulsanti Azione Rapida */}
+      <div style={{ marginTop: '24px', width: '100%', maxWidth: '600px', display: 'flex', gap: '12px', flexDirection: 'column' }}>
+        
+        <button
+          onClick={handlePersonalizedSuggestions}
+          style={{
+            width: '100%', padding: '14px 24px',
+            borderRadius: 'var(--radius-full)',
+            border: '2px solid rgba(0,242,254,0.4)',
+            background: 'rgba(0,242,254,0.08)',
+            color: '#00f2fe',
+            fontWeight: '700', fontSize: '1rem', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+            transition: 'all 0.3s ease',
+          }}
+          onMouseOver={e => { e.currentTarget.style.background = 'rgba(0,242,254,0.18)'; e.currentTarget.style.borderColor = '#00f2fe'; }}
+          onMouseOut={e => { e.currentTarget.style.background = 'rgba(0,242,254,0.08)'; e.currentTarget.style.borderColor = 'rgba(0,242,254,0.4)'; }}
+        >
+          <Sparkles size={20} />
+          💡 Consigliati per me
+          {tier !== 'ultra' && <Lock size={14} style={{ marginLeft: '4px' }} />}
+        </button>
+
         <button
           onClick={handleDiscover}
           disabled={discovering}
@@ -181,7 +305,7 @@ export default function Home() {
       )}
 
       {/* Trending */}
-      <div style={{ marginTop: '40px', display: 'flex', gap: '20px', color: 'var(--text-muted)', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ marginTop: '40px', display: 'flex', gap: '20px', color: 'var(--text-muted)', flexWrap: 'wrap', justifyContent: 'center', paddingBottom: '40px' }}>
         <span>Trending:</span>
         <span style={{ cursor: 'pointer', transition: 'color 0.3s' }} onMouseOver={e => e.target.style.color = 'var(--text-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-muted)'} onClick={() => navigate('/game/Helldivers 2')}>Helldivers 2</span>
         <span style={{ cursor: 'pointer', transition: 'color 0.3s' }} onMouseOver={e => e.target.style.color = 'var(--text-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-muted)'} onClick={() => navigate('/game/Final Fantasy VII Rebirth')}>FFVII Rebirth</span>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Search, AlertTriangle } from 'lucide-react';
 import GameService from '../services/GameService';
 import GameCard from '../components/GameCard';
@@ -9,17 +9,22 @@ import ModelDownloader from '../components/ModelDownloader';
 export default function SearchResults() {
   const { query } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const decodedQuery = decodeURIComponent(query);
+  const isAiSearch = new URLSearchParams(location.search).get('ai') === 'true';
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [error, setError] = useState(null);
+
+  const isPersonalized = isAiSearch && decodedQuery.startsWith("Consigliami dei nuovi giochi");
+  const displayQuery = isPersonalized ? "giochi in base ai tuoi gusti" : decodedQuery;
 
   useEffect(() => {
     async function fetchResults() {
       setLoading(true);
       setError(null);
       try {
-        const list = await GameService.searchGames(decodedQuery);
+        const list = isAiSearch ? await GameService.searchGamesAI(decodedQuery) : await GameService.searchGames(decodedQuery);
         setResults(list);
       } catch (err) {
         if (err.code === 'MODEL_MISSING') {
@@ -35,7 +40,7 @@ export default function SearchResults() {
   }, [query]);
 
   if (loading) {
-    return <LoadingScreen title={`Sto cercando tutti i giochi con "${decodedQuery}"...`} />;
+    return <LoadingScreen title={isPersonalized ? "Sto analizzando i tuoi gusti..." : `Sto cercando tutti i giochi con "${decodedQuery}"...`} />;
   }
 
   if (error) {
@@ -55,23 +60,29 @@ export default function SearchResults() {
     <div className="animate-fade-in" style={{ paddingBottom: '60px' }}>
       <div style={{ marginBottom: '40px', textAlign: 'center' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
-          <Search size={32} color="var(--accent-primary)" />
+          <Search size={32} color={isAiSearch ? "#00f2fe" : "var(--accent-primary)"} />
           <h1 className="search-title" style={{ fontSize: '2rem', fontWeight: '800' }}>
-            Risultati per "<span className="text-gradient">{decodedQuery}</span>"
+            {isAiSearch ? "Il Sommelier consiglia:" : "Risultati per"} "<span className="text-gradient">{displayQuery}</span>"
           </h1>
         </div>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-          {results.length > 0 ? `Trovati ${results.length} giochi.` : 'Nessun gioco trovato negli archivi.'}
+          {results.length > 0 ? (isAiSearch ? "Ecco i giochi perfetti per te:" : `Trovati ${results.length} giochi.`) : 'Nessun gioco trovato negli archivi.'}
         </p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {results.map((game) => (
-          <GameCard
-            key={game.id}
-            game={game}
-            onClick={() => navigate(`/game/${encodeURIComponent(game.title)}`, { state: { game } })}
-          />
+          <div key={game.id} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {game.aiReason && (
+              <div style={{ padding: '12px 16px', background: 'rgba(0,242,254,0.1)', borderLeft: '3px solid #00f2fe', borderRadius: '4px', fontSize: '0.9rem', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.4' }}>
+                " {game.aiReason} "
+              </div>
+            )}
+            <GameCard
+              game={game}
+              onClick={() => navigate(`/game/${encodeURIComponent(game.title)}`, { state: { game } })}
+            />
+          </div>
         ))}
       </div>
     </div>

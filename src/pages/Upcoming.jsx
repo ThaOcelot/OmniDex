@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, Star, ChevronRight, Gamepad } from 'lucide-react';
+import { Calendar, Star, ChevronRight, Gamepad, Bell, BellRing } from 'lucide-react';
 import RAWGService from '../services/RAWGService';
+import NotificationService from '../services/NotificationService';
+import { db } from '../services/db';
 
 const PLATFORM_ICONS = {
   pc: '🖥️', playstation5: '🎮', playstation4: '🎮',
@@ -19,6 +21,7 @@ function getPlatformIcon(slug) {
 export default function Upcoming() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [favoritesMap, setFavoritesMap] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +29,49 @@ export default function Upcoming() {
       setGames(data);
       setLoading(false);
     }).catch(() => setLoading(false));
+
+    loadFavorites();
   }, []);
+
+  const loadFavorites = async () => {
+    const favs = await db.getFavorites();
+    const map = {};
+    for (const f of favs) {
+      map[f.id] = f.isFavorite !== false; // true se le notifiche sono abilitate
+    }
+    setFavoritesMap(map);
+  };
+
+  const toggleNotification = async (e, game) => {
+    e.stopPropagation(); // Evita di aprire il dettaglio
+    const currentlyEnabled = favoritesMap[game.id];
+
+    if (currentlyEnabled) {
+      // Disabilita notifica
+      await db.updateFavoriteFlag(game.id, false);
+      await NotificationService.cancelReleaseNotification(game.id);
+      setFavoritesMap(prev => ({ ...prev, [game.id]: false }));
+    } else {
+      // Abilita notifica
+      const isFav = await db.isFavorite(game.id);
+      if (!isFav) {
+        await db.addFavorite({
+          id: game.id,
+          title: game.name, // Importante per la compatibilità con Favorites
+          name: game.name,
+          background_image: game.background_image,
+          rating: game.rating,
+          metacritic: game.metacritic,
+          platforms: game.platforms,
+          released: game.released,
+          status: 'backlog' // Aggiunge automaticamente al backlog
+        });
+      }
+      await db.updateFavoriteFlag(game.id, true);
+      await NotificationService.scheduleReleaseNotification(game);
+      setFavoritesMap(prev => ({ ...prev, [game.id]: true }));
+    }
+  };
 
   // Raggruppa per mese
   const grouped = games.reduce((acc, game) => {
@@ -119,7 +164,7 @@ export default function Upcoming() {
                 }} />
 
                 {/* Info */}
-                <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ flex: 1, minWidth: 0, paddingRight: '8px' }}>
                   <div style={{ fontWeight: '700', fontSize: '0.95rem', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {game.name}
                   </div>
@@ -146,7 +191,23 @@ export default function Upcoming() {
                   </div>
                 </div>
 
-                <ChevronRight size={16} color="var(--text-muted)" style={{ flexShrink: 0 }} />
+                <div 
+                  style={{ 
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    padding: '8px', borderRadius: '50%',
+                    background: favoritesMap[game.id] ? 'rgba(0, 242, 254, 0.15)' : 'rgba(255,255,255,0.05)',
+                    color: favoritesMap[game.id] ? '#00f2fe' : 'var(--text-muted)',
+                    transition: 'all 0.2s'
+                  }}
+                  onClick={(e) => toggleNotification(e, game)}
+                  onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                  onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  title={favoritesMap[game.id] ? "Disattiva notifiche" : "Avvisami quando esce"}
+                >
+                  {favoritesMap[game.id] ? <BellRing size={18} /> : <Bell size={18} />}
+                </div>
+                
+                <ChevronRight size={16} color="var(--text-muted)" style={{ flexShrink: 0, marginLeft: '4px' }} />
               </div>
             ))}
           </div>

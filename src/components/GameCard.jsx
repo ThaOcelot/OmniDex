@@ -153,7 +153,7 @@ const GameCard = ({ game, onClick }) => {
       {/* Body */}
       <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '15px' }}>
-          {game.platforms?.slice(0, 3).map(p => (
+          {game.platforms?.slice(0, 4).map(p => (
             <span key={p} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
               {p}
             </span>

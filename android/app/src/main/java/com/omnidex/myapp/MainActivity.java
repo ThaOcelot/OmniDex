@@ -1,4 +1,4 @@
-package com.outergames.omnidex;
+package com.omnidex.myapp;
 
 import com.getcapacitor.BridgeActivity;
 

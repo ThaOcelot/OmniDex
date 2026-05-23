@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="com.google.ai.edge.aicore" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,6 +31,11 @@
             android:grantUriPermissions="true">
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
+
+        <!-- ID Applicazione AdMob per Test (Obbligatorio per evitare il crash all'avvio) -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
     </application>
 
     <!-- Permissions -->

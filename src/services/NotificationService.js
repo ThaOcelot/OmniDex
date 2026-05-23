@@ -60,7 +60,8 @@ class NotificationService {
    */
   async checkNewNewsForFavorites() {
     try {
-      const favorites = await db.getFavorites();
+      // Solo i giochi con notifiche attive (campanella 🔔 abilitata dall'utente)
+      const favorites = await db.getFavoritesForNotifications();
       if (!favorites || favorites.length === 0) return;
 
       console.log(`🔔 Checking news for ${favorites.length} favorite games...`);
@@ -100,7 +101,9 @@ class NotificationService {
                   sound: 'default',
                   extra: {
                     gameName: game.title,
-                    gameId: game.id
+                    gameId: game.id,
+                    newsUrl: latestNews.url,
+                    newsTitle: latestNews.title
                   }
                 }
               ]
@@ -197,6 +200,93 @@ class NotificationService {
     // Fallback definitivo per browser restrittivi o senza permessi concessi
     alert(`[Notifica di Gioco]\n\n${notificationTitle}\n\n${newsTitle}`);
     return true;
+  }
+
+  /**
+   * Mostra un prompt all'utente per disabilitare l'ottimizzazione batteria
+   */
+  async checkBackgroundExecutionPrompt() {
+    const isNative = window.Capacitor?.isNativePlatform?.();
+    if (!isNative) return;
+
+    const prompted = localStorage.getItem('battery_opt_prompt_shown');
+    if (!prompted) {
+      localStorage.setItem('battery_opt_prompt_shown', 'true');
+      
+      setTimeout(async () => {
+        const res = window.confirm("Per ricevere le notifiche in modo affidabile, OmniDex deve poter funzionare in background.\n\nVuoi aprire le impostazioni dell'app ora e impostare l'Uso Batteria su 'Senza limitazioni'?");
+        if (res) {
+          try {
+            const { App } = await import('@capacitor/app');
+            await App.openAppSettings();
+          } catch(e) {
+            console.warn("🔔 Failed to open app settings", e);
+          }
+        }
+      }, 500); // Piccolo ritardo per evitare accavallamenti visivi con permessi
+    }
+  }
+
+  /**
+   * Schedula la notifica di uscita di un gioco per il Release Radar
+   */
+  async scheduleReleaseNotification(game) {
+    if (!game || !game.released) return;
+
+    const hasPermission = await this.requestPermissions();
+    if (!hasPermission) {
+      console.warn("🔔 Permessi di notifica non concessi.");
+      return;
+    }
+
+    await this.checkBackgroundExecutionPrompt();
+
+    const isNative = window.Capacitor?.isNativePlatform?.();
+    if (!isNative) return;
+
+    try {
+      const releaseDate = new Date(game.released);
+      releaseDate.setHours(10, 0, 0, 0); // Ore 10:00 AM
+
+      if (releaseDate.getTime() < Date.now()) {
+        console.log(`🔔 Data di rilascio passata per ${game.name}, nessuna notifica schedulata.`);
+        return;
+      }
+
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            id: game.id, // ID del gioco come ID notifica per poterlo cancellare
+            title: `Il grande giorno è arrivato! 🎮`,
+            body: `${game.name} è ufficialmente disponibile da oggi!`,
+            largeBody: `${game.name} è ufficialmente disponibile da oggi! Entra in OmniDex e scopri i dettagli.`,
+            schedule: { at: releaseDate },
+            sound: 'default'
+          }
+        ]
+      });
+      console.log(`🔔 Notifica rilascio schedulata per ${game.name} il ${releaseDate.toLocaleString()}`);
+    } catch (e) {
+      console.warn("🔔 Errore schedulazione notifica di rilascio:", e);
+    }
+  }
+
+  /**
+   * Cancella una notifica di uscita precedentemente schedulata
+   */
+  async cancelReleaseNotification(gameId) {
+    if (!gameId) return;
+    const isNative = window.Capacitor?.isNativePlatform?.();
+    if (!isNative) return;
+
+    try {
+      await LocalNotifications.cancel({
+        notifications: [{ id: gameId }]
+      });
+      console.log(`🔔 Notifica rilascio cancellata per ID ${gameId}`);
+    } catch (e) {
+      console.warn("🔔 Errore cancellazione notifica:", e);
+    }
   }
 }
 

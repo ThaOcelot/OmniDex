@@ -1,16 +1,18 @@
 {
   "name": "outer-games",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.4.16",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "vite build && gh-pages -d dist"
+    "deploy": "vite build && gh-pages -d dist",
+    "postinstall": "node scripts/patch-admob.cjs"
   },
   "dependencies": {
+    "@capacitor-community/admob": "^8.0.0",
     "@capacitor/android": "^8.3.3",
     "@capacitor/app": "^8.1.0",
     "@capacitor/core": "^8.3.3",
@@ -20,6 +22,9 @@
     "@capacitor/share": "^8.0.1",
     "@google/generative-ai": "^0.24.1",
     "commander": "^14.0.3",
+    "cordova-plugin-purchase": "^13.16.0",
+    "firebase": "^12.13.0",
+    "html2canvas": "^1.4.1",
     "idb": "^8.0.3",
     "lucide-react": "^1.14.0",
     "react": "^19.2.5",
