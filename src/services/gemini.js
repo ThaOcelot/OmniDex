@@ -1,10 +1,11 @@
 import { registerPlugin, CapacitorHttp } from '@capacitor/core';
 import { db } from './db';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { app } from './FirebaseService';
 
 const LocalAIPlugin = registerPlugin('LocalAIPlugin');
-
-const RAWG_API_KEY = 'f0f8782547814b088437efdb1cc88399';
-const RAWG_BASE_URL = 'https://api.rawg.io/api';
+const functions = getFunctions(app);
+const getRawgGames = httpsCallable(functions, 'getRawgGames');
 
 const SYSTEM_PROMPT = `
 Sei l'Archivista Monumentale di OmniDex. 
@@ -28,9 +29,15 @@ async function httpGet(url, params = {}) {
   } catch (e) { return null; }
 }
 
+async function rawgGet(endpoint, params = {}) {
+  try {
+    const response = await getRawgGames({ endpoint, params });
+    return response.data.data;
+  } catch (e) { return null; }
+}
+
 export async function searchGamesList(query) {
-  const data = await httpGet(`${RAWG_BASE_URL}/games`, {
-    key: RAWG_API_KEY,
+  const data = await rawgGet('games', {
     search: query,
     page_size: 20
   });
@@ -53,8 +60,7 @@ export async function searchGameInfo(gameTitle) {
   const cached = await db.getGame(gameTitle);
   if (cached) return cached;
 
-  const searchRes = await httpGet(`${RAWG_BASE_URL}/games`, {
-    key: RAWG_API_KEY,
+  const searchRes = await rawgGet('games', {
     search: gameTitle,
     page_size: 1
   });
@@ -62,9 +68,7 @@ export async function searchGameInfo(gameTitle) {
   const gameBrief = searchRes?.results?.[0];
   if (!gameBrief) return null;
 
-  const game = await httpGet(`${RAWG_BASE_URL}/games/${gameBrief.id}`, {
-    key: RAWG_API_KEY
-  });
+  const game = await rawgGet(`games/${gameBrief.id}`);
 
   if (!game) return null;
 

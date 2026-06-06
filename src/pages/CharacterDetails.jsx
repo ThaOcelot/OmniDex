@@ -21,7 +21,7 @@ export default function CharacterDetails() {
 
   const fetchProfile = async (forceRegenerate = false) => {
     // Controllo Tier
-    if (!IAPService.isPro() && !IAPService.isUltra()) {
+    if (!IAPService.isUltra()) {
       setError("locked");
       setLoading(false);
       return;
@@ -81,14 +81,29 @@ export default function CharacterDetails() {
 
   if (loading) {
     return (
-      <div className="container" style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh' }}>
+      <div className="container animate-fade-in" style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh' }}>
         <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
           <ChevronLeft size={24} />
         </button>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
-          <div style={{ width: '60px', height: '60px', border: '3px solid rgba(139,92,246,0.3)', borderTopColor: 'var(--accent-primary)', borderRadius: '50%', animation: 'spin 1s linear infinite', marginBottom: '20px' }}></div>
-          <div style={{ color: 'var(--accent-primary)', fontWeight: 'bold', fontSize: '1.2rem', animation: 'pulse 1.5s ease-in-out infinite' }}>L'AI sta analizzando i database...</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginTop: '10px' }}>Ricerca informazioni su {characterName}</div>
+        <div className="glass-panel" style={{ padding: '30px', textAlign: 'center', marginBottom: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className="skeleton" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '20px' }} />
+          <div className="skeleton" style={{ width: '200px', height: '32px', marginBottom: '10px', borderRadius: '8px' }} />
+          <div className="skeleton" style={{ width: '150px', height: '20px', borderRadius: '4px' }} />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          <div className="glass-panel" style={{ padding: '24px' }}>
+            <div className="skeleton" style={{ width: '30%', height: '24px', marginBottom: '16px', borderRadius: '8px' }} />
+            <div className="skeleton" style={{ width: '100%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+            <div className="skeleton" style={{ width: '95%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+            <div className="skeleton" style={{ width: '90%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+            <div className="skeleton" style={{ width: '80%', height: '16px', borderRadius: '4px' }} />
+          </div>
+          <div className="glass-panel" style={{ padding: '24px' }}>
+            <div className="skeleton" style={{ width: '40%', height: '24px', marginBottom: '16px', borderRadius: '8px' }} />
+            <div className="skeleton" style={{ width: '100%', height: '40px', marginBottom: '10px', borderRadius: '8px' }} />
+            <div className="skeleton" style={{ width: '100%', height: '40px', marginBottom: '10px', borderRadius: '8px' }} />
+            <div className="skeleton" style={{ width: '100%', height: '40px', borderRadius: '8px' }} />
+          </div>
         </div>
       </div>
     );
@@ -104,7 +119,7 @@ export default function CharacterDetails() {
           <div style={{ fontSize: '4rem', marginBottom: '20px', filter: 'drop-shadow(0 0 20px rgba(139, 92, 246, 0.4))' }}>🔒</div>
           <h2 style={{ marginBottom: '16px', color: 'var(--text-primary)', fontSize: '1.8rem' }}>Ricerca Personaggi Bloccata</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', maxWidth: '500px', margin: '0 auto 24px' }}>
-            La generazione enciclopedica dei personaggi è un'esclusiva per gli utenti <strong style={{ color: 'var(--accent-primary)' }}>Pro</strong> e <strong style={{ color: '#00f2fe' }}>Ultra</strong>.
+            La generazione enciclopedica dei personaggi è un'esclusiva per gli utenti <strong style={{ color: '#00f2fe' }}>Ultra</strong>.
           </p>
           <button 
             className="btn-primary" 
@@ -247,14 +262,17 @@ export default function CharacterDetails() {
 
       </div>
 
-      {(!profile.biography || !profile.games?.length || !profile.relationships?.length) && (
-        <div style={{ textAlign: 'center', padding: '40px 20px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px dashed var(--glass-border)', marginTop: '24px' }}>
+      <div style={{ textAlign: 'center', padding: '40px 20px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px dashed var(--glass-border)', marginTop: '24px' }}>
+        {(!profile.biography || !profile.games?.length || !profile.relationships?.length) && (
           <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '20px' }}>Alcune informazioni di questo profilo sembrano mancanti o incomplete.</p>
-          <button onClick={handleRegenerate} className="btn-primary" style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Sparkles size={18} /> Rigenera con IA
-          </button>
-        </div>
-      )}
+        )}
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '15px' }}>
+          Pensi che questa scheda sia incompleta o inaccurata?
+        </p>
+        <button onClick={handleRegenerate} className="btn-primary" style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          Rigenera con IA
+        </button>
+      </div>
 
     </div>
   );

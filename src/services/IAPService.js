@@ -196,15 +196,9 @@ class IAPService {
     else productId = this.PRODUCT_ULTRA_MONTHLY; // default
 
     if (!isNative) {
-      // Flusso di simulazione Web
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const tier = (tierType === 'ultra_monthly' || tierType === 'ultra_yearly') ? 'ultra' : tierType;
-          this.setTier(tier);
-          console.log(`💰 [IAP] Simulazione acquisto ${tierType.toUpperCase()} completata!`);
-          resolve(true);
-        }, 1200);
-      });
+      // Flusso di simulazione Web bloccato: d'ora in poi solo gli abbonati sull'app nativa possono salire di tier
+      alert("L'acquisto di abbonamenti e versioni Pro è disponibile solo sull'app mobile ufficiale.");
+      return false;
     }
 
     // Flusso nativo Google Play Store v13

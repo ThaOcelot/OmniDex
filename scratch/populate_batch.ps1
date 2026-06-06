@@ -27,7 +27,7 @@ foreach ($gameId in $games) {
     Write-Host "🎮 Avvio SVISCERAMENTO per: $gameId ($current su $total)" -ForegroundColor Cyan
     Write-Host "================================" -ForegroundColor Cyan
     
-    node scratch\populate_full.mjs $gameId
+    node scratch\populate_full_v2.mjs $gameId
     
     if ($current -lt $total) {
         Write-Host ">>> Elaborazione ID: $gameId completata. Pausa anti-rate-limit 5s..." -ForegroundColor Yellow

@@ -1,7 +1,7 @@
 {
   "name": "outer-games",
   "private": true,
-  "version": "1.4.16",
+  "version": "1.5.5",
   "type": "module",
   "scripts": {
     "dev": "vite",

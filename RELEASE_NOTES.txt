@@ -1,0 +1,3 @@
+Version 1.5.4 (Code 29)
+
+Siamo entusiasti di presentarvi OmniDex 1.5.4! 🚀 In questo aggiornamento abbiamo rinnovato la veste grafica, introducendo un logo completamente nuovo che riflette al meglio l'identità dell'app, visibile anche nelle schermate di avvio (Splash Screen) e su tutte le piattaforme. Inoltre, abbiamo risolto un fastidioso bug tecnico legato all'anteprima degli acquisti in-app che permetteva sblocchi involontari delle versioni Pro e Ultra. L'esperienza è ora più sicura, fluida e stabile per tutti!  

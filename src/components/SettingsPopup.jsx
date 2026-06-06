@@ -11,7 +11,6 @@ export default function SettingsPopup({ onClose }) {
   const [tier, setTier] = useState(IAPService.getTier());
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
-  const [debugClicks, setDebugClicks] = useState(0);
   const [ultraPlan, setUltraPlan] = useState('monthly'); // 'monthly' | 'yearly'
 
   // Sincronizza il tema con l'attributo data-theme del documento
@@ -51,24 +50,6 @@ export default function SettingsPopup({ onClose }) {
       console.error(err);
     } finally {
       setRestoring(false);
-    }
-  };
-
-  const handleDebugClick = () => {
-    const clicks = debugClicks + 1;
-    setDebugClicks(clicks);
-    if (clicks >= 5) {
-      if (tier === 'free') {
-        IAPService.setTier('pro');
-        alert("⚙️ [Debug] OmniDex sbloccata a PRO!");
-      } else if (tier === 'pro') {
-        IAPService.setTier('ultra');
-        alert("⚙️ [Debug] OmniDex sbloccata a ULTRA!");
-      } else {
-        IAPService.resetToFree();
-        alert("⚙️ [Debug] OmniDex tornata a FREE!");
-      }
-      setDebugClicks(0);
     }
   };
 
@@ -191,15 +172,14 @@ export default function SettingsPopup({ onClose }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span 
-                onClick={handleDebugClick}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
                 style={{ 
                   fontSize: '1.4rem', 
-                  cursor: 'pointer',
                   userSelect: 'none',
+                  pointerEvents: 'none',
                   display: 'inline-block',
                   animation: tier === 'free' ? 'pulse 2s infinite' : 'none'
                 }}
-                title="Debug: Clicca 5 volte per resettare"
               >
                 {tier === 'ultra' ? '💎' : '👑'}
               </span>

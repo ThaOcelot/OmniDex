@@ -1,0 +1,830 @@
+{
+  "Super Mario": [
+    {
+      "query": "Super Mario Bros.",
+      "id": 25080,
+      "name": "Super Mario Bros.",
+      "released": "1985-09-13"
+    },
+    {
+      "query": "Super Mario Bros. 2",
+      "id": 25173,
+      "name": "Super Mario Bros. 2",
+      "released": "1988-10-09"
+    },
+    {
+      "query": "Super Mario Bros. 3",
+      "id": 24030,
+      "name": "Super Mario Bros. 3",
+      "released": "1988-10-23"
+    },
+    {
+      "query": "Super Mario Land",
+      "id": 27058,
+      "name": "Super Mario Land",
+      "released": "1989-04-21"
+    },
+    {
+      "query": "Super Mario World",
+      "id": 24899,
+      "name": "Super Mario World",
+      "released": "1990-11-21"
+    },
+    {
+      "query": "Super Mario Land 2: 6 Golden Coins",
+      "id": 55301,
+      "name": "Super Mario Land 2: 6 Golden Coins",
+      "released": "1992-10-21"
+    },
+    {
+      "query": "Super Mario 64",
+      "id": 54528,
+      "name": "Super Mario 64",
+      "released": "1996-06-23"
+    },
+    {
+      "query": "Super Mario Sunshine",
+      "id": 52371,
+      "name": "Super Mario Sunshine",
+      "released": "2002-08-25"
+    },
+    {
+      "query": "New Super Mario Bros.",
+      "id": 24933,
+      "name": "New Super Mario Bros.",
+      "released": "2006-05-15"
+    },
+    {
+      "query": "Super Mario Galaxy",
+      "id": 27024,
+      "name": "Super Mario Galaxy",
+      "released": "2007-11-01"
+    },
+    {
+      "query": "New Super Mario Bros. Wii",
+      "id": 24493,
+      "name": "New Super Mario Bros. Wii",
+      "released": "2009-11-12"
+    },
+    {
+      "query": "Super Mario Galaxy 2",
+      "id": 27036,
+      "name": "Super Mario Galaxy 2",
+      "released": "2010-05-23"
+    },
+    {
+      "query": "Super Mario 3D Land",
+      "id": 27102,
+      "name": "Super Mario 3D Land",
+      "released": "2011-11-03"
+    },
+    {
+      "query": "New Super Mario Bros. U",
+      "id": 27967,
+      "name": "New Super Mario Bros. U",
+      "released": "2012-11-18"
+    },
+    {
+      "query": "Super Mario 3D World",
+      "id": 27974,
+      "name": "Super Mario 3D World",
+      "released": "2013-11-21"
+    },
+    {
+      "query": "Super Mario Odyssey",
+      "id": 28026,
+      "name": "Super Mario Odyssey",
+      "released": "2017-10-27"
+    },
+    {
+      "query": "Super Mario Bros. Wonder",
+      "id": 962495,
+      "name": "Super Mario Bros. Wonder",
+      "released": "2023-10-20"
+    }
+  ],
+  "Pokémon": [
+    {
+      "query": "Pokemon Red",
+      "id": 23762,
+      "name": "Pokémon Red, Blue, Yellow",
+      "released": "1996-02-27"
+    },
+    {
+      "query": "Pokemon Gold",
+      "id": 27936,
+      "name": "Pokémon Gold, Silver",
+      "released": "1999-11-21"
+    },
+    {
+      "query": "Pokemon Ruby",
+      "id": 52372,
+      "name": "Pokémon Ruby, Sapphire, Emerald",
+      "released": "2004-09-16"
+    },
+    {
+      "query": "Pokemon FireRed",
+      "id": 53473,
+      "name": "Pokémon FireRed, LeafGreen",
+      "released": "2004-01-29"
+    },
+    {
+      "query": "Pokemon Diamond",
+      "id": 25131,
+      "name": "Pokémon Diamond, Pearl",
+      "released": "2007-04-22"
+    },
+    {
+      "query": "Pokemon HeartGold",
+      "id": 26316,
+      "name": "Pokémon HeartGold, SoulSilver",
+      "released": "2010-03-14"
+    },
+    {
+      "query": "Pokemon Black",
+      "id": 330615,
+      "name": "Pokémon Black, White",
+      "released": "2011-03-06"
+    },
+    {
+      "query": "Pokemon Black 2",
+      "id": 331454,
+      "name": "Pokémon Black 2, White 2",
+      "released": "2012-10-07"
+    },
+    {
+      "query": "Pokemon X",
+      "id": 27312,
+      "name": "Pokémon X, Y",
+      "released": "2013-10-12"
+    },
+    {
+      "query": "Pokemon Omega Ruby",
+      "id": 23973,
+      "name": "Pokémon Alpha Sapphire, Omega Ruby",
+      "released": "2014-11-21"
+    },
+    {
+      "query": "Pokemon Sun",
+      "id": 23748,
+      "name": "Pokémon Sun, Moon",
+      "released": "2016-11-18"
+    },
+    {
+      "query": "Pokemon Ultra Sun",
+      "id": 27939,
+      "name": "Pokémon Ultra Sun, Ultra Moon",
+      "released": "2017-11-17"
+    },
+    {
+      "query": "Pokemon Let's Go, Pikachu!",
+      "id": 58606,
+      "name": "Pokémon: Let's Go, Pikachu! and Eevee!",
+      "released": "2018-11-15"
+    },
+    {
+      "query": "Pokemon Sword",
+      "id": 282825,
+      "name": "Pokémon Sword and Shield",
+      "released": "2019-11-15"
+    },
+    {
+      "query": "Pokemon Brilliant Diamond",
+      "id": 564763,
+      "name": "Pokémon Brilliant Diamond, Shining Pearl",
+      "released": "2021-11-19"
+    },
+    {
+      "query": "Pokemon Legends: Arceus",
+      "id": 564761,
+      "name": "Pokémon Legends: Arceus",
+      "released": "2022-01-28"
+    },
+    {
+      "query": "Pokemon Scarlet",
+      "id": 747505,
+      "name": "Pokémon Scarlet and Violet",
+      "released": "2022-11-18"
+    }
+  ],
+  "Call of Duty": [
+    {
+      "query": "Call of Duty (2003)",
+      "id": 19369,
+      "name": "Call of Duty",
+      "released": "2003-10-29"
+    },
+    {
+      "query": "Call of Duty 2",
+      "id": 14331,
+      "name": "Call of Duty 2",
+      "released": "2005-10-25"
+    },
+    {
+      "query": "Call of Duty 3",
+      "id": 25064,
+      "name": "Call of Duty 3",
+      "released": "2006-11-07"
+    },
+    {
+      "query": "Call of Duty 4: Modern Warfare",
+      "id": 4535,
+      "name": "Call of Duty 4: Modern Warfare",
+      "released": "2007-11-05"
+    },
+    {
+      "query": "Call of Duty: World at War",
+      "id": 5528,
+      "name": "Call of Duty: World at War",
+      "released": "2008-11-11"
+    },
+    {
+      "query": "Call of Duty: Modern Warfare 2 (2009)",
+      "id": 4527,
+      "name": "Call of Duty: Modern Warfare 2",
+      "released": "2009-11-10"
+    },
+    {
+      "query": "Call of Duty: Black Ops",
+      "id": 865,
+      "name": "Call of Duty: Black Ops",
+      "released": "2010-11-09"
+    },
+    {
+      "query": "Call of Duty: Modern Warfare 3",
+      "id": 11276,
+      "name": "Call of Duty: Modern Warfare 3",
+      "released": "2011-11-08"
+    },
+    {
+      "query": "Call of Duty: Black Ops II",
+      "id": 14446,
+      "name": "Call of Duty: Black Ops II",
+      "released": "2012-11-13"
+    },
+    {
+      "query": "Call of Duty: Ghosts",
+      "id": 7439,
+      "name": "Call of Duty: Ghosts",
+      "released": "2013-11-05"
+    },
+    {
+      "query": "Call of Duty: Advanced Warfare",
+      "id": 842,
+      "name": "Call of Duty: Advanced Warfare",
+      "released": "2014-11-03"
+    },
+    {
+      "query": "Call of Duty: Black Ops III",
+      "id": 906,
+      "name": "Call of Duty: Black Ops III",
+      "released": "2015-11-06"
+    },
+    {
+      "query": "Call of Duty: Infinite Warfare",
+      "id": 887,
+      "name": "Call of Duty: Infinite Warfare",
+      "released": "2016-11-04"
+    },
+    {
+      "query": "Call of Duty: WWII",
+      "id": 21924,
+      "name": "Call of Duty: WWII",
+      "released": "2017-11-03"
+    },
+    {
+      "query": "Call of Duty: Black Ops 4",
+      "id": 58389,
+      "name": "Call of Duty: Black Ops 4",
+      "released": "2018-10-12"
+    },
+    {
+      "query": "Call of Duty: Modern Warfare (2019)",
+      "id": 323065,
+      "name": "Call of Duty: Modern Warfare (2019)",
+      "released": "2019-10-25"
+    },
+    {
+      "query": "Call of Duty: Black Ops Cold War",
+      "id": 481910,
+      "name": "Call of Duty: Black Ops Cold War",
+      "released": "2020-11-13"
+    },
+    {
+      "query": "Call of Duty: Vanguard",
+      "id": 647552,
+      "name": "Call of Duty: Vanguard",
+      "released": "2021-11-05"
+    },
+    {
+      "query": "Call of Duty: Modern Warfare II (2022)",
+      "id": 4527,
+      "name": "Call of Duty: Modern Warfare 2",
+      "released": "2009-11-10"
+    },
+    {
+      "query": "Call of Duty: Modern Warfare III (2023)",
+      "id": 11276,
+      "name": "Call of Duty: Modern Warfare 3",
+      "released": "2011-11-08"
+    },
+    {
+      "query": "Call of Duty: Black Ops 6",
+      "id": 983212,
+      "name": "Call of Duty: Black Ops 6",
+      "released": "2024-10-24"
+    }
+  ],
+  "The Legend of Zelda": [
+    {
+      "query": "The Legend of Zelda (1986)",
+      "id": 24072,
+      "name": "The Legend of Zelda",
+      "released": "1986-02-21"
+    },
+    {
+      "query": "Zelda II: The Adventure of Link",
+      "id": 53205,
+      "name": "Zelda II: The Adventure of Link",
+      "released": "1987-01-14"
+    },
+    {
+      "query": "The Legend of Zelda: A Link to the Past",
+      "id": 25096,
+      "name": "The Legend of Zelda: A Link to the Past",
+      "released": "1991-11-21"
+    },
+    {
+      "query": "The Legend of Zelda: Link's Awakening",
+      "id": 292842,
+      "name": "The Legend of Zelda: Link's Awakening (2019)",
+      "released": "2019-09-20"
+    },
+    {
+      "query": "The Legend of Zelda: Ocarina of Time",
+      "id": 25097,
+      "name": "The Legend of Zelda: Ocarina of Time",
+      "released": "1998-11-21"
+    },
+    {
+      "query": "The Legend of Zelda: Majora's Mask",
+      "id": 25924,
+      "name": "The Legend of Zelda: Majora's Mask",
+      "released": "2000-04-27"
+    },
+    {
+      "query": "The Legend of Zelda: Oracle of Ages",
+      "id": 27256,
+      "name": "The Legend of Zelda: Oracle of Ages",
+      "released": "2001-02-27"
+    },
+    {
+      "query": "The Legend of Zelda: Oracle of Seasons",
+      "id": 27255,
+      "name": "The Legend of Zelda: Oracle of Seasons",
+      "released": "2001-02-27"
+    },
+    {
+      "query": "The Legend of Zelda: The Wind Waker",
+      "id": 56092,
+      "name": "The Legend of Zelda: The Wind Waker",
+      "released": "2002-12-13"
+    },
+    {
+      "query": "The Legend of Zelda: The Minish Cap",
+      "id": 27418,
+      "name": "The Legend of Zelda: The Minish Cap",
+      "released": "2004-11-04"
+    },
+    {
+      "query": "The Legend of Zelda: Twilight Princess",
+      "id": 27015,
+      "name": "The Legend of Zelda: Twilight Princess",
+      "released": "2006-11-19"
+    },
+    {
+      "query": "The Legend of Zelda: Phantom Hourglass",
+      "id": 27023,
+      "name": "The Legend of Zelda: Phantom Hourglass",
+      "released": "2007-10-01"
+    },
+    {
+      "query": "The Legend of Zelda: Spirit Tracks",
+      "id": 23850,
+      "name": "The Legend of Zelda: Spirit Tracks",
+      "released": "2009-12-07"
+    },
+    {
+      "query": "The Legend of Zelda: Skyward Sword",
+      "id": 26824,
+      "name": "The Legend of Zelda: Skyward Sword",
+      "released": "2011-11-20"
+    },
+    {
+      "query": "The Legend of Zelda: A Link Between Worlds",
+      "id": 27977,
+      "name": "The Legend of Zelda: A Link Between Worlds",
+      "released": "2013-11-22"
+    },
+    {
+      "query": "The Legend of Zelda: Breath of the Wild",
+      "id": 22511,
+      "name": "The Legend of Zelda: Breath of the Wild",
+      "released": "2017-03-03"
+    },
+    {
+      "query": "The Legend of Zelda: Tears of the Kingdom",
+      "id": 327239,
+      "name": "The Legend of Zelda: Tears of the Kingdom",
+      "released": "2023-05-12"
+    }
+  ],
+  "Final Fantasy": [
+    {
+      "query": "Final Fantasy (1987)",
+      "id": 52936,
+      "name": "Final Fantasy (1987)",
+      "released": "1987-12-17"
+    },
+    {
+      "query": "Final Fantasy II",
+      "id": 52935,
+      "name": "Final Fantasy II (1988)",
+      "released": "1988-12-17"
+    },
+    {
+      "query": "Final Fantasy III",
+      "id": 308056,
+      "name": "Final Fantasy III (1990)",
+      "released": "1990-04-27"
+    },
+    {
+      "query": "Final Fantasy IV",
+      "id": 52937,
+      "name": "Final Fantasy IV (1991)",
+      "released": "1991-07-19"
+    },
+    {
+      "query": "Final Fantasy V",
+      "id": 1922,
+      "name": "FINAL FANTASY V",
+      "released": "1992-12-06"
+    },
+    {
+      "query": "Final Fantasy VI",
+      "id": 1063,
+      "name": "FINAL FANTASY VI",
+      "released": "1994-04-02"
+    },
+    {
+      "query": "Final Fantasy VII (1997)",
+      "id": 259801,
+      "name": "Final Fantasy VII",
+      "released": "2020-04-10"
+    },
+    {
+      "query": "Final Fantasy VIII",
+      "id": 5115,
+      "name": "FINAL FANTASY VIII",
+      "released": "1999-02-11"
+    },
+    {
+      "query": "Final Fantasy IX",
+      "id": 52943,
+      "name": "Final Fantasy IX",
+      "released": "2000-07-07"
+    },
+    {
+      "query": "Final Fantasy X",
+      "id": 41128,
+      "name": "Final Fantasy X",
+      "released": "2001-07-19"
+    },
+    {
+      "query": "Final Fantasy XI",
+      "id": 34872,
+      "name": "Final Fantasy XI",
+      "released": "2002-11-07"
+    },
+    {
+      "query": "Final Fantasy XII",
+      "id": 301511,
+      "name": "Final Fantasy XII",
+      "released": "2006-03-16"
+    },
+    {
+      "query": "Final Fantasy XIII",
+      "id": 20760,
+      "name": "FINAL FANTASY XIII",
+      "released": "2009-12-17"
+    },
+    {
+      "query": "Final Fantasy XIV",
+      "id": 39530,
+      "name": "Final Fantasy XIV",
+      "released": "2010-09-30"
+    },
+    {
+      "query": "Final Fantasy XV",
+      "id": 750,
+      "name": "FINAL FANTASY XV",
+      "released": "2016-11-29"
+    },
+    {
+      "query": "Final Fantasy XVI",
+      "id": 494382,
+      "name": "Final Fantasy XVI",
+      "released": "2023-06-22"
+    },
+    {
+      "query": "Final Fantasy VII Remake",
+      "id": 259801,
+      "name": "Final Fantasy VII",
+      "released": "2020-04-10"
+    },
+    {
+      "query": "Final Fantasy VII Rebirth",
+      "id": 802435,
+      "name": "Final Fantasy VII Rebirth",
+      "released": "2024-02-29"
+    }
+  ],
+  "Tomb Raider": [
+    {
+      "query": "Tomb Raider (1996)",
+      "id": 5286,
+      "name": "Tomb Raider",
+      "released": "2013-03-05"
+    },
+    {
+      "query": "Tomb Raider II",
+      "id": 57908,
+      "name": "Tomb Raider II",
+      "released": "1997-10-31"
+    },
+    {
+      "query": "Tomb Raider III: Adventures of Lara Croft",
+      "id": 32122,
+      "name": "Tomb Raider 3: Adventures of Lara Croft",
+      "released": "1998-11-21"
+    },
+    {
+      "query": "Tomb Raider: The Last Revelation",
+      "id": 12280,
+      "name": "Tomb Raider IV: The Last Revelation",
+      "released": "1999-10-31"
+    },
+    {
+      "query": "Tomb Raider: Chronicles",
+      "id": 12279,
+      "name": "Tomb Raider V: Chronicles",
+      "released": "2000-11-17"
+    },
+    {
+      "query": "Tomb Raider: The Angel of Darkness",
+      "id": 22865,
+      "name": "Tomb Raider: The Angel of Darkness",
+      "released": "2003-06-19"
+    },
+    {
+      "query": "Tomb Raider: Legend",
+      "id": 5298,
+      "name": "Tomb Raider: Legend",
+      "released": "2006-04-06"
+    },
+    {
+      "query": "Tomb Raider: Anniversary",
+      "id": 5297,
+      "name": "Tomb Raider: Anniversary",
+      "released": "2007-06-01"
+    },
+    {
+      "query": "Tomb Raider: Underworld",
+      "id": 4869,
+      "name": "Tomb Raider: Underworld",
+      "released": "2008-11-18"
+    },
+    {
+      "query": "Tomb Raider (2013)",
+      "id": 5286,
+      "name": "Tomb Raider",
+      "released": "2013-03-05"
+    },
+    {
+      "query": "Rise of the Tomb Raider",
+      "id": 7689,
+      "name": "Rise of the Tomb Raider",
+      "released": "2015-11-10"
+    },
+    {
+      "query": "Shadow of the Tomb Raider",
+      "id": 51329,
+      "name": "Shadow of the Tomb Raider",
+      "released": "2018-09-14"
+    }
+  ],
+  "Halo": [
+    {
+      "query": "Halo: Combat Evolved",
+      "id": 28448,
+      "name": "Halo: Combat Evolved",
+      "released": "2001-11-15"
+    },
+    {
+      "query": "Halo 2",
+      "id": 37130,
+      "name": "Halo 2",
+      "released": "2004-11-09"
+    },
+    {
+      "query": "Halo 3",
+      "id": 28589,
+      "name": "Halo 3",
+      "released": "2007-09-25"
+    },
+    {
+      "query": "Halo 3: ODST",
+      "id": 50566,
+      "name": "Halo 3: ODST",
+      "released": "2009-09-22"
+    },
+    {
+      "query": "Halo: Reach",
+      "id": 28613,
+      "name": "Halo: Reach",
+      "released": "2010-09-14"
+    },
+    {
+      "query": "Halo 4",
+      "id": 28627,
+      "name": "Halo 4",
+      "released": "2012-11-06"
+    },
+    {
+      "query": "Halo 5: Guardians",
+      "id": 8444,
+      "name": "Halo 5: Guardians",
+      "released": "2015-10-27"
+    },
+    {
+      "query": "Halo Infinite",
+      "id": 58751,
+      "name": "Halo Infinite",
+      "released": "2021-12-08"
+    }
+  ],
+  "Sonic the Hedgehog": [
+    {
+      "query": "Sonic the Hedgehog (1991)",
+      "id": 283965,
+      "name": "Sonic The Hedgehog (2006)",
+      "released": "2006-11-14"
+    },
+    {
+      "query": "Sonic the Hedgehog 2 (1992)",
+      "id": 2552,
+      "name": "Sonic the Hedgehog 2",
+      "released": "1992-11-21"
+    },
+    {
+      "query": "Sonic the Hedgehog CD",
+      "id": 283965,
+      "name": "Sonic The Hedgehog (2006)",
+      "released": "2006-11-14"
+    },
+    {
+      "query": "Sonic the Hedgehog 3",
+      "id": 57179,
+      "name": "Sonic the Hedgehog 3 (1994)",
+      "released": "1994-02-02"
+    },
+    {
+      "query": "Sonic & Knuckles",
+      "id": 26293,
+      "name": "Sonic & Knuckles",
+      "released": "1994-10-18"
+    },
+    {
+      "query": "Sonic Adventure",
+      "id": 343595,
+      "name": "Sonic Adventure",
+      "released": "1998-12-23"
+    },
+    {
+      "query": "Sonic Adventure 2",
+      "id": 343597,
+      "name": "Sonic Adventure 2",
+      "released": "2001-06-18"
+    },
+    {
+      "query": "Sonic Heroes",
+      "id": 36189,
+      "name": "Sonic Heroes",
+      "released": "2003-12-30"
+    },
+    {
+      "query": "Sonic the Hedgehog (2006)",
+      "id": 283965,
+      "name": "Sonic The Hedgehog (2006)",
+      "released": "2006-11-14"
+    },
+    {
+      "query": "Sonic Unleashed",
+      "id": 3731,
+      "name": "Sonic Unleashed",
+      "released": "2008-11-18"
+    },
+    {
+      "query": "Sonic Colors",
+      "id": 26563,
+      "name": "Sonic Colors",
+      "released": "2010-11-11"
+    },
+    {
+      "query": "Sonic Generations",
+      "id": 4331,
+      "name": "Sonic Generations",
+      "released": "2011-11-01"
+    },
+    {
+      "query": "Sonic Lost World",
+      "id": 14988,
+      "name": "Sonic Lost World",
+      "released": "2013-10-18"
+    },
+    {
+      "query": "Sonic Mania",
+      "id": 23587,
+      "name": "Sonic Mania",
+      "released": "2017-08-15"
+    },
+    {
+      "query": "Sonic Forces",
+      "id": 27943,
+      "name": "Sonic Forces",
+      "released": "2017-11-07"
+    },
+    {
+      "query": "Sonic Frontiers",
+      "id": 704789,
+      "name": "Sonic Frontiers",
+      "released": "2022-11-08"
+    },
+    {
+      "query": "Sonic Superstars",
+      "id": 961859,
+      "name": "Sonic Superstars",
+      "released": "2023-10-16"
+    }
+  ],
+  "Age of Empires": [
+    {
+      "query": "Age of Empires",
+      "id": 32697,
+      "name": "Age of Empires",
+      "released": "1997-10-15"
+    },
+    {
+      "query": "Age of Empires II: The Age of Kings",
+      "id": 32595,
+      "name": "Age of Empires II: Age of Kings",
+      "released": "1999-09-30"
+    },
+    {
+      "query": "Age of Empires III",
+      "id": 36514,
+      "name": "Age of Empires III",
+      "released": "2005-10-18"
+    },
+    {
+      "query": "Age of Empires IV",
+      "id": 58618,
+      "name": "Age of Empires IV",
+      "released": "2021-10-28"
+    },
+    {
+      "query": "Age of Empires: Definitive Edition",
+      "id": 52336,
+      "name": "Age of Empires: Definitive Edition",
+      "released": "2018-02-20"
+    },
+    {
+      "query": "Age of Empires II: Definitive Edition",
+      "id": 326253,
+      "name": "Age of Empires II: Definitive Edition",
+      "released": "2019-11-14"
+    },
+    {
+      "query": "Age of Empires III: Definitive Edition",
+      "id": 499264,
+      "name": "Age of Empires III: Definitive Edition",
+      "released": "2020-10-15"
+    },
+    {
+      "query": "Age of Mythology",
+      "id": 30520,
+      "name": "Age of Mythology",
+      "released": "2002-11-01"
+    }
+  ]
+}

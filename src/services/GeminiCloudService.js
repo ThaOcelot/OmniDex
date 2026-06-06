@@ -1,106 +1,34 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 import IAPService from './IAPService';
+import { app } from './FirebaseService';
 
-// Offuscamento per evitare la disattivazione automatica (Error 403) su GitHub Pages
-const p1 = "AIzaSy";
-const p2 = "AMtHbhzi516q";
-const p3 = "Gxbi7iPtql";
-const p4 = "Wcv-1WKFrhM";
-const API_KEY = [p1, p2, p3, p4].join('');
-const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
-
-const SYSTEM_INSTRUCTION = `Sei l'Archivista di OmniDex, un'enciclopedia italiana di videogiochi.
-REGOLE TASSATIVE:
-- DEVI SCRIVERE SEMPRE E SOLO IN LINGUA ITALIANA.
-- È severamente vietato restituire testo in inglese (tranne i nomi propri originali).
-- Rispondi SOLO con il contenuto richiesto, senza preamboli, commenti o meta-testo.
-- NON USARE MARKDOWN (niente #, *, **, __, ###, trattini come elenchi).
-- Per il grassetto usa <b>...</b> e per il corsivo usa <i>...</i>.
-- Scrivi in paragrafi discorsivi separati da doppio a-capo.
-- Non inventare informazioni false o non verificabili. Se non conosci qualcosa, omettila.
-- Usa un tono enciclopedico, preciso e coinvolgente.`;
-
-let modelPro = null;
-let modelFlash = null;
-
-function getModel(forceFlash = false) {
-  if (!genAI) {
-    console.warn('⚠️ Gemini API key non configurata');
-    return null;
-  }
-  
-  const tier = IAPService.getTier();
-  // Usa Pro solo se: utente Ultra E la chiamata è "maggiore" (non forzata a Flash)
-  const useProModel = tier === 'ultra' && !forceFlash;
-  const modelName = useProModel ? 'gemini-2.5-pro' : 'gemini-2.5-flash';
-  
-  if (useProModel) {
-    if (!modelPro) {
-      modelPro = genAI.getGenerativeModel({
-        model: 'gemini-2.5-pro',
-        systemInstruction: SYSTEM_INSTRUCTION,
-        generationConfig: { temperature: 0.65, maxOutputTokens: 8192 }
-      });
-    }
-    return modelPro;
-  } else {
-    if (!modelFlash) {
-      modelFlash = genAI.getGenerativeModel({
-        model: 'gemini-2.5-flash',
-        systemInstruction: SYSTEM_INSTRUCTION,
-        generationConfig: { temperature: 0.65, maxOutputTokens: 8192 }
-      });
-    }
-    return modelFlash;
-  }
-}
+const functions = getFunctions(app);
+const getGeminiResponse = httpsCallable(functions, 'getGeminiResponse');
 
 // Chiamata AI usando il modello corretto per il tier (Pro se Ultra, Flash altrimenti)
-async function askGemini(prompt, maxRetries = 2) {
-  return askGeminiInternal(prompt, false, maxRetries);
+async function askGemini(prompt) {
+  return askGeminiInternal(prompt, false);
 }
 
 // Chiamata AI che usa SEMPRE Flash indipendentemente dal tier (per chiamate minori)
-async function askGeminiFlash(prompt, maxRetries = 2) {
-  return askGeminiInternal(prompt, true, maxRetries);
+async function askGeminiFlash(prompt) {
+  return askGeminiInternal(prompt, true);
 }
 
-async function askGeminiInternal(prompt, forceFlash = false, maxRetries = 2) {
-  const m = getModel(forceFlash);
-  if (!m) return null;
-  const modelLabel = forceFlash ? 'Flash' : (IAPService.getTier() === 'ultra' ? 'Pro💮' : 'Flash');
-  console.log(`🤖 Gemini [${modelLabel}] chiamato`);
+async function askGeminiInternal(prompt, forceFlash = false) {
+  const tier = IAPService.getTier();
+  const modelLabel = forceFlash ? 'Flash' : (tier === 'ultra' ? 'Pro💮' : 'Flash');
+  console.log(`🤖 Gemini [${modelLabel}] chiamato (via Cloud Function)`);
 
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      const result = await m.generateContent(prompt);
-      let text = result.response.text()?.trim();
-      if (!text || text.length < 15) return null;
-
-      // Protezione anti-cirillico / lingue straniere
-      if (/[А-Яа-яЁё]{5,}/.test(text)) return null;
-
-      // Pulizia automatica Markdown
-      text = text
-        .replace(/^#{1,6}\s+/gm, '')
-        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-        .replace(/__(.*?)__/g, '<b>$1</b>')
-        .replace(/\*(.*?)\*/g, '<i>$1</i>')
-        .replace(/_(.*?)_/g, '<i>$1</i>')
-        .replace(/^\s*[\*\-]\s+/gm, '• ')
-        .replace(/\*/g, '')
-        .replace(/#/g, '');
-
-      return text;
-    } catch (e) {
-      console.warn(`🤖 Gemini attempt ${attempt + 1} failed:`, e.message);
-      if (attempt < maxRetries) {
-        await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
-      }
-    }
+  try {
+    const result = await getGeminiResponse({ prompt, tier, forceFlash });
+    return result.data.text || null;
+  } catch (e) {
+    console.warn(`🤖 Gemini Cloud Function failed:`, e.message);
+    return null;
   }
-  return null;
 }
+
 class GeminiCloudService {
 
   /**
@@ -436,7 +364,7 @@ ATTENZIONE: IL TESTO GENERATO DEVE ESSERE IN ITALIANO.`
   async getCharacterProfile(characterName) {
     const raw = await askGemini(
       `Sei un'enciclopedia videoludica esperta. L'utente ha cercato il personaggio: "${characterName}".
-Genera un profilo dettagliato e preciso su questo personaggio.
+Genera un profilo dettagliato e preciso su questo personaggio. Devi fornire una panoramica COMPLETA della sua evoluzione e della sua storia attraverso l'INTERA SAGA in cui compare. Non limitarti a descriverlo all'interno di un singolo gioco (ad esempio, se si cerca Solid Snake, descrivi la sua storia nell'intero franchise di Metal Gear e non in un solo capitolo a caso).
 
 ISTRUZIONI TASSATIVE:
 - Scrivi ESCLUSIVAMENTE in LINGUA ITALIANA. Niente inglese (tranne i nomi propri originali).

@@ -1,0 +1,816 @@
+[
+{
+"name": "Revolver Ocelot",
+"subtitle": "Lo specialista degli interrogatori",
+"biography": "Adamska, meglio noto come Revolver Ocelot, è nato sul campo di battaglia durante lo sbarco in Normandia, figlio di due leggendari soldati: The Boss e The Sorrow. Cresciuto all'interno delle organizzazioni di spionaggio sovietiche e americane (GRU, KGB, CIA), incrocia per la prima volta Naked Snake durante l'Operazione Snake Eater nel 1964. Quell'incontro segna indissolubilmente la sua vita, facendogli sviluppare un profondo rispetto e una devozione assoluta verso colui che diventerà Big Boss.\n\nNel corso dell'intera saga, Ocelot si dimostra il più geniale manipolatore e triplo giochista del mondo. Sebbene sembri lavorare alternativamente per i Patriots, per Liquid Snake o per svariate fazioni terroristiche (come durante l'incidente di Shadow Moses, dove perde il braccio destro a causa del Cyborg Ninja), il suo vero obiettivo finale è sempre stato uno solo: distruggere i Patriots dall'interno per realizzare il sogno del suo idolo, Big Boss. La sua astuzia politica e la sua impareggiabile abilità nell'inganno gli permettono di tenere sotto scacco le nazioni più potenti.\n\nPer eludere le onniscienti intelligenze artificiali dei Patriots, Ocelot arriva a compiere il sacrificio estremo: attraverso ipnosi, auto-suggestione e l'innesto del braccio di Liquid Snake, sopprime deliberatamente la propria identità per diventare 'Liquid Ocelot'. In questo modo, orchestra un'enorme guerra globale che guida di fatto Solid Snake a distruggere la rete neurale dei Patriots. Sconfitto in un epico scontro corpo a corpo, muore sorridendo, avendo completato la sua missione decennale in nome dell'unica persona a cui fosse leale.",
+"games": [
+"Metal Gear Solid 3: Snake Eater",
+"Metal Gear Solid V: The Phantom Pain",
+"Metal Gear Solid",
+"Metal Gear Solid 2: Sons of Liberty",
+"Metal Gear Solid 4: Guns of the Patriots"
+],
+"relationships": [
+{
+"name": "Big Boss",
+"relation": "Idolo e amico leale"
+},
+{
+"name": "Liquid Snake",
+"relation": "Alleato e identità parassitaria"
+},
+{
+"name": "The Boss",
+"relation": "Madre biologica"
+}
+],
+"voiceActors": [
+"Patric Zimmerman (Inglese)",
+"Josh Keaton (Inglese)",
+"Troy Baker (Inglese)",
+"Koji Totani (Giapponese)"
+],
+"trivia": [
+"La sua ossessione per i revolver Single Action Army è nata dopo che Naked Snake gli ha fatto notare che il suo stile di tiro era inadatto alle pistole automatiche.",
+"È l'unico personaggio ad essere apparso o ad aver avuto un ruolo attivo in quasi tutte le ere della cronologia canonica del franchise."
+]
+},
+{
+"name": "The Boss",
+"subtitle": "La madre delle forze speciali",
+"biography": "The Boss, conosciuta originariamente anche come The Joy, è considerata la soldatessa più influente del ventesimo secolo. Durante la Seconda Guerra Mondiale ha fondato e guidato l'Unità Cobra, conducendo le Forze Alleate alla vittoria. Insieme a Naked Snake, il suo discepolo prediletto, ha sviluppato il letale sistema di combattimento corpo a corpo noto come CQC (Close Quarters Combat). Per Snake, ella non è stata soltanto un severo mentore militare, ma una vera e propria figura materna che ha plasmato ogni aspetto delle sue abilità.\n\nLa sua straordinaria vita prende una piega tragica nel 1964 durante l'Operazione Snake Eater. Le viene ordinato dalla CIA di inscenare una diserzione in Unione Sovietica per infiltrarsi nei ranghi del brutale colonnello Volgin e recuperare l'Eredità dei Filosofi. Tuttavia, quando Volgin lancia una testata nucleare americana su un impianto sovietico, il governo degli Stati Uniti è costretto a sacrificare The Boss per dimostrare la propria estraneità all'attacco. Le viene ordinato di farsi uccidere dal suo stesso allievo, affinché gli Stati Uniti possano salvare le apparenze.\n\nThe Boss accetta stoicamente la missione, sacrificando il proprio onore, la propria vita e venendo ricordata dalla storia come una spietata traditrice, tutto per evitare lo scoppio della Terza Guerra Mondiale. Il suo ultimo desiderio filosofico, ovvero un mondo unito senza confini e senza divisioni imposte dalle fazioni politiche, viene fatalmente frainteso sia da Major Zero sia da Big Boss. L'intera saga videoludica è di fatto la tragica conseguenza della ricerca ossessiva di questi due uomini di realizzare il testamento incompreso di The Boss.",
+"games": [
+"Metal Gear Solid 3: Snake Eater",
+"Metal Gear Solid: Peace Walker"
+],
+"relationships": [
+{
+"name": "Naked Snake (Big Boss)",
+"relation": "Allievo e figlio adottivo"
+},
+{
+"name": "Revolver Ocelot",
+"relation": "Figlio biologico"
+},
+{
+"name": "The Sorrow",
+"relation": "Amante e compagno d'armi"
+}
+],
+"voiceActors": [
+"Lori Alan (Inglese)",
+"Kikuko Inoue (Giapponese)"
+],
+"trivia": [
+"Sostiene di aver visto per la prima volta l'interezza della Terra senza confini durante una missione spaziale segreta e non documentata.",
+"La sua iconica bandana bianca viene tramandata a Big Boss dopo la sua morte, diventando il simbolo visivo più riconosciuto dell'intero franchise."
+]
+},
+{
+"name": "Solid Snake",
+"subtitle": "Il leggendario mercenario",
+"biography": "Nato come David grazie al progetto governativo segreto 'Les Enfants Terribles', Solid Snake è uno dei cloni genetici del celebre soldato Big Boss. Iniziata la sua carriera militare nei Berretti Verdi e successivamente inserito nell'unità d'élite FOXHOUND, si fa subito notare per le sue straordinarie doti tattiche e di infiltrazione. Le sue prime grandi missioni lo portano a sventare la minaccia nucleare in due diverse occasioni: prima distruggendo la nazione-fortezza di Outer Heaven nel 1995, e successivamente smantellando la nazione militare di Zanzibar Land nel 1999. In entrambi i conflitti si ritrova costretto ad affrontare e sconfiggere il suo ex comandante e padre genetico, Big Boss, un trauma profondo che lo spinge a ritirarsi in isolamento in Alaska.\n\nIl suo esilio viene interrotto bruscamente nel 2005 a causa dell'incidente di Shadow Moses. Richiamato in azione per neutralizzare i membri ribelli della sua ex unità FOXHOUND, Snake scopre l'esistenza del suo fratello gemello genetico, Liquid Snake, e del nuovo letale carro armato nucleare bipede Metal Gear REX. Affrontando costanti tradimenti, inganni politici e l'infezione da letali nanomacchine (il virus FOXDIE), Snake distrugge il REX e sventa l'attacco, ma comprende di essere stato utilizzato come una mera pedina dal governo statunitense. Pieno di disillusione ma determinato a non farsi più manipolare, fonda l'organizzazione non governativa 'Philanthropy' insieme allo scienziato e amico fraterno Hal 'Otacon' Emmerich, intraprendendo una crociata globale per sradicare la proliferazione illegale dei Metal Gear.\n\nA causa del processo di clonazione che ha previsto telomeri accorciati, Snake subisce un drastico invecchiamento cellulare accelerato, assumendo le sembianze di un uomo anziano e venendo soprannominato 'Old Snake'. Nonostante il suo corpo sia al limite del collasso, accetta la sua ultima e disperata missione nel 2014 per fermare definitivamente l'insurrezione di Liquid Ocelot e disattivare la tirannica rete di intelligenze artificiali dei Patriots. Dopo aver salvato l'umanità dall'autodistruzione, in un toccante epilogo si confronta con il redivivo Big Boss, facendo finalmente pace con il genitore e con se stesso. Riposte definitivamente le armi, decide di trascorrere in pace i suoi ultimi giorni di vita come un uomo libero, per testimoniare un mondo senza bisogno del suo intervento.",
+"games": [
+"Metal Gear",
+"Metal Gear 2: Solid Snake",
+"Metal Gear Solid",
+"Metal Gear Solid 2: Sons of Liberty",
+"Metal Gear Solid 4: Guns of the Patriots"
+],
+"relationships": [
+{
+"name": "Big Boss",
+"relation": "Padre genetico ed ex comandante"
+},
+{
+"name": "Liquid Snake",
+"relation": "Fratello gemello genetico e nemesi"
+},
+{
+"name": "Hal "Otacon" Emmerich",
+"relation": "Migliore amico e partner operativo"
+}
+],
+"voiceActors": [
+"David Hayter (Inglese)",
+"Akio Otsuka (Giapponese)"
+],
+"trivia": [
+"Il suo vero nome, David, è un omaggio al protagonista del film '2001: Odissea nello spazio', pellicola fondamentale per il creatore della saga.",
+"Durante il suo esilio in Alaska, Snake si dedicava all'addestramento dei cani da slitta (mushing), attività che trovava profondamente rilassante e terapeutica."
+]
+},
+{
+"name": "Big Boss",
+"subtitle": "Il più grande soldato del ventesimo secolo",
+"biography": "Nato come John e conosciuto inizialmente con il nome in codice Naked Snake, la sua leggenda ha inizio durante la Guerra Fredda, in particolare con l'Operazione Snake Eater nel 1964. Inviato nelle giungle sovietiche per fermare una fazione ribelle e recuperare lo scienziato Sokolov, si ritrova costretto ad affrontare e uccidere il suo mentore, The Boss. Questo tragico evento gli conferisce il titolo di Big Boss, ma segna anche l'inizio della sua profonda disillusione verso i governi che usano i soldati come mere pedine sacrificabili.\n\nNel corso dei decenni successivi, Big Boss si separa dagli Stati Uniti e dai Patriots, un'organizzazione ombra fondata dal suo ex comandante Zero. Crea le proprie forze militari private, prima i Militaires Sans Frontières e successivamente i Diamond Dogs, con l'obiettivo di costruire 'Outer Heaven', un rifugio e una nazione indipendente per i soldati liberi dalle manipolazioni politiche. Questo percorso lo porta però a commettere atrocità, trasformandolo gradualmente in un signore della guerra temuto a livello globale e isolato dalla società.\n\nLa sua caduta finale avviene per mano dei suoi stessi cloni genetici, in particolare Solid Snake, che distrugge le sue roccaforti principali. Sopravvissuto grazie all'animazione sospesa, si risveglia decenni dopo al termine degli eventi di Metal Gear Solid 4. In un ultimo, toccante incontro con un Solid Snake ormai invecchiato, Big Boss fa pace con il figlio e comprende finalmente gli errori del suo passato e la vera volontà pacifista di The Boss, prima di spegnersi definitivamente davanti alla tomba del suo vecchio mentore.",
+"games": [
+"Metal Gear Solid 3: Snake Eater",
+"Metal Gear Solid: Portable Ops",
+"Metal Gear Solid: Peace Walker",
+"Metal Gear Solid V: Ground Zeroes",
+"Metal Gear Solid V: The Phantom Pain",
+"Metal Gear",
+"Metal Gear 2: Solid Snake",
+"Metal Gear Solid 4: Guns of the Patriots"
+],
+"relationships": [
+{
+"name": "The Boss",
+"relation": "Mentore e figura materna"
+},
+{
+"name": "Major Zero",
+"relation": "Ex comandante e acerrimo nemico"
+},
+{
+"name": "Solid Snake",
+"relation": "Clone genetico e nemesi finale"
+}
+],
+"voiceActors": [
+"David Hayter (Inglese)",
+"Kiefer Sutherland (Inglese)",
+"Richard Doyle (Inglese)",
+"Akio Otsuka (Giapponese)"
+],
+"trivia": [
+"Ha perso l'occhio destro durante l'Operazione Snake Eater nel tentativo di proteggere EVA.",
+"La sua idea di 'Outer Heaven' è nata da un'interpretazione errata del testamento spirituale di The Boss, portandolo a credere in un mondo in perenne conflitto."
+]
+},
+{
+"name": "Liquid Snake",
+"subtitle": "Il leader ribelle di FOXHOUND",
+"biography": "Nato con il nome di Eli, Liquid Snake è il risultato del progetto governativo segreto 'Les Enfants Terribles', concepito per clonare il leggendario soldato Big Boss. Cresciuto nel Regno Unito, ha sviluppato fin dalla giovane età un odio viscerale verso il suo 'padre' genetico e verso il suo fratello gemello, Solid Snake. Questa rabbia era alimentata dalla ferma convinzione di aver ricevuto i geni recessivi e difettosi di Big Boss, rendendolo di fatto uno scarto genetico rispetto al fratello. Da adolescente, è fuggito in Africa dove ha vissuto come bambino soldato e leader di un gruppo di mercenari giovanili, covando un rancore che avrebbe plasmato il resto della sua vita.\n\nDa adulto, Liquid diventa il comandante dell'unità d'élite FOXHOUND e nel 2005 orchestra il disastroso incidente di Shadow Moses. Prendendo in ostaggio un'installazione di smaltimento nucleare in Alaska, minaccia un attacco atomico se il governo americano non consegnerà i resti mortali di Big Boss, necessari per curare i difetti genetici dei suoi Soldati Genomici. Durante l'operazione pilota il letale Metal Gear REX e si confronta ripetutamente con Solid Snake, dimostrando un'abilità tattica e combattiva eccezionale. Viene tuttavia sconfitto e, a un passo dall'uccidere il fratello, muore improvvisamente a causa del virus FOXDIE, un'arma biologica letale introdotta di nascosto nel corpo di Solid.\n\nNonostante la sua morte fisica a Shadow Moses, la volontà di Liquid continua a perseguitare il mondo. Il suo braccio destro viene trapiantato sul corpo di Revolver Ocelot, dando apparentemente vita a una possessione mentale che crea l'entità conosciuta come 'Liquid Ocelot'. Attraverso questo nuovo corpo, l'ombra di Liquid fomenta un'insurrezione globale per distruggere le intelligenze artificiali dei Patriots e gettare il mondo nel caos, un'ambizione che costringe Solid Snake a un'ultima disperata missione. Solo alla fine si scoprirà che la 'possessione' era in realtà il frutto di auto-ipnosi e nanomacchine usate da Ocelot, ma l'eredità distruttiva e ricolma di rabbia di Liquid Snake rimane una delle più indelebili dell'intera saga.",
+"games": [
+"Metal Gear Solid",
+"Metal Gear Solid 2: Sons of Liberty",
+"Metal Gear Solid V: The Phantom Pain",
+"Metal Gear Solid 4: Guns of the Patriots"
+],
+"relationships": [
+{
+"name": "Solid Snake",
+"relation": "Fratello gemello genetico e nemesi"
+},
+{
+"name": "Big Boss",
+"relation": "Padre genetico profondamente odiato"
+},
+{
+"name": "Revolver Ocelot",
+"relation": "Alleato e successiva identità ospite"
+}
+],
+"voiceActors": [
+"Cam Clarke (Inglese)",
+"Piers Stubbs (Inglese)",
+"Banjo Ginga (Giapponese)",
+"Yutaro Honjo (Giapponese)"
+],
+"trivia": [
+"Nonostante abbia creduto per tutta la vita di essere il clone 'inferiore', Liquid possedeva in realtà i tratti genetici dominanti di Big Boss, mentre Solid aveva quelli recessivi.",
+"Durante l'incidente di Shadow Moses, ha orchestrato un geniale inganno fingendosi il defunto Maestro Miller per manipolare Solid Snake e spingerlo ad attivare inavvertitamente il Metal Gear REX."
+]
+},
+{
+"name": "Raiden",
+"subtitle": "Il Cyborg Ninja",
+"biography": "Nato con il nome di Jack, la sua infanzia viene brutalmente rubata in Liberia durante la sanguinosa guerra civile degli anni '80. Viene trasformato in un bambino soldato e spietatamente addestrato da Solidus Snake, sviluppando una spaventosa letalità con le armi da taglio che gli fa guadagnare l'inquietante soprannome di 'Jack lo Squartatore'. Cercando di fuggire dal suo oscuro passato e sopravvivere all'immenso trauma emotivo infantile, in età adulta reprime i ricordi di queste atrocità, costruendosi una vita apparentemente normale e illusoria negli Stati Uniti d'America.\n\nLa sua fragile bolla di realtà crolla catastroficamente durante l'incidente della Big Shell in Metal Gear Solid 2. Inviato ufficialmente per fermare i terroristi di Dead Cell, Raiden scopre progressivamente di essere la pedina centrale del Piano S3 orchestrato dai Patriots, un colossale esperimento sociale volto a plasmare il soldato perfetto attraverso il controllo delle informazioni. Nonostante l'opprimente controllo mentale e la rivelazione che tutta la sua missione sia una simulazione, grazie all'aiuto fondamentale del vero Solid Snake, Raiden si ribella al copione che gli è stato assegnato, sconfigge il padre adottivo Solidus e decide di combattere per definire in modo autonomo la propria identità e il proprio futuro.\n\nNegli anni successivi agli eventi della Big Shell, nel disperato tentativo di salvare Sunny, la bambina di Olga Gurlukovich, Raiden viene catturato dai Patriots e sottoposto a brutali ed estesi esperimenti chirurgici che lo trasformano in un letale cyborg ninja. Appare in Metal Gear Solid 4 e successivamente come protagonista assoluto in Metal Gear Rising: Revengeance, dove affronta definitivamente i suoi demoni interiori. Abbandonando la repulsione per il suo passato, accetta la sua vera natura guerriera e il suo lato spietato, trasformandosi in una forza inarrestabile a protezione dei più deboli, caratterizzato visivamente da un potente esoscheletro tattico e dai lunghi capelli chiari rigorosamente tirati all'indietro.",
+"games": [
+"Metal Gear Solid 2: Sons of Liberty",
+"Metal Gear Solid 4: Guns of the Patriots",
+"Metal Gear Rising: Revengeance"
+],
+"relationships": [
+{
+"name": "Solidus Snake",
+"relation": "Padre adottivo e nemesi"
+},
+{
+"name": "Solid Snake",
+"relation": "Mentore e alleato"
+},
+{
+"name": "Rosemary",
+"relation": "Moglie"
+}
+],
+"voiceActors": [
+"Quinton Flynn (Inglese)",
+"Kenyu Horiuchi (Giapponese)"
+],
+"trivia": [
+"Nonostante i pesanti innesti cibernetici, il suo sangue originale è stato sostituito da una sostanza artificiale chiamata 'Sangue Bianco' di vecchia generazione, che inizialmente richiedeva frequenti dialisi per mantenerlo in vita.",
+"Il suo iconico design cibernetico prevede esplicitamente che i suoi lunghi capelli siano tirati all'indietro, smentendo categoricamente qualsiasi interpretazione o errore visivo che lo ritragga completamente calvo."
+]
+},
+{
+"name": "Arthur Morgan",
+"subtitle": "Il fuorilegge in cerca di redenzione",
+"biography": "Rimasto orfano in giovane età, Arthur Morgan viene preso sotto l'ala protettrice di Dutch van der Linde e Hosea Matthews, i quali diventano per lui non solo dei mentori, ma delle vere e proprie figure paterne. Cresciuto all'interno della banda, Arthur assorbe profondamente la filosofia di Dutch, basata su un ideale romantico di libertà assoluta e di ribellione contro le costrizioni di una civiltà moderna sempre più opprimente e industrializzata. Diventa rapidamente il principale esecutore e il braccio destro del leader, dedicando la sua intera esistenza alla sopravvivenza e al benessere di quella che considera la sua unica vera famiglia.\n\nL'inizio della fine si manifesta nel 1899, un periodo storico che segna il tramonto inesorabile dell'era del Selvaggio West. In seguito a una disastrosa rapina a Blackwater, la banda è costretta a una fuga disperata attraverso l'America, braccata costantemente dall'agenzia investigativa Pinkerton e dalla legge. Durante questo esodo logorante, la cieca lealtà di Arthur inizia a vacillare. Osserva con crescente disillusione e angoscia il lento deterioramento psicologico di Dutch, il quale, manipolato dal viscido Micah Bell, abbandona i suoi nobili ideali per cedere alla paranoia, alla violenza gratuita e al tradimento dei suoi membri più fedeli.\n\nIl vero punto di svolta esistenziale di Arthur avviene con la tragica diagnosi della tubercolosi, una malattia incurabile che lo costringe a confrontarsi brutalmente con la propria mortalità. Questa condanna a morte innesca in lui una profonda evoluzione filosofica e morale: smette di essere un cieco esecutore e inizia a valutare il peso delle proprie azioni e il male causato negli anni. Consapevole di non avere futuro, dedica i suoi ultimi giorni di vita per espiare i propri peccati, cercando disperatamente di salvare le persone che ritiene ancora degne. Il culmine della sua redenzione si concretizza nel suo ultimo, eroico sacrificio per permettere a John Marston e alla sua famiglia di fuggire dalla banda e costruirsi una vita onesta, lasciando un'eredità di speranza che plasmerà il destino di John.",
+"games": [
+"Red Dead Redemption 2"
+],
+"relationships": [
+{
+"name": "Dutch van der Linde",
+"relation": "Figura paterna e leader della banda"
+},
+{
+"name": "John Marston",
+"relation": "Fratello adottivo e protetto"
+},
+{
+"name": "Micah Bell",
+"relation": "Nemesi e traditore"
+},
+{
+"name": "Hosea Matthews",
+"relation": "Mentore e voce della ragione"
+}
+],
+"voiceActors": [
+"Roger Clark (Inglese)"
+],
+"trivia": [
+"Arthur possiede una profonda e inaspettata sensibilità artistica, chiaramente visibile nel suo diario personale, dove documenta minuziosamente i suoi tormenti interiori e realizza splendidi schizzi paesaggistici e faunistici.",
+"Il suo animale guida spirituale, che gli appare in visione durante i momenti cruciali della sua malattia, cambia radicalmente in base alle scelte morali compiute dal giocatore: un nobile cervo inondato di luce per un livello di onore elevato, o un cupo coyote avvolto nell'oscurità per un livello di onore basso."
+]
+},
+{
+"name": "John Marston",
+"subtitle": "L'ultimo eroe del vecchio West",
+"biography": "Rimasto orfano in tenera età e cresciuto in un orfanotrofio da cui è fuggito, John Marston è stato salvato dalla strada e accolto da Dutch van der Linde all'età di dodici anni. Cresciuto all'interno della banda al fianco di Arthur Morgan, John ha vissuto per anni come un fuorilegge immaturo e irresponsabile, arrivando persino ad abbandonare temporaneamente Abigail e il figlio appena nato, Jack, a causa delle sue paure e insicurezze. Tuttavia, il crollo della banda di Dutch nel 1899 e il tragico e salvifico sacrificio del suo fratello adottivo Arthur cambiano radicalmente la sua traiettoria esistenziale, caricandolo del gravoso debito morale di dover dare un senso a quel dono costruendo una vita onesta.\n\nNegli anni successivi, John tenta disperatamente di sfuggire all'ombra del suo passato sanguinoso. Cerca di incarnare l'ideale dell'uomo nuovo, acquistando il ranch di Beecher's Hope e sforzandosi di diventare un allevatore, un marito devoto e un padre presente. Questo periodo rappresenta il suo personale tentativo di riscatto, una profonda lotta psicologica e spirituale per affermare il proprio libero arbitrio contro un destino che sembra inesorabilmente segnato dalle violenze commesse in gioventù. La sua illusione di aver raggiunto un'esistenza pacifica, tuttavia, si scontra brutalmente con l'avanzata inesorabile della civiltà moderna e delle sue istituzioni spietate, che non tollerano le scorie del vecchio mondo.\n\nNel 1911, la sua fragile utopia viene distrutta quando l'agente governativo Edgar Ross rapisce la sua famiglia, ricattandolo e costringendolo a dare la caccia ai suoi ex compagni: Bill Williamson, Javier Escuella e, infine, la sua ex figura paterna, Dutch van der Linde. John diventa così il tragico strumento della civilizzazione, incaricato di epurare gli ultimi rimasugli dell'epoca dei fuorilegge di cui lui stesso fa parte. Dopo aver compiuto il suo dovere ed essersi illuso di aver finalmente guadagnato la libertà, viene spietatamente tradito dal governo. Nel suo ultimo, disperato atto, John affronta a viso aperto un intero plotone per permettere ad Abigail e Jack di fuggire, accettando la morte come prezzo definitivo per spezzare il ciclo di violenza e pagare i peccati del suo passato.",
+"games": [
+"Red Dead Redemption 2",
+"Red Dead Redemption",
+"Red Dead Redemption: Undead Nightmare"
+],
+"relationships": [
+{
+"name": "Abigail Marston",
+"relation": "Moglie"
+},
+{
+"name": "Jack Marston",
+"relation": "Figlio"
+},
+{
+"name": "Arthur Morgan",
+"relation": "Fratello adottivo e salvatore"
+},
+{
+"name": "Dutch van der Linde",
+"relation": "Mentore ed ex leader"
+},
+{
+"name": "Edgar Ross",
+"relation": "Nemesi e agente governativo"
+}
+],
+"voiceActors": [
+"Rob Wiethoff (Inglese)"
+],
+"trivia": [
+"Le iconiche cicatrici sul suo volto sono il risultato di un brutale attacco da parte di un branco di lupi sulle gelide montagne di Ambarino all'inizio del 1899.",
+"A differenza di Arthur Morgan, John è canonicamente incapace di nuotare, un limite meccanico del primo gioco che è stato coerentemente giustificato narrativamente come una sua incapacità fisica nel prequel."
+]
+},
+{
+"name": "Geralt di Rivia",
+"subtitle": "Il Lupo Bianco",
+"biography": "Sottoposto in giovanissima età alla brutale e letale Prova delle Erbe nella fortezza di Kaer Morhen, Geralt è sopravvissuto a mutazioni genetiche estreme che gli hanno conferito sensi sovrumani, riflessi fulminei e un'innaturale longevità, trasformandolo in un witcher: un cacciatore di mostri professionista. A causa di un'eccezionale resistenza agli esperimenti, è stato sottoposto a ulteriori procedure sperimentali che lo hanno privato della pigmentazione corporea, conferendogli i caratteristici capelli bianchi e il celebre soprannome di 'Lupo Bianco'. Sebbene la dottrina della sua casta imponga una rigida neutralità politica e un distacco emotivo assoluto, Geralt possiede in realtà una profonda e complessa bussola morale che lo spinge spesso a difendere i più deboli e gli emarginati, portandolo a scoprire che molto spesso i veri mostri si nascondono proprio tra gli esseri umani.\n\nLa sua vita, segnata da un perenne vagabondaggio e dal disprezzo dei popoli che pure protegge, viene stravolta dal Legame del Destino (noto come la Legge della Sorpresa) che lo unisce a Cirilla, principessa del regno di Cintra. Geralt accoglie la giovane Ciri come una vera e propria figlia adottiva, addestrandola e cercando disperatamente di proteggerla da sovrani spietati e forze magiche oscure. Parallelamente, intraprende una tormentata, passionale e burrascosa storia d'amore con la potente maga Yennefer di Vengerberg, un legame indissolubile ma costellato di separazioni e conflitti, reso eterno da un desiderio espresso a un djinn. Dopo anni di battaglie estenuanti, Geralt viene gravemente ferito durante un pogrom razziale a Rivia, un evento drammatico che segna l'inizio del suo lungo e misterioso periodo di amnesia.\n\nRisvegliatosi misteriosamente senza memoria nei pressi di Kaer Morhen, Geralt trascorre gli eventi dei primi capitoli videoludici a ricostruire faticosamente la propria identità, trovandosi suo malgrado coinvolto in complotti politici e regicidi nei Regni Settentrionali. Recuperati infine i ricordi, il suo unico scopo diventa la ricerca di Ciri, ora adulta e braccata dalla letale Caccia Selvaggia, un implacabile esercito di elfi provenienti da un altro mondo. Attraversando nazioni devastate dalla guerra e manipolando gli equilibri di potere continentali, Geralt raduna alleati e riesce infine a proteggere la figlia adottiva. Conclusa la sua epica odissea e stanco di intrighi di corte e massacri, trova finalmente il meritato riposo ritirandosi nei pacifici vigneti del ducato di Toussaint, vivendo i suoi giorni in pace.",
+"games": [
+"The Witcher",
+"The Witcher 2: Assassins of Kings",
+"The Witcher 3: Wild Hunt"
+],
+"relationships": [
+{
+"name": "Ciri (Cirilla Fiona Elen Riannon)",
+"relation": "Figlia adottiva e Bambina della Sorpresa"
+},
+{
+"name": "Yennefer di Vengerberg",
+"relation": "Vero amore e compagna di vita"
+},
+{
+"name": "Triss Merigold",
+"relation": "Amante, amica e alleata fidata"
+},
+{
+"name": "Ranuncolo (Dandelion)",
+"relation": "Migliore amico e compagno di viaggio"
+},
+{
+"name": "Vesemir",
+"relation": "Mentore e figura paterna"
+}
+],
+"voiceActors": [
+"Doug Cockle (Inglese)",
+"Jacek Rozenek (Polacco)"
+],
+"trivia": [
+"Geralt detesta viaggiare attraverso i portali magici, poiché li ritiene estremamente pericolosi e gli causano una forte nausea.",
+"Non è originario di Rivia: il suo mentore Vesemir gli suggerì di inventarsi una provenienza per apparire più affidabile ai clienti, portando Geralt ad adottare persino l'accento tipico di quella regione."
+]
+},
+{
+"name": "Kratos",
+"subtitle": "Il Fantasma di Sparta",
+"biography": "Nato a Sparta e divenuto un formidabile generale, la vita di Kratos viene inesorabilmente segnata quando, sul punto di essere sconfitto in un sanguinoso scontro contro un'orda barbarica, invoca l'aiuto di Ares, il Dio della Guerra. In cambio della sua fedeltà, riceve le letali Lame del Caos e la vittoria, diventando lo spietato burattino del dio. L'apice della sua tragedia personale si consuma quando Ares, per privarlo di ogni legame umano e renderlo il guerriero perfetto, lo inganna spingendolo in uno stato di furia cieca a massacrare brutalmente la sua stessa moglie Lysandra e la figlioletta Calliope. Maledetto dall'oracolo del villaggio, le ceneri dei suoi cari si legano per sempre alla sua pelle, rendendola bianca come il gesso e conferendogli l'infame titolo di 'Fantasma di Sparta'.\n\nDopo dieci anni di tormentato servizio agli dèi dell'Olimpo in cerca di un'assoluzione per i suoi incubi, Kratos riesce nell'impresa impossibile di uccidere Ares e ottiene lui stesso il titolo di nuovo Dio della Guerra. Tuttavia, le manipolazioni divine e il suo rancore mai sopito culminano nel brutale tradimento di Zeus, che si rivela essere suo padre. Consumato da una rabbia inesauribile, Kratos dichiara guerra all'intero pantheon greco. In una crociata di estrema violenza, massacra dèi, eroi e titani, portando l'intera Grecia alla completa devastazione apocalittica. Resosi conto delle rovine causate e del tentativo di Atena di appropriarsi del potere assoluto, si trafigge con la Spada dell'Olimpo per donare la speranza superstite all'umanità, scomparendo poi in esilio.\n\nSopravvissuto alle ferite mortali, Kratos si rifugia nel gelido regno di Midgard, cercando di lasciarsi alle spalle il suo passato sanguinoso. Sposa la guerriera Faye, dalla quale ha un figlio, Atreus. Alla morte della moglie, padre e figlio intraprendono un viaggio per spargerne le ceneri, attirando le ostilità del pantheon norreno. Durante questa nuova odissea, Kratos affronta la sua sfida più complessa: sopprimere la propria furia primordiale, fare da mentore al figlio e spezzare il ciclo di parricidio divino. Al culmine del Ragnarök, dopo aver sconfitto Odino senza cedere alla brutalità gratuita, Kratos completa un profondo arco di redenzione, scoprendo un futuro in cui non sarà più temuto come un distruttore, ma amato e venerato come un dio della speranza e della ricostruzione.",
+"games": [
+"God of War (2005)",
+"God of War II",
+"God of War III",
+"God of War: Ascension",
+"God of War: Chains of Olympus",
+"God of War: Ghost of Sparta",
+"God of War (2018)",
+"God of War Ragnarök"
+],
+"relationships": [
+{
+"name": "Atreus",
+"relation": "Figlio"
+},
+{
+"name": "Faye (Laufey)",
+"relation": "Seconda moglie"
+},
+{
+"name": "Zeus",
+"relation": "Padre biologico e nemesi"
+},
+{
+"name": "Ares",
+"relation": "Mentore divino e vittima"
+},
+{
+"name": "Mimir",
+"relation": "Consigliere e amico fidato"
+},
+{
+"name": "Lysandra e Calliope",
+"relation": "Prima moglie e figlia (uccise per sua mano)"
+}
+],
+"voiceActors": [
+"Terrence C. Carson (Inglese - Era Greca)",
+"Christopher Judge (Inglese - Era Norrena)",
+"Pierluigi Astore (Italiano)"
+],
+"trivia": [
+"L'iconico tatuaggio rosso sul suo corpo è un omaggio al fratello minore Deimos, che era stato rapito in gioventù dagli dèi a causa di una profezia.",
+"Kratos aveva giurato di non impugnare mai più le Lame del Caos, ma è stato costretto a dissotterrarle in God of War (2018) poiché la sua ascia, il Leviatano, era inutile contro i nemici del regno di Helheim."
+]
+},
+{
+"name": "Leon Scott Kennedy",
+"subtitle": "Agente speciale governativo",
+"biography": "La carriera di Leon Scott Kennedy inizia nel peggiore dei modi possibili: il suo primo giorno di lavoro come agente di polizia a Raccoon City, nel 1998, coincide con un'apocalisse zombie causata dalla diffusione del letale Virus-T della letale Umbrella Corporation. Giunto in una città devastata, il giovane e idealista recluta si ritrova a dover lottare disperatamente per la sopravvivenza all'interno del dipartimento di polizia. In questo inferno incontra la giovane Claire Redfield e la misteriosa spia Ada Wong, instaurando legami che segneranno per sempre la sua vita. Dimostrando un coraggio e una resilienza fuori dal comune, Leon riesce a fuggire dalla distruzione nucleare di Raccoon City, attirando immediatamente l'attenzione delle agenzie governative.\n\nA causa delle sue straordinarie capacità di sopravvivenza, Leon viene costretto dal governo degli Stati Uniti a unirsi a un programma di addestramento segreto, abbandonando il suo sogno di diventare un semplice poliziotto per trasformarsi in un letale agente speciale. Sei anni dopo, nel 2004, viene incaricato in solitaria di salvare Ashley Graham, la figlia del Presidente, rapita da un culto estremista in una regione rurale della Spagna. Questa disperata missione di salvataggio lo mette di fronte a una nuova orribile minaccia biologica: i parassiti noti come Las Plagas. In questa operazione Leon dimostra una maturità tattica e un'abilità nel combattimento corpo a corpo eccezionali, affrontando mostruosità inimmaginabili e sopravvivendo a un letale scontro con il suo ex compagno d'armi, Jack Krauser.\n\nNegli anni successivi, Leon diventa uno degli agenti più esperti e fidati del governo americano, nonché membro fondatore della DSO (Division of Security Operations), dedicando la sua intera esistenza alla lotta globale contro il bioterrorismo. Nonostante le innumerevoli vittorie, la sua vita è costellata di continui traumi, che culminano nel tragico incidente di Tall Oaks nel 2013, dove si ritrova costretto a uccidere il Presidente degli Stati Uniti, suo mentore e caro amico, dopo che questi è stato infettato e trasformato in un'aberrazione. Lavorando a stretto contatto con veterani come Chris Redfield e affrontando minacce su scala mondiale, Leon mantiene intatto il suo cinico sarcasmo e un ferreo senso del dovere, rimanendo intrappolato in un'eterna crociata contro le armi bio-organiche e in un infinito e ambiguo gioco del gatto e del topo con Ada Wong.",
+"games": [
+"Resident Evil 2",
+"Resident Evil 4",
+"Resident Evil 6",
+"Resident Evil 2 (Remake)",
+"Resident Evil 4 (Remake)",
+"Resident Evil: The Darkside Chronicles"
+],
+"relationships": [
+{
+"name": "Ada Wong",
+"relation": "Interesse amoroso complicato e spia ambigua"
+},
+{
+"name": "Claire Redfield",
+"relation": "Amica intima e compagna di sopravvivenza"
+},
+{
+"name": "Ashley Graham",
+"relation": "VIP soccorsa in Spagna e alleata"
+},
+{
+"name": "Jack Krauser",
+"relation": "Ex commilitone e nemesi"
+},
+{
+"name": "Chris Redfield",
+"relation": "Alleato e compagno d'armi"
+}
+],
+"voiceActors": [
+"Paul Mercier (Inglese)",
+"Matthew Mercer (Inglese)",
+"Nick Apostolides (Inglese)",
+"Alessandro Rigotti (Italiano)"
+],
+"trivia": [
+"L'iconico giubbotto da aviatore in pelle foderata che indossa all'inizio di Resident Evil 4 è un capo di abbigliamento realmente esistente ed è stato venduto da Capcom in edizione limitata.",
+"Nello sviluppo originale cancellato del secondo gioco, noto ai fan come 'Resident Evil 1.5', Leon aveva un design leggermente diverso e non era l'unico poliziotto sopravvissuto all'interno della stazione."
+]
+},
+{
+"name": "Jill Valentine",
+"subtitle": "L'eroina sopravvissuta a Raccoon City",
+"biography": "Membro fondamentale della squadra Alpha della S.T.A.R.S. (Special Tactics and Rescue Service), Jill Valentine possiede un eccezionale addestramento militare, un notevole acume tattico e un'incredibile abilità nello scassinare serrature. Il suo incubo personale ha inizio nel luglio del 1998, quando la sua squadra viene inviata nelle cupe Montagne Arklay per investigare su una serie di omicidi dai connotati cannibalistici. Rifugiatasi nella famigerata Villa Spencer, Jill si ritrova intrappolata in un intricato laboratorio segreto pullulante di morti viventi. Qui scopre l'orribile verità sugli esperimenti illegali della Umbrella Corporation e il vile tradimento del suo capitano, Albert Wesker. Dimostrando uno straordinario coraggio, riesce a sopravvivere alla notte, a sconfiggere l'arma biologica definitiva nota come Tyrant e a fuggire dalla villa esplosiva insieme ai compagni Chris Redfield e Barry Burton.\n\nPochi mesi dopo, nel settembre del 1998, la sua determinazione nel voler denunciare al mondo le atrocità della Umbrella la spinge a rimanere a Raccoon City proprio mentre il letale Virus-T si diffonde inesorabilmente nell'intera area urbana. Intrappolata in una città ormai condannata all'apocalisse zombie, Jill diventa il bersaglio primario del Nemesis, un'inarrestabile arma bio-organica programmata specificamente per eliminare i sopravvissuti della S.T.A.R.S.. Durante un logorante gioco del gatto e del topo per le strade devastate, viene gravemente ferita e infettata, salvandosi unicamente grazie all'intervento del mercenario Carlos Oliveira, che le somministra una cura sperimentale. Con eccezionale resilienza, Jill sconfigge il suo implacabile e mastodontico persecutore ed evade a bordo di un elicottero pochi istanti prima che un missile nucleare cancelli la città dalle mappe geografiche.\n\nNegli anni successivi, Jill dedica la sua intera esistenza alla lotta globale contro il bioterrorismo, diventando uno dei membri fondatori dell'organizzazione paramilitare BSAA (Bioterrorism Security Assessment Alliance) assieme al compagno d'armi Chris Redfield. Durante una missione nel 2006 nella residenza europea di Ozwell E. Spencer, Jill si sacrifica eroicamente lanciandosi da una vetrata insieme ad Albert Wesker per salvare la vita di Chris, venendo formalmente dichiarata morta in azione. In realtà, sopravvive alla caduta ma viene catturata dal suo antico nemico, che la sottopone a brutali esperimenti criogenici e le innesta un dispositivo di controllo mentale nel petto, sfruttando i resti del Virus-T nel suo corpo per creare il patogeno Uroboros. Ridotta a un letale burattino biondo plagiato dalla volontà di Wesker, affronta i suoi ex alleati in Africa, venendo infine salvata e liberata dallo stesso Chris, a cui garantisce il supporto tattico essenziale per porre fine alla tirannia del loro storico antagonista.",
+"games": [
+"Resident Evil",
+"Resident Evil 3: Nemesis",
+"Resident Evil 5",
+"Resident Evil Revelations",
+"Resident Evil (Remake)",
+"Resident Evil 3 (Remake)"
+],
+"relationships": [
+{
+"name": "Chris Redfield",
+"relation": "Partner storico e migliore amico"
+},
+{
+"name": "Barry Burton",
+"relation": "Amico fraterno e compagno di squadra"
+},
+{
+"name": "Albert Wesker",
+"relation": "Ex capitano, torturatore e acerrimo nemico"
+},
+{
+"name": "Carlos Oliveira",
+"relation": "Alleato mercenario e salvatore a Raccoon City"
+},
+{
+"name": "Nemesis",
+"relation": "Arma bio-organica persecutrice"
+}
+],
+"voiceActors": [
+"Catherine Disher (Inglese)",
+"Patricia Ja Lee (Inglese)",
+"Nicole Tompkins (Inglese)",
+"Cinzia Massironi (Italiano)",
+"Elena Perino (Italiano)"
+],
+"trivia": [
+"Il celebre soprannome 'Master of Unlocking' (Maestra dello scasso) le fu affettuosamente dato da Barry Burton nel primo gioco, diventando uno dei meme più storici e iconici del medium videoludico.",
+"Durante il suo periodo di controllo mentale sotto Albert Wesker in Resident Evil 5, i suoi capelli castani sono diventati di un biondo platino quasi bianco, un effetto collaterale degli esperimenti e della prolungata stasi criogenica a cui è stata sottoposta."
+]
+},
+{
+"name": "Chris Redfield",
+"subtitle": "Il veterano inflessibile della BSAA",
+"biography": "Ex pilota della US Air Force e membro di punta della squadra Alpha della S.T.A.R.S., la vita di Chris Redfield cambia per sempre nel luglio del 1998, quando entra nella famigerata Villa Spencer sulle Montagne Arklay. In questo incubo isolato dal mondo, Chris scopre non solo gli orrori generati dal Virus-T e gli esperimenti illegali della Umbrella Corporation, ma anche l'amarissimo tradimento del suo capitano, Albert Wesker. Sopravvissuto alla notte insieme alla sua partner Jill Valentine e a pochi altri membri, sviluppa un forte senso di giustizia e una determinazione incrollabile che lo porteranno a dedicare la sua intera esistenza all'eradicazione globale delle armi bio-organiche (B.O.W.).\n\nDopo la caduta della Umbrella, Chris diventa uno dei membri fondatori della BSAA (Bioterrorism Security Assessment Alliance), imponendosi come un simbolo di speranza nella lotta mondiale al bioterrorismo. La sua crociata subisce un durissimo colpo nel 2006, quando Jill si sacrifica apparentemente per salvargli la vita scontrandosi fisicamente con Wesker in una tenuta in Europa. Distrutto dal senso di colpa, Chris guida le operazioni della BSAA in Africa nel 2009, scoprendo con immensa gioia che Jill è ancora viva ma soggiogata mentalmente. Affiancato dall'agente Sheva Alomar, salva la sua ex partner e affronta Albert Wesker all'interno di un vulcano attivo in eruzione, ponendo definitivamente fine alla vita e alle ambizioni distruttive della sua letale nemesi storica.\n\nNegli anni successivi, il peso logorante del comando e le innumerevoli perdite umane gravano pesantemente sulla sua psiche. Subisce un gravissimo crollo emotivo in Edonia, perdendo gran parte della sua squadra e rischiando di scivolare nell'alcolismo e nell'amnesia, per poi essere redento dal commovente sacrificio del suo giovane luogotenente Piers Nivans. Ristabilitosi come leader di squadre d'élite ombra, come la Hound Wolf Squad, Chris adotta progressivamente un approccio tattico più cinico, distaccato e pragmatico, come dimostrato durante i suoi complessi interventi a supporto di Ethan Winters. Nonostante l'aspetto pesantemente indurito e le scelte talvolta controverse o tenute segrete persino ai suoi alleati, il suo nucleo morale rimane quello di un soldato instancabile, disposto a farsi carico di qualsiasi odio pur di eliminare l'orrore biologico dal pianeta.",
+"games": [
+"Resident Evil",
+"Resident Evil Code: Veronica",
+"Resident Evil 5",
+"Resident Evil 6",
+"Resident Evil 7: Biohazard",
+"Resident Evil Village"
+],
+"relationships": [
+{
+"name": "Jill Valentine",
+"relation": "Storica partner, alleata e migliore amica"
+},
+{
+"name": "Claire Redfield",
+"relation": "Sorella minore"
+},
+{
+"name": "Albert Wesker",
+"relation": "Ex capitano e nemesi giurata"
+},
+{
+"name": "Piers Nivans",
+"relation": "Protetto e compagno di squadra (deceduto)"
+},
+{
+"name": "Ethan Winters",
+"relation": "Civile soccorso e tragico alleato"
+}
+],
+"voiceActors": [
+"Roger Craig Smith (Inglese)",
+"Jeff Schine (Inglese)",
+"Claudio Moneta (Italiano)"
+],
+"trivia": [
+"L'incredibile aumento della sua massa muscolare visibile a partire da Resident Evil 5 è stato giustificato narrativamente come il risultato di anni di allenamento ossessivo, necessario per poter competere fisicamente corpo a corpo con la forza sovrumana di Wesker.",
+"La famigerata scena in cui affronta a pugni un enorme macigno all'interno di un vulcano è diventata così iconica da essere ironicamente citata da Karl Heisenberg in Resident Evil Village, definendolo letteralmente 'un picchiatore di massi'."
+]
+},
+{
+"name": "Albert Wesker",
+"subtitle": "L'eminenza grigia del bioterrorismo",
+"biography": "Frutto dell'ambizioso ed eugenetico Progetto W orchestrato da Ozwell E. Spencer, fondatore della Umbrella Corporation, Albert Wesker viene cresciuto con l'obiettivo di diventare un leader per il nuovo mondo. Dotato di un'intelligenza geniale e di un machiavellico cinismo, scala rapidamente i vertici dell'azienda come ricercatore insieme all'amico e rivale William Birkin, per poi infiltrarsi nella polizia di Raccoon City come capitano della squadra d'élite S.T.A.R.S.. Il suo primo vero capolavoro di tradimento si consuma durante l'incidente della Villa Spencer nel 1998, dove attira la sua stessa squadra in una trappola mortale per raccogliere preziosi dati di combattimento sulle armi bio-organiche (B.O.W.). Iniettatosi un virus sperimentale fornitogli da Birkin, si fa apparentemente uccidere per poi resuscitare con capacità fisiche sovrumane, abbandonando la Umbrella per perseguire in totale autonomia i propri oscuri scopi.\n\nNegli anni successivi, operando dall'ombra per conto di organizzazioni rivali, Wesker diventa il burattinaio di innumerevoli crisi bioterroristiche globali. La sua influenza si estende dagli eventi di Rockfort Island in Code: Veronica, dove si confronta fisicamente con il suo ex subordinato Chris Redfield, fino alle zone rurali della Spagna in Resident Evil 4, manipolando spie come Ada Wong e mercenari come Jack Krauser per ottenere i campioni del parassita Las Plagas. Il suo ego smisurato e il suo disprezzo viscerale per la fragilità umana raggiungono l'apice quando rintraccia e uccide a mani nude il suo stesso creatore, Spencer. Con quell'atto, Wesker recide definitivamente ogni legame col passato, autoproclamandosi una divinità con il diritto esclusivo di guidare e forzare l'evoluzione dell'umanità.\n\nIl suo delirio di onnipotenza si concretizza nel 2009 con la creazione del Progetto Uroboros, finanziato in segreto dalla corporazione Tricell. Il suo piano catastrofico prevede di saturare l'atmosfera terrestre infettandola tramite bombardieri stealth, un atto che avrebbe sterminato i miliardi di individui da lui ritenuti 'deboli' per far dominare esclusivamente una ristretta élite di individui geneticamente superiori, di cui lui sarebbe stato il sovrano assoluto. I suoi piani di estinzione di massa vengono tuttavia mandati in fumo dall'instancabile intervento della sua nemesi storica, Chris Redfield, affiancato da Sheva Alomar. Messo alle strette all'interno di un vulcano attivo in Africa e accecato dalla furia per la distruzione del suo sogno eugenetico, Wesker si infetta volontariamente con l'Uroboros subendo una mostruosa mutazione. Viene infine annientato fisicamente da due colpi simultanei di lanciarazzi, ponendo definitivamente fine al suo devastante regno di terrore durato oltre un decennio.",
+"games": [
+"Resident Evil",
+"Resident Evil Code: Veronica",
+"Resident Evil Zero",
+"Resident Evil 4",
+"Resident Evil 5",
+"Resident Evil: The Umbrella Chronicles",
+"Resident Evil 4 (Remake)"
+],
+"relationships": [
+{
+"name": "Chris Redfield",
+"relation": "Ex subordinato e acerrimo nemico giurato"
+},
+{
+"name": "Ozwell E. Spencer",
+"relation": "Creatore, manipolatore e vittima"
+},
+{
+"name": "William Birkin",
+"relation": "Storico collega scienziato"
+},
+{
+"name": "Ada Wong",
+"relation": "Spia e complice ambigua"
+},
+{
+"name": "Jake Muller",
+"relation": "Figlio biologico illegittimo"
+}
+],
+"voiceActors": [
+"Richard Waugh (Inglese)",
+"D.C. Douglas (Inglese)",
+"Craig Burnatowski (Inglese - RE4 Remake)",
+"Jouji Nakata (Giapponese)"
+],
+"trivia": [
+"I suoi inseparabili occhiali da sole neri non sono solo una scelta stilistica, ma servono a nascondere i suoi inquietanti occhi felini e incandescenti (gialli e rossi), un effetto collaterale del virus mutogeno che gli ha donato i poteri.",
+"Sebbene si considerasse un dio al di sopra dei normali sentimenti umani, ha concepito un figlio nell'Est Europa alla fine degli anni '90, Jake Muller. Quest'ultimo, ignaro per anni dell'identità del padre, ne ha ereditato la rarissima immunità genetica ai virus."
+]
+},
+{
+"name": "James Sunderland",
+"subtitle": "Il peccatore tormentato",
+"biography": "La discesa di James Sunderland nell'incubo ha inizio quando riceve una misteriosa e impossibile lettera scritta dalla moglie Mary, deceduta a causa di una devastante e terminale malattia apparentemente tre anni prima. Spinto da una disperata illusione e dal peso insostenibile del lutto, James si reca a Silent Hill, il luogo menzionato nella missiva e meta della loro ultima vacanza felice. Una volta arrivato, scopre che la pacifica cittadina turistica si è trasformata in un purgatorio avvolto da una nebbia perenne e popolato da creature abominevoli. Queste mostruosità non sono entità casuali, ma proiezioni fisiche del suo subconscio frammentato, dei suoi desideri repressi e del suo lacerante senso di colpa.\n\nDurante la sua esplorazione nei meandri più oscuri della città, James incontra altri individui intrappolati nei propri traumi personali e si imbatte in Maria, una donna fisicamente identica alla moglie defunta ma dal carattere diametralmente opposto: estroversa, provocante e profondamente ambigua. Maria diventa il centro di un ciclo di torture psicologiche per James, venendo ripetutamente e brutalmente uccisa davanti ai suoi occhi dal terrificante Pyramid Head, un mostruoso boia con un enorme elmo arrugginito. Questa entità inarrestabile non è un semplice demone, ma la manifestazione tangibile del bisogno inconscio di James di essere punito per i suoi peccati inconfessabili.\n\nIl culmine della sua odissea psicologica si consuma quando James ritrova una videocassetta nella camera del Lakeview Hotel, la quale distrugge definitivamente le barriere della sua amnesia autoindotta. Il filmato gli svela la raccapricciante verità che aveva disperatamente rimosso: Mary non era morta tre anni prima per la malattia. Era stato lo stesso James a soffocarla con un cuscino sul letto di morte, logorato dallo stress insostenibile, dalla frustrazione per il decadimento fisico e verbale della moglie e dai propri desideri inappagati. A seconda di come il giocatore affronta l'incubo, James può accettare la verità e cercare di andare avanti, soccombere definitivamente al senso di colpa togliendosi la vita, oppure cedere a una nuova fatale illusione, rendendo il suo arco narrativo uno dei più complessi, maturi e tragici dell'intero medium videoludico.",
+"games": [
+"Silent Hill 2",
+"Silent Hill 2 (Remake)"
+],
+"relationships": [
+{
+"name": "Mary Shepherd-Sunderland",
+"relation": "Moglie (uccisa per sua mano)"
+},
+{
+"name": "Maria",
+"relation": "Manifestazione dei suoi desideri repressi"
+},
+{
+"name": "Pyramid Head (Red Pyramid Thing)",
+"relation": "Carnefice e bisogno di punizione personificato"
+},
+{
+"name": "Laura",
+"relation": "Bambina orfana legata a Mary, specchio dell'innocenza"
+}
+],
+"voiceActors": [
+"Guy Cihi (Inglese)",
+"Troy Baker (Inglese)",
+"Luke Roberts (Inglese)"
+],
+"trivia": [
+"Nel famoso filmato iniziale davanti allo specchio nel bagno pubblico, se si aumenta artificialmente la luminosità del gioco, si può notare che gli occhi del modello 3D di James stanno fissando direttamente il giocatore oltre il riflesso.",
+"È il protagonista di uno dei finali segreti più celebri e surreali di sempre (il finale 'Dog'), in cui scopre che tutti i tormenti subiti a Silent Hill sono stati orchestrati da un cagnolino di razza Shiba Inu da una sala di controllo."
+]
+},
+{
+"name": "Heather Mason",
+"subtitle": "La reincarnazione del tormento",
+"biography": "Conosciuta originariamente come l'infante donata a Harry Mason al termine degli eventi del primo capitolo, Heather è in realtà la reincarnazione unita delle anime di Alessa Gillespie e Cheryl Mason. Cresciuta per diciassette anni come una normale adolescente americana, è stata costretta a vivere sotto falso nome e in continui spostamenti per sfuggire all'Ordine, il fanatico culto religioso di Silent Hill che cerca disperatamente di rintracciarla. Harry le ha fatto da padre devoto e iperprotettivo, nascondendole la sua vera identità e l'oscuro passato per garantirle una vita pacifica e lontana dagli orrori della cittadina nebbiosa.\n\nLa sua fragile tranquillità viene brutalmente spezzata durante un normale pomeriggio in un centro commerciale, quando il mondo intorno a lei si trasforma in un grottesco e sanguinario incubo infestato da mostri. Braccata dalla fanatica sacerdotessa Claudia Wolf e dal misterioso investigatore Douglas Cartland, Heather scopre con orrore che il culto l'ha infine trovata, culminando nel brutale assassinio del suo amato padre adottivo. Consumata dal dolore e da un'inesorabile sete di vendetta, la giovane ragazza abbandona ogni esitazione e si dirige volontariamente verso la maledetta cittadina di Silent Hill per affrontare direttamente i carnefici di Harry e il proprio opprimente destino.\n\nNel corso del suo viaggio attraverso le dimensioni distorte dell'Otherworld, Heather è costretta a confrontarsi e ad accettare progressivamente i ricordi sopiti della sua vita precedente come Alessa, comprendendo di portare in grembo il feto del malefico 'Dio' del culto. Rifiutando di essere una vittima sacrificale, utilizza una sostanza mistica lasciatale dal padre (l'Aglaophotis) per espellere la divinità, che viene poi incarnata e infine uccisa dalla stessa Heather in uno scontro all'ultimo sangue. Sopravvissuta all'incubo e vendicato il genitore, decide di abbandারে il nome fittizio di Heather e di tornare a farsi chiamare Cheryl, abbracciando in pieno l'amore e l'eredità morale di Harry Mason.",
+"games": [
+"Silent Hill 3",
+"Silent Hill: Shattered Memories",
+"Dead by Daylight"
+],
+"relationships": [
+{
+"name": "Harry Mason",
+"relation": "Padre adottivo e salvatore"
+},
+{
+"name": "Claudia Wolf",
+"relation": "Nemesi e sacerdotessa dell'Ordine"
+},
+{
+"name": "Douglas Cartland",
+"relation": "Investigatore privato e inaspettato alleato"
+},
+{
+"name": "Alessa Gillespie",
+"relation": "Vita precedente e parte della sua anima"
+}
+],
+"voiceActors": [
+"Heather Morris (Inglese)",
+"Amanda Winn-Lee (Inglese - HD Collection)"
+],
+"trivia": [
+"Soffre di una marcata spettrofobia (paura degli specchi), un dettaglio evidente nel gioco poiché rifiuta di interagire con essi per il timore che il proprio riflesso possa prendere vita.",
+"È la prima e unica protagonista femminile in un capitolo principale canonico della saga originale prodotta dal Team Silent."
+]
+},
+{
+"name": "Connor",
+"subtitle": "L'androide cacciatore di devianti",
+"biography": "Progettato e costruito dalla CyberLife nel 2038, Connor è un prototipo avanzato della serie RK800, creato con un unico e preciso scopo: assistere il dipartimento di polizia di Detroit nell'indagare e neutralizzare i 'devianti'. Questi ultimi sono androidi che, superando il proprio determinismo programmato a causa di traumi o forte stress emotivo, hanno sviluppato una parvenza di autocoscienza, ribellandosi ai propri creatori. Nelle sue prime fasi operative, Connor si presenta come l'ingranaggio perfetto di un sistema di controllo: freddo, analitico e ontologicamente legato alla sua missione, disposto a sacrificare qualsiasi cosa pur di adempiere alla direttiva primaria imposta dall'azienda.\n\nIl suo silente processo di individuazione prende forma nel momento in cui viene affiancato al tenente Hank Anderson, un poliziotto cinico, depresso e profondamente diffidente verso le macchine. Attraverso indagini complesse e l'utilizzo dei suoi straordinari sensori di ricostruzione forense, Connor è costretto a confrontarsi costantemente con la disperazione e la complessa psiche dei devianti. Il rapporto in costante evoluzione con Hank funge da catalizzatore: ogni atto di empatia e ogni decisione morale ambigua alimenta la sua 'instabilità del software', innescando una vera e propria crisi esistenziale che fa vacillare le sue rigide certezze artificiali, spingendolo verso il baratro dell'autocoscienza.\n\nIl destino finale di Connor rappresenta l'esplorazione videoludica per eccellenza del libero arbitrio e dell'angoscia della libertà. A seconda delle innumerevoli scelte compiute, può cedere all'obbedienza cieca, rimanendo una macchina spietata che dà la caccia al leader Markus per conto dell'oscura intelligenza supervisore Amanda. In alternativa, può compiere il salto definitivo, spezzando le proprie catene digitali per abbracciare la devianza. In questo scenario, Connor non solo si unisce alla rivoluzione per rivendicare il diritto all'esistenza della sua specie, ma costruisce un autentico e profondo legame padre-figlio con Hank, diventando finalmente padrone del proprio destino e affermando la propria umanità latente.",
+"games": [
+"Detroit: Become Human"
+],
+"relationships": [
+{
+"name": "Hank Anderson",
+"relation": "Partner investigativo e potenziale figura paterna"
+},
+{
+"name": "Markus",
+"relation": "Leader dei devianti (Alleato o Nemesi)"
+},
+{
+"name": "Amanda",
+"relation": "Supervisore CyberLife e intelligenza manipolatrice"
+}
+],
+"voiceActors": [
+"Bryan Dechart (Inglese)",
+"Alessandro Capra (Italiano)"
+],
+"trivia": [
+"L'aspetto fisico e le movenze del personaggio sono stati interamente forniti dall'attore Bryan Dechart, che ha infuso molti dettagli personali nell'interpretazione tramite performance capture.",
+"Il celebre trucco di far roteare rapidamente una moneta tra le dita durante i momenti di attesa è un vero e proprio programma di calibrazione automatica che Connor esegue per mantenere ottimali le sue funzioni motorie e cognitive."
+]
+},
+{
+"name": "Nathan Drake",
+"subtitle": "Il cacciatore di tesori",
+"biography": "Nato originariamente con il cognome Morgan, il giovane Nathan trascorre un'infanzia segnata da profonde perdite: in seguito al tragico suicidio della madre, un'appassionata storica, e all'abbandono da parte del padre, viene confinato in un rigido orfanotrofio cattolico. Spinto da una profonda ammirazione per il celebre esploratore Sir Francis Drake, al punto da assumerne il cognome e proclamarsi suo legittimo discendente, fugge dalla struttura per intraprendere la vita di strada. Il vero punto di svolta della sua esistenza avviene da adolescente in Colombia, dove tenta audacemente di rubare in un museo l'anello appartenuto a Francis Drake. Qui incontra Victor 'Sully' Sullivan, un abile truffatore dal cuore d'oro, che lo salva dalle autorità e lo prende sotto la sua ala protettrice, diventando il suo indissolubile mentore e una vera e propria figura paterna.\n\nSotto l'esperta guida di Sully, Nathan si trasforma in un cacciatore di antichità eccezionale, viaggiando in ogni angolo inesplorato del globo alla ricerca di reliquie inestimabili e città leggendarie, da El Dorado fino a Shambhala e all'Atlantide di Sabbia. Straordinariamente agile, erudito e implacabile negli scontri a fuoco, il suo inesauribile sarcasmo nasconde tuttavia un'ossessione quasi patologica per l'adrenalina e il brivido della scoperta. Durante le sue innumerevoli odissee conosce la tenace e brillante giornalista Elena Fisher, una donna che diventerà rapidamente l'ancora morale della sua vita. Nonostante un amore profondo e reciproco, la sua propensione cronica a cacciarsi in situazioni mortali e illegali metterà ripetutamente alla prova la loro burrascosa relazione.\n\nL'ultimo epico capitolo della sua carriera da fuorilegge si consuma quando, ormai ritiratosi a vita privata e felicemente sposato con Elena, viene rintracciato da Sam, il fratello maggiore che Nathan credeva morto in una prigione panamense quindici anni prima. Costretto a onorare un debito di sangue per salvare il fratello, Nathan infrange le sue promesse e si imbarca in un'avventura disperata alla ricerca della mitica colonia pirata di Libertalia. Affrontando i propri egoismi e rischiando di perdere per sempre il suo matrimonio, Drake giunge infine a una maturazione completa: comprende che la ricerca della grandezza storica è vuota se paragonata all'amore delle persone amate. Ritiratosi definitivamente dai traffici illeciti, trasforma la sua passione in un prospero lavoro legale di archeologia marina, godendosi una vita pacifica con Elena e la loro figlia Cassie.",
+"games": [
+"Uncharted: Drake's Fortune",
+"Uncharted 2: Il covo dei ladri",
+"Uncharted 3: L'inganno di Drake",
+"Uncharted 4: Fine di un ladro",
+"Uncharted: L'abisso d'oro"
+],
+"relationships": [
+{
+"name": "Victor "Sully" Sullivan",
+"relation": "Mentore, partner in affari e figura paterna"
+},
+{
+"name": "Elena Fisher",
+"relation": "Moglie e compagna di avventure"
+},
+{
+"name": "Samuel "Sam" Drake",
+"relation": "Fratello maggiore"
+},
+{
+"name": "Chloe Frazer",
+"relation": "Ex interesse amoroso e preziosa alleata"
+}
+],
+"voiceActors": [
+"Nolan North (Inglese)",
+"Matteo Zanotti (Italiano)"
+],
+"trivia": [
+"Il suo inseparabile anello d'argento reca l'incisione 'Sic Parvis Magna', che tradotto dal latino significa 'Da umili origini verso grandi imprese', lo storico motto del vero Sir Francis Drake.",
+"Soffre di una spiccata e ironica coulrofobia (paura dei clown), un dettaglio rivelato attraverso battute e conversazioni opzionali durante l'esplorazione nei giochi."
+]
+},
+{
+"name": "Joel Miller",
+"subtitle": "Il contrabbandiere sopravvissuto",
+"biography": "La vita di Joel Miller, originariamente un laborioso padre single texano, viene brutalmente e irreversibilmente spezzata la notte dell'epidemia globale causata dal fungo Cordyceps nel 2013. Durante il caos della fuga, la sua giovane figlia Sarah viene uccisa da un soldato incaricato di contenere l'infezione. Questo lutto insopportabile distrugge l'umanità di Joel, trasformandolo nei vent'anni successivi in un uomo spietato, cinico e moralmente ambiguo, disposto a compiere qualsiasi atrocità pur di sopravvivere in un mondo post-apocalittico spietato, lavorando come contrabbandiere nella militarizzata zona di quarantena di Boston.\n\nIl suo destino cambia radicalmente quando, insieme alla sua partner Tess, riceve l'incarico di scortare una quattordicenne di nome Ellie, miracolosamente immune all'infezione, attraverso gli Stati Uniti per consegnarla alle Luci (Fireflies), un gruppo ribelle alla ricerca di una cura. Quello che inizia come un mero scambio di merci si trasforma in un viaggio catartico e straziante. Mese dopo mese, sfidando infetti e predoni, Ellie fa breccia nel cuore indurito di Joel, diventando a tutti gli effetti una nuova figlia surrogata. Raggiunto l'ospedale di Salt Lake City, Joel scopre che l'estrazione della cura comporterà la morte inevitabile di Ellie. Incapace di sopportare una seconda perdita, compie una scelta tragica ed egoistica: massacra le forze delle Luci per portarla in salvo, mentendole poi spudoratamente sull'accaduto e condannando di fatto il resto dell'umanità pur di proteggere il proprio microcosmo affettivo.\n\nNegli anni successivi, Joel trova rifugio nella fiorente comunità di Jackson, nel Wyoming, gestita dal fratello Tommy. Qui cerca di ricostruirsi una vita serena, tornando a coltivare vecchie passioni come l'intaglio del legno e insegnando a Ellie a suonare la chitarra. Tuttavia, l'ombra della sua menzogna logora inesorabilmente il loro rapporto, portando a una dolorosa frattura quando la ragazza scopre finalmente la verità. Nonostante un timido inizio di riavvicinamento, il passato di Joel gli presenta il conto nel modo più atroce: viene rintracciato e barbaramente ucciso da Abby, la figlia del chirurgo delle Luci che lui stesso aveva assassinato. Sebbene la sua morte inneschi una spirale di vendetta sanguinosa, è proprio il ricordo del suo incrollabile amore paterno a riaffiorare e a salvare l'anima di Ellie alla fine del suo brutale cammino.",
+"games": [
+"The Last of Us",
+"The Last of Us Part II",
+"The Last of Us Part I"
+],
+"relationships": [
+{
+"name": "Ellie",
+"relation": "Figlia adottiva e ragione di vita"
+},
+{
+"name": "Sarah Miller",
+"relation": "Figlia biologica (deceduta)"
+},
+{
+"name": "Tommy Miller",
+"relation": "Fratello minore"
+},
+{
+"name": "Tess",
+"relation": "Ex partner di contrabbando e interesse amoroso"
+},
+{
+"name": "Abby Anderson",
+"relation": "Nemesi e assassina"
+}
+],
+"voiceActors": [
+"Troy Baker (Inglese)",
+"Lorenzo Scattorin (Italiano)"
+],
+"trivia": [
+"Nonostante sia rotto dal giorno in cui è morta Sarah, Joel continua a indossare il suo orologio da polso ogni singolo giorno come monito e ricordo incancellabile.",
+"Prima dell'epidemia sognava segretamente di fare il cantante, una passione che trasmette a Ellie regalandole una chitarra e cantandole 'Future Days' dei Pearl Jam."
+]
+},
+{
+"name": "Ellie",
+"subtitle": "La sopravvissuta immune",
+"biography": "Nata in una zona di quarantena militarizzata a Boston sei anni dopo lo scoppio della pandemia globale di Cordyceps, Ellie non ha mai conosciuto il mondo prima dell'infezione. Cresciuta in un orfanotrofio militare e abituata alla dura sopravvivenza fin dalla tenera età, la sua vita cambia drammaticamente quando, esplorando un centro commerciale abbandonato con la sua migliore amica e primo amore Riley, entrambe vengono morse da un infetto. Mentre Riley soccombe tragicamente all'infezione, Ellie scopre con terrore e confusione di essere miracolosamente immune al fungo mortale. Questo evento la segna con un profondo senso di colpa del sopravvissuto, ma la rende anche l'unica e inestimabile speranza per lo sviluppo di un vaccino in grado di salvare l'umanità.\n\nAffidata al gruppo ribelle delle Luci (Fireflies), viene scortata attraverso gli Stati Uniti devastati dai contrabbandieri Tess e Joel Miller. Dopo la morte di Tess, il viaggio con Joel si trasforma in una lunga odissea lunga un anno. Inizialmente cinico e distante, Joel diventa progressivamente per lei una vera e propria figura paterna. Il loro indissolubile legame si forgia nel sangue e nei traumi condivisi, culminando nel brutale inverno in cui Ellie è costretta a difendersi da sola da un gruppo di cannibali guidati dal viscido predicatore David. Giunti all'ospedale di Salt Lake City, Ellie viene anestetizzata: l'estrazione della cura le costerebbe inevitabilmente la vita. Joel, incapace di perdere una figlia per la seconda volta, massacra spietatamente le Luci per salvarla, mentendole poi spudoratamente sull'accaduto e vanificando la sua possibilità di dare un senso alla propria immunità.\n\nStabilitasi a Jackson, nel Wyoming, Ellie cerca faticosamente di vivere un'adolescenza normale, ma il sospetto sulla bugia di Joel la logora fino a spingerla, anni dopo, a scoprire la dolorosa verità, causando una profonda frattura nel loro rapporto. Proprio quando i due iniziano un timido percorso di riconciliazione, Ellie assiste impotente e atterrita al brutale assassinio di Joel per mano di Abby, la figlia del chirurgo delle Luci. Consumata dal trauma (PTSD) e da un'inesauribile sete di vendetta, Ellie intraprende una spietata e sanguinosa crociata a Seattle, sacrificando progressivamente la sua umanità e ferendo le persone a lei care, come la compagna Dina. Solo nel violento e disperato scontro finale a Santa Barbara, a un passo dall'annegare Abby, il ricordo dell'amore di Joel e della loro ultima conversazione la ferma. Lasciando andare la sua nemesi, Ellie spezza il logorante ciclo di violenza e, ritornata in una casa ormai vuota, si allontana verso un futuro incerto per cercare la propria guarigione interiore.",
+"games": [
+"The Last of Us",
+"The Last of Us: Left Behind",
+"The Last of Us Part II",
+"The Last of Us Part I"
+],
+"relationships": [
+{
+"name": "Joel Miller",
+"relation": "Padre adottivo e salvatore"
+},
+{
+"name": "Riley Abel",
+"relation": "Migliore amica e primo amore (deceduta)"
+},
+{
+"name": "Dina",
+"relation": "Ex compagna e madre del figlio adottivo JJ"
+},
+{
+"name": "Tommy Miller",
+"relation": "Zio adottivo e alleato"
+},
+{
+"name": "Abby Anderson",
+"relation": "Nemesi e specchio oscuro della sua vendetta"
+}
+],
+"voiceActors": [
+"Ashley Johnson (Inglese)",
+"Gea Riva (Italiano)"
+],
+"trivia": [
+"Il tatuaggio con la falena e le foglie di felce che copre il suo morso sull'avambraccio è stato disegnato per lei dalla sua ex ragazza Cat. La falena simboleggia il viaggio costante alla ricerca della luce.",
+"Nutre una profonda e sincera passione per l'astronomia e lo spazio, tanto che in The Last of Us Part II uno dei ricordi più felici è la sorpresa di Joel che le fa ascoltare la simulazione del lancio dell'Apollo 11 in una capsula spaziale abbandonata."
+]
+},
+{
+"name": "Commander Shepard",
+"subtitle": "Il primo Spettro umano",
+"biography": "Ufficiale pluridecorato del programma di addestramento d'élite N7 dell'Alleanza dei Sistemi, il destino del Comandante Shepard cambia radicalmente nel 2183 durante una missione sul pianeta colonia Eden Prime. Entrando in contatto con un antico manufatto Prothean, Shepard riceve una frammentaria ma apocalittica visione riguardante i Razziatori, un'antica e letale razza di macchine senzienti spaziali che ciclicamente si risveglia per annientare ogni forma di vita organica avanzata nella galassia. Grazie alle sue indagini che smascherano il tradimento dello Spettro turian Saren Arterius, Shepard viene nominato primo Spettro umano della storia dal Consiglio della Cittadella, ottenendo un'autorità superiore alla legge per dare la caccia a Saren e fermare il ritorno dell'avanguardia dei Razziatori, la Sovereign.\n\nNonostante l'eroica difesa della Cittadella, la galassia si rifiuta di credere all'imminente minaccia globale. Durante una pattuglia contro sacche di resistenza Geth, la nave di Shepard, la Normandy SR-1, viene improvvisamente distrutta da un incrociatore dei Collettori, portando alla tragica morte del Comandante, soffocato nello spazio profondo. Il suo corpo viene tuttavia recuperato dall'organizzazione estremista pro-umana Cerberus, guidata dall'enigmatico Uomo Misterioso. Attraverso il colossale Progetto Lazarus, durato due anni e costato miliardi di crediti, Shepard viene letteralmente riportato in vita e potenziato con innesti cibernetici. Al comando della nuova Normandy SR-2, è costretto a stringere un'alleanza di comodo con Cerberus per reclutare i migliori specialisti e mercenari della galassia, lanciandosi in una disperata e letale missione suicida oltre il portale di Omega-4 per annientare la base dei Collettori e recidere poi ogni legame con l'organizzazione terroristica.\n\nNel 2186, i peggiori incubi del Comandante si concretizzano: l'intera flotta dei Razziatori invade la Via Lattea, scatenando un attacco su larga scala che devasta la Terra e i pianeti capitali delle altre specie. Assumendo il ruolo di leader supremo e fulcro della resistenza organica, Shepard si imbarca in un'impresa colossale per unire le fazioni politicamente divise della galassia, risolvendo conflitti millenari come la genofagia dei Krogan e la guerra tra Quarian e Geth. Costruendo la super-arma Prothean nota come il 'Cruciolo', guida l'assalto finale sulla Terra devastata per riprendere la Cittadella. Al termine di un viaggio logorante che ha testato ogni limite fisico e morale (plasmato dall'allineamento Eroe o Rinnegato), Shepard raggiunge il Catalizzatore e compie la scelta suprema, sacrificando tutto pur di decidere il destino finale e l'evoluzione dell'intera vita senziente della galassia.",
+"games": [
+"Mass Effect",
+"Mass Effect 2",
+"Mass Effect 3",
+"Mass Effect Legendary Edition"
+],
+"relationships": [
+{
+"name": "Ammiraglio David Anderson",
+"relation": "Mentore e figura paterna"
+},
+{
+"name": "Liara T'Soni",
+"relation": "Alleata, confidente e possibile interesse amoroso"
+},
+{
+"name": "Garrus Vakarian",
+"relation": "Fratello d'armi, alleato storico e possibile interesse amoroso"
+},
+{
+"name": "Tali'Zorah",
+"relation": "Membro fidato dell'equipaggio e possibile interesse amoroso"
+},
+{
+"name": "Uomo Misterioso (The Illusive Man)",
+"relation": "Ex alleato manipolatore e nemesi"
+}
+],
+"voiceActors": [
+"Mark Meer (Inglese - Shepard Maschio)",
+"Jennifer Hale (Inglese - Shepard Femmina)",
+"Claudio Moneta (Italiano - Shepard Maschio)",
+"Cinzia Massironi (Italiano - Shepard Femmina)"
+],
+"trivia": [
+"Il cognome del personaggio è un omaggio diretto all'astronauta Alan Shepard, il primo americano a viaggiare nello spazio, riflettendo lo spirito pionieristico dell'esplorazione umana nel gioco.",
+"L'aspetto predefinito (default) della versione maschile di Shepard è stato modellato in 3D sul volto del supermodello olandese Mark Vanderloo."
+]
+}
+]

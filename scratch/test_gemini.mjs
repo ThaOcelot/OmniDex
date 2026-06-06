@@ -7,7 +7,7 @@ const GEMINI_API_KEY = [p1, p2, p3, p4].join('');
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ 
-  model: "gemini-2.5-pro", 
+  model: "gemini-2.5-flash", 
   systemInstruction: "Sei un'intelligenza artificiale di data entry. Rispondi SEMPRE E SOLO con il testo puro richiesto, senza preamboli.",
   generationConfig: { temperature: 0.3 }
 });

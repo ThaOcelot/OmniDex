@@ -30,19 +30,28 @@ REGOLE TASSATIVE:
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ 
-  model: "gemini-2.5-pro", 
+  model: "gemini-3.5-flash", 
   systemInstruction: SYSTEM_INSTRUCTION,
   generationConfig: { temperature: 0.3 } // Lower temperature for more strict formatting
 });
 
-async function askGemini(prompt) {
-  try {
-    const result = await model.generateContent(prompt);
-    return result.response.text();
-  } catch (e) {
-    console.error("Gemini API Error:", e);
-    return null;
+async function askGemini(prompt, maxRetries = 5) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const result = await model.generateContent(prompt);
+      return result.response.text();
+    } catch (e) {
+      console.error(`Gemini API Error (Attempt ${attempt + 1}/${maxRetries + 1}):`, e.message || e);
+      if (attempt < maxRetries) {
+        const delay = Math.pow(2, attempt) * 2000 + Math.random() * 1000;
+        console.log(`⏳ Attendo ${Math.round(delay / 1000)} secondi prima di riprovare...`);
+        await new Promise(r => setTimeout(r, delay));
+      } else {
+        return null;
+      }
+    }
   }
+  return null;
 }
 
 async function getRawgGame(query) {

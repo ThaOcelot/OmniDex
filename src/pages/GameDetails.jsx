@@ -209,7 +209,32 @@ export default function GameDetails() {
 
   // ─── Early returns ──────────────────────────────────────────────────────────
   if (loading) {
-    return <LoadingScreen title={`Sto costruendo l'enciclopedia di ${decodedName}...`} subtitle="Potrebbe volerci qualche secondo, stiamo raccogliendo tonnellate di dati." />;
+    return (
+      <div className="game-details-page animate-fade-in" style={{ padding: 'clamp(15px, 4vw, 30px)', maxWidth: '1400px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', gap: '6px', marginBottom: '24px' }}>
+          <div className="skeleton" style={{ width: '120px', height: '20px', borderRadius: '4px' }} />
+        </div>
+        <div className="glass-panel" style={{ padding: 'clamp(20px, 5vw, 40px)', marginBottom: '30px', minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
+          <div className="skeleton" style={{ width: '40%', height: '48px', marginBottom: '16px', borderRadius: '8px' }} />
+          <div className="skeleton" style={{ width: '20%', height: '24px', marginBottom: '32px', borderRadius: '8px' }} />
+          <div className="skeleton" style={{ width: '100%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+          <div className="skeleton" style={{ width: '90%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+          <div className="skeleton" style={{ width: '95%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+          <div className="skeleton" style={{ width: '80%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+        </div>
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '28px' }}>
+          <div className="skeleton" style={{ width: '100px', height: '40px', borderRadius: '20px' }} />
+          <div className="skeleton" style={{ width: '100px', height: '40px', borderRadius: '20px' }} />
+          <div className="skeleton" style={{ width: '100px', height: '40px', borderRadius: '20px' }} />
+        </div>
+        <div className="glass-panel" style={{ padding: '24px', minHeight: '200px' }}>
+          <div className="skeleton" style={{ width: '30%', height: '24px', marginBottom: '20px', borderRadius: '8px' }} />
+          <div className="skeleton" style={{ width: '100%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+          <div className="skeleton" style={{ width: '95%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+          <div className="skeleton" style={{ width: '90%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+        </div>
+      </div>
+    );
   }
 
   if (!gameData && !error) {
@@ -267,6 +292,10 @@ export default function GameDetails() {
   };
 
   const handleCharacterClick = (character) => {
+    if (tier !== 'ultra') {
+      window.dispatchEvent(new CustomEvent('open-settings'));
+      return;
+    }
     navigate(`/character/${encodeURIComponent(character.name)}`);
   };
 

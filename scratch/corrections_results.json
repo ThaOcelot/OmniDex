@@ -1,0 +1,1276 @@
+{
+  "Call of Duty: Modern Warfare II": [
+    {
+      "id": 4527,
+      "name": "Call of Duty: Modern Warfare 2",
+      "released": "2009-11-10",
+      "slug": "modern-warfare-2"
+    },
+    {
+      "id": 791636,
+      "name": "Call of Duty: Modern Warfare II",
+      "released": "2022-10-22",
+      "slug": "call-of-duty-modern-warfare-ii"
+    },
+    {
+      "id": 884,
+      "name": "Call of Duty: Modern Warfare Remastered",
+      "released": "2016-10-05",
+      "slug": "call-of-duty-modern-warfare-remastered"
+    },
+    {
+      "id": 4535,
+      "name": "Call of Duty 4: Modern Warfare",
+      "released": "2007-11-05",
+      "slug": "modern-warfare"
+    },
+    {
+      "id": 11276,
+      "name": "Call of Duty: Modern Warfare 3",
+      "released": "2011-11-08",
+      "slug": "call-of-duty-modern-warfare-3"
+    },
+    {
+      "id": 964285,
+      "name": "Call of Duty: Modern Warfare III",
+      "released": "2023-11-09",
+      "slug": "call-of-duty-modern-warfare-iii"
+    },
+    {
+      "id": 856178,
+      "name": "Call of Duty: Modern Warfare II - Open Beta",
+      "released": "2022-09-24",
+      "slug": "call-of-duty-modern-warfare-ii-open-beta"
+    },
+    {
+      "id": 423944,
+      "name": "Call of Duty: Modern Warfare 2 Campaign Remastered",
+      "released": "2020-03-31",
+      "slug": "call-of-duty-modern-warfare-2-campaign-remastered"
+    },
+    {
+      "id": 323065,
+      "name": "Call of Duty: Modern Warfare (2019)",
+      "released": "2019-10-25",
+      "slug": "call-of-duty-modern-warfare"
+    },
+    {
+      "id": 842,
+      "name": "Call of Duty: Advanced Warfare",
+      "released": "2014-11-03",
+      "slug": "call-of-duty-advanced-warfare"
+    },
+    {
+      "id": 887,
+      "name": "Call of Duty: Infinite Warfare",
+      "released": "2016-11-04",
+      "slug": "call-of-duty-infinite-warfare"
+    },
+    {
+      "id": 42122,
+      "name": "Call of Duty: Modern Warfare 2 - Resurgence Pack",
+      "released": "2010-06-03",
+      "slug": "call-of-duty-modern-warfare-2-resurgence-pack"
+    },
+    {
+      "id": 24489,
+      "name": "Call of Duty Modern Warfare: Mobilized",
+      "released": "2009-11-10",
+      "slug": "call-of-duty-modern-warfare-mobilized"
+    },
+    {
+      "id": 15967,
+      "name": "Call of Duty: Advanced Warfare - Gold Edition",
+      "released": "2014-11-03",
+      "slug": "call-of-duty-advanced-warfare-gold-edition"
+    },
+    {
+      "id": 26810,
+      "name": "Call of Duty: Modern Warfare 3 Defiance",
+      "released": "2011-11-08",
+      "slug": "call-of-duty-modern-warfare-3-defiance"
+    },
+    {
+      "id": 367199,
+      "name": "Call of Duty: Modern Warfare - 2v2 Alpha",
+      "released": "2019-08-22",
+      "slug": "call-of-duty-modern-warfare-2v2-alpha"
+    },
+    {
+      "id": 373658,
+      "name": "Call of Duty: Modern Warfare - Open Beta",
+      "released": "2019-09-10",
+      "slug": "call-of-duty-modern-warfare-open-beta"
+    },
+    {
+      "id": 19369,
+      "name": "Call of Duty",
+      "released": "2003-10-29",
+      "slug": "call-of-duty"
+    },
+    {
+      "id": 4390,
+      "name": "Call of Duty: Modern Warfare 2 with Stimulus Package",
+      "released": "2010-03-30",
+      "slug": "call-of-duty-modern-warfare-2-with-stimulus-packag"
+    },
+    {
+      "id": 647552,
+      "name": "Call of Duty: Vanguard",
+      "released": "2021-11-05",
+      "slug": "call-of-duty-vanguard"
+    },
+    {
+      "id": 378625,
+      "name": "Call of Duty: Mobile",
+      "released": "2019-10-01",
+      "slug": "call-of-duty-mobile"
+    },
+    {
+      "id": 395988,
+      "name": "Call of Duty: Modern Warfare - Battle Pass Ed.",
+      "released": "2019-10-24",
+      "slug": "call-of-duty-modern-warfare-battle-pass-ed"
+    },
+    {
+      "id": 418467,
+      "name": "Call of Duty: Warzone",
+      "released": "2020-03-10",
+      "slug": "call-of-duty-warzone"
+    },
+    {
+      "id": 582812,
+      "name": "Call Of Duty: Mario Warfare",
+      "released": "2021-04-09",
+      "slug": "call-of-duty-mario-warfare"
+    },
+    {
+      "id": 21924,
+      "name": "Call of Duty: WWII",
+      "released": "2017-11-03",
+      "slug": "call-of-duty-wwii"
+    },
+    {
+      "id": 49866,
+      "name": "Call of Duty 2: Big Red One",
+      "released": "2005-11-01",
+      "slug": "call-of-duty-2-big-red-one"
+    },
+    {
+      "id": 483971,
+      "name": "Call of Eldritch: Modern Dwarfare",
+      "released": "2020-08-22",
+      "slug": "call-of-eldritch-modern-dwarfare"
+    },
+    {
+      "id": 865,
+      "name": "Call of Duty: Black Ops",
+      "released": "2010-11-09",
+      "slug": "call-of-duty-black-ops"
+    },
+    {
+      "id": 872778,
+      "name": "Call of Duty: Warzone 2.0",
+      "released": "2022-11-16",
+      "slug": "call-of-duty-warzone-20"
+    },
+    {
+      "id": 7439,
+      "name": "Call of Duty: Ghosts",
+      "released": "2013-11-05",
+      "slug": "call-of-duty-ghosts"
+    }
+  ],
+  "Call of Duty: Modern Warfare III": [
+    {
+      "id": 11276,
+      "name": "Call of Duty: Modern Warfare 3",
+      "released": "2011-11-08",
+      "slug": "call-of-duty-modern-warfare-3"
+    },
+    {
+      "id": 964285,
+      "name": "Call of Duty: Modern Warfare III",
+      "released": "2023-11-09",
+      "slug": "call-of-duty-modern-warfare-iii"
+    },
+    {
+      "id": 884,
+      "name": "Call of Duty: Modern Warfare Remastered",
+      "released": "2016-10-05",
+      "slug": "call-of-duty-modern-warfare-remastered"
+    },
+    {
+      "id": 4535,
+      "name": "Call of Duty 4: Modern Warfare",
+      "released": "2007-11-05",
+      "slug": "modern-warfare"
+    },
+    {
+      "id": 791636,
+      "name": "Call of Duty: Modern Warfare II",
+      "released": "2022-10-22",
+      "slug": "call-of-duty-modern-warfare-ii"
+    },
+    {
+      "id": 4527,
+      "name": "Call of Duty: Modern Warfare 2",
+      "released": "2009-11-10",
+      "slug": "modern-warfare-2"
+    },
+    {
+      "id": 856178,
+      "name": "Call of Duty: Modern Warfare II - Open Beta",
+      "released": "2022-09-24",
+      "slug": "call-of-duty-modern-warfare-ii-open-beta"
+    },
+    {
+      "id": 323065,
+      "name": "Call of Duty: Modern Warfare (2019)",
+      "released": "2019-10-25",
+      "slug": "call-of-duty-modern-warfare"
+    },
+    {
+      "id": 842,
+      "name": "Call of Duty: Advanced Warfare",
+      "released": "2014-11-03",
+      "slug": "call-of-duty-advanced-warfare"
+    },
+    {
+      "id": 26810,
+      "name": "Call of Duty: Modern Warfare 3 Defiance",
+      "released": "2011-11-08",
+      "slug": "call-of-duty-modern-warfare-3-defiance"
+    },
+    {
+      "id": 423944,
+      "name": "Call of Duty: Modern Warfare 2 Campaign Remastered",
+      "released": "2020-03-31",
+      "slug": "call-of-duty-modern-warfare-2-campaign-remastered"
+    },
+    {
+      "id": 887,
+      "name": "Call of Duty: Infinite Warfare",
+      "released": "2016-11-04",
+      "slug": "call-of-duty-infinite-warfare"
+    },
+    {
+      "id": 24489,
+      "name": "Call of Duty Modern Warfare: Mobilized",
+      "released": "2009-11-10",
+      "slug": "call-of-duty-modern-warfare-mobilized"
+    },
+    {
+      "id": 15967,
+      "name": "Call of Duty: Advanced Warfare - Gold Edition",
+      "released": "2014-11-03",
+      "slug": "call-of-duty-advanced-warfare-gold-edition"
+    },
+    {
+      "id": 367199,
+      "name": "Call of Duty: Modern Warfare - 2v2 Alpha",
+      "released": "2019-08-22",
+      "slug": "call-of-duty-modern-warfare-2v2-alpha"
+    },
+    {
+      "id": 373658,
+      "name": "Call of Duty: Modern Warfare - Open Beta",
+      "released": "2019-09-10",
+      "slug": "call-of-duty-modern-warfare-open-beta"
+    },
+    {
+      "id": 19369,
+      "name": "Call of Duty",
+      "released": "2003-10-29",
+      "slug": "call-of-duty"
+    },
+    {
+      "id": 42122,
+      "name": "Call of Duty: Modern Warfare 2 - Resurgence Pack",
+      "released": "2010-06-03",
+      "slug": "call-of-duty-modern-warfare-2-resurgence-pack"
+    },
+    {
+      "id": 4260,
+      "name": "Call of Duty: Modern Warfare 3 With DLC Collection 1",
+      "released": "2012-09-04",
+      "slug": "call-of-duty-modern-warfare-3-with-dlc-collection-"
+    },
+    {
+      "id": 647552,
+      "name": "Call of Duty: Vanguard",
+      "released": "2021-11-05",
+      "slug": "call-of-duty-vanguard"
+    },
+    {
+      "id": 378625,
+      "name": "Call of Duty: Mobile",
+      "released": "2019-10-01",
+      "slug": "call-of-duty-mobile"
+    },
+    {
+      "id": 395988,
+      "name": "Call of Duty: Modern Warfare - Battle Pass Ed.",
+      "released": "2019-10-24",
+      "slug": "call-of-duty-modern-warfare-battle-pass-ed"
+    },
+    {
+      "id": 418467,
+      "name": "Call of Duty: Warzone",
+      "released": "2020-03-10",
+      "slug": "call-of-duty-warzone"
+    },
+    {
+      "id": 582812,
+      "name": "Call Of Duty: Mario Warfare",
+      "released": "2021-04-09",
+      "slug": "call-of-duty-mario-warfare"
+    },
+    {
+      "id": 21924,
+      "name": "Call of Duty: WWII",
+      "released": "2017-11-03",
+      "slug": "call-of-duty-wwii"
+    },
+    {
+      "id": 4390,
+      "name": "Call of Duty: Modern Warfare 2 with Stimulus Package",
+      "released": "2010-03-30",
+      "slug": "call-of-duty-modern-warfare-2-with-stimulus-packag"
+    },
+    {
+      "id": 483971,
+      "name": "Call of Eldritch: Modern Dwarfare",
+      "released": "2020-08-22",
+      "slug": "call-of-eldritch-modern-dwarfare"
+    },
+    {
+      "id": 865,
+      "name": "Call of Duty: Black Ops",
+      "released": "2010-11-09",
+      "slug": "call-of-duty-black-ops"
+    },
+    {
+      "id": 872778,
+      "name": "Call of Duty: Warzone 2.0",
+      "released": "2022-11-16",
+      "slug": "call-of-duty-warzone-20"
+    },
+    {
+      "id": 7439,
+      "name": "Call of Duty: Ghosts",
+      "released": "2013-11-05",
+      "slug": "call-of-duty-ghosts"
+    }
+  ],
+  "Final Fantasy VII": [
+    {
+      "id": 259801,
+      "name": "Final Fantasy VII",
+      "released": "2020-04-10",
+      "slug": "final-fantasy-vii-remake"
+    },
+    {
+      "id": 52939,
+      "name": "Final Fantasy VII (1997)",
+      "released": "1997-01-31",
+      "slug": "final-fantasy-vii"
+    },
+    {
+      "id": 357811,
+      "name": "Final Fantasy VII: Advent Children",
+      "released": "2006-04-25",
+      "slug": "final-fantasy-vii-advent-children"
+    },
+    {
+      "id": 52332,
+      "name": "Crisis Core: Final Fantasy VII",
+      "released": "2007-09-13",
+      "slug": "crisis-core-final-fantasy-7"
+    },
+    {
+      "id": 52943,
+      "name": "Final Fantasy IX",
+      "released": "2000-07-07",
+      "slug": "final-fantasy-ix"
+    },
+    {
+      "id": 1063,
+      "name": "FINAL FANTASY VI",
+      "released": "1994-04-02",
+      "slug": "final-fantasy-vi"
+    },
+    {
+      "id": 52936,
+      "name": "Final Fantasy (1987)",
+      "released": "1987-12-17",
+      "slug": "final-fantasy-1987"
+    },
+    {
+      "id": 5168,
+      "name": "Dissidia: Final Fantasy",
+      "released": "2008-12-18",
+      "slug": "dissidia-final-fantasy"
+    },
+    {
+      "id": 39530,
+      "name": "Final Fantasy XIV",
+      "released": "2010-09-30",
+      "slug": "final-fantasy-14"
+    },
+    {
+      "id": 34872,
+      "name": "Final Fantasy XI",
+      "released": "2002-11-07",
+      "slug": "final-fantasy-11"
+    },
+    {
+      "id": 5115,
+      "name": "FINAL FANTASY VIII",
+      "released": "1999-02-11",
+      "slug": "final-fantasy-viii"
+    },
+    {
+      "id": 1922,
+      "name": "FINAL FANTASY V",
+      "released": "1992-12-06",
+      "slug": "final-fantasy-v"
+    },
+    {
+      "id": 41128,
+      "name": "Final Fantasy X",
+      "released": "2001-07-19",
+      "slug": "final-fantasy-10"
+    },
+    {
+      "id": 52949,
+      "name": "Final Fantasy Tactics",
+      "released": "1997-06-28",
+      "slug": "final-fantasy-tactics"
+    },
+    {
+      "id": 804751,
+      "name": "Crisis Core: Final Fantasy VII Reunion",
+      "released": "2022-12-13",
+      "slug": "crisis-core-final-fantasy-vii-reunion"
+    },
+    {
+      "id": 52935,
+      "name": "Final Fantasy II (1988)",
+      "released": "1988-12-17",
+      "slug": "final-fantasy-ii-1988"
+    },
+    {
+      "id": 3993,
+      "name": "FINAL FANTASY XIII-2",
+      "released": "2011-12-15",
+      "slug": "final-fantasy-xiii-2"
+    },
+    {
+      "id": 52937,
+      "name": "Final Fantasy IV (1991)",
+      "released": "1991-07-19",
+      "slug": "final-fantasy-iv-1991"
+    },
+    {
+      "id": 308056,
+      "name": "Final Fantasy III (1990)",
+      "released": "1990-04-27",
+      "slug": "final-fantasy-iii-1990"
+    },
+    {
+      "id": 267219,
+      "name": "Dirge of Cerberus: Final Fantasy VII",
+      "released": "2006-01-26",
+      "slug": "dirge-of-cerberus-final-fantasy-7"
+    },
+    {
+      "id": 401816,
+      "name": "Dissidia 012: Final Fantasy",
+      "released": "2011-03-22",
+      "slug": "dissidia-012-final-fantasy"
+    },
+    {
+      "id": 283970,
+      "name": "Final Fantasy X-2",
+      "released": "2003-03-13",
+      "slug": "final-fantasy-x-2"
+    },
+    {
+      "id": 42957,
+      "name": "Final Fantasy XIV: Heavensward",
+      "released": "2015-06-26",
+      "slug": "final-fantasy-xiv-heavensward"
+    },
+    {
+      "id": 327232,
+      "name": "Final Fantasy VIII Remastered",
+      "released": "2019-09-02",
+      "slug": "final-fantasy-viii-remastered"
+    },
+    {
+      "id": 327225,
+      "name": "FINAL FANTASY XIV: Shadowbringers",
+      "released": "2019-07-02",
+      "slug": "final-fantasy-xiv-shadowbringers"
+    },
+    {
+      "id": 734627,
+      "name": "Final Fantasy 7: New Threat",
+      "released": "2014-01-17",
+      "slug": "finafl-fantasy-7-new-threat"
+    },
+    {
+      "id": 51835,
+      "name": "Dissidia: Final Fantasy NT",
+      "released": "2018-01-30",
+      "slug": "dissidia-final-fantasy-nt-open-beta-test"
+    },
+    {
+      "id": 681399,
+      "name": "FINAL FANTASY XIV: Endwalker",
+      "released": "2021-12-07",
+      "slug": "final-fantasy-xiv-endwalker"
+    },
+    {
+      "id": 620,
+      "name": "FINAL FANTASY III (3D REMAKE)",
+      "released": "2006-11-14",
+      "slug": "final-fantasy-iii"
+    },
+    {
+      "id": 25327,
+      "name": "Final Fantasy XII: Revenant Wings",
+      "released": "2007-11-20",
+      "slug": "final-fantasy-12-revenant-wings"
+    }
+  ],
+  "Tomb Raider": [
+    {
+      "id": 5286,
+      "name": "Tomb Raider",
+      "released": "2013-03-05",
+      "slug": "tomb-raider"
+    },
+    {
+      "id": 5297,
+      "name": "Tomb Raider: Anniversary",
+      "released": "2007-06-01",
+      "slug": "tomb-raider-anniversary"
+    },
+    {
+      "id": 5298,
+      "name": "Tomb Raider: Legend",
+      "released": "2006-04-06",
+      "slug": "tomb-raider-legend"
+    },
+    {
+      "id": 4869,
+      "name": "Tomb Raider: Underworld",
+      "released": "2008-11-18",
+      "slug": "tomb-raider-underworld"
+    },
+    {
+      "id": 57908,
+      "name": "Tomb Raider II",
+      "released": "1997-10-31",
+      "slug": "tomb-raider-ii"
+    },
+    {
+      "id": 12279,
+      "name": "Tomb Raider V: Chronicles",
+      "released": "2000-11-17",
+      "slug": "tomb-raider-chronicles"
+    },
+    {
+      "id": 442857,
+      "name": "Tomb Raider: Definitive Edition",
+      "released": "2014-01-31",
+      "slug": "tomb-raider-goty"
+    },
+    {
+      "id": 22865,
+      "name": "Tomb Raider: The Angel of Darkness",
+      "released": "2003-06-19",
+      "slug": "tomb-raider-the-angel-of-darkness"
+    },
+    {
+      "id": 1015421,
+      "name": "Tomb Raider: Legacy of Atlantis",
+      "released": "2026-12-31",
+      "slug": "tomb-raider-legacy-of-atlantis"
+    },
+    {
+      "id": 12280,
+      "name": "Tomb Raider IV: The Last Revelation",
+      "released": "1999-10-31",
+      "slug": "tomb-raider-the-last-revelation"
+    },
+    {
+      "id": 990490,
+      "name": "Tomb Raider IV•V•VI Remastered",
+      "released": "2025-02-14",
+      "slug": "tomb-raider-iv-vi-remastered"
+    },
+    {
+      "id": 347823,
+      "name": "Tomb Raider: The Times Exclusive Playable Level",
+      "released": "1999-12-01",
+      "slug": "tomb-raider-2"
+    },
+    {
+      "id": 966221,
+      "name": "Tomb Raider I•II•III Remastered",
+      "released": "2024-02-13",
+      "slug": "tomb-raider-i-iii-remastered"
+    },
+    {
+      "id": 32122,
+      "name": "Tomb Raider 3: Adventures of Lara Croft",
+      "released": "1998-11-21",
+      "slug": "tomb-raider-3-adventures-of-lara-croft"
+    },
+    {
+      "id": 1015411,
+      "name": "Tomb Raider: Catalyst",
+      "released": "2027-12-31",
+      "slug": "tomb-raider-catalyst"
+    },
+    {
+      "id": 31759,
+      "name": "Tomb Raider (1996)",
+      "released": "1996-10-25",
+      "slug": "tomb-raider-1996"
+    },
+    {
+      "id": 7689,
+      "name": "Rise of the Tomb Raider",
+      "released": "2015-11-10",
+      "slug": "rise-of-the-tomb-raider"
+    },
+    {
+      "id": 53485,
+      "name": "Tomb Raider: The Prophecy",
+      "released": "2002-11-12",
+      "slug": "tomb-raider-the-prophecy"
+    },
+    {
+      "id": 374258,
+      "name": "TOMB RAIDER Lara'sFury (Capitulo2)",
+      "released": "2019-09-10",
+      "slug": "tomb-raider-larasfury-capitulo2"
+    },
+    {
+      "id": 32399,
+      "name": "Tomb Raider: Unfinished Business",
+      "released": "1998-12-31",
+      "slug": "tomb-raider-unfinished-business"
+    },
+    {
+      "id": 51329,
+      "name": "Shadow of the Tomb Raider",
+      "released": "2018-09-14",
+      "slug": "shadow-of-the-tomb-raider"
+    },
+    {
+      "id": 394400,
+      "name": "Tomb Raider: Underworld - Lara's Shadow",
+      "released": "2009-03-10",
+      "slug": "tomb-raider-underworld-laras-shadow"
+    },
+    {
+      "id": 479678,
+      "name": "Shadow of the Tomb Raider: Definitive Edition",
+      "released": "2019-11-05",
+      "slug": "shadow-of-the-tomb-raider-definitive-edition"
+    },
+    {
+      "id": 34588,
+      "name": "Tomb Raider 2: Golden Mask",
+      "released": "1999-06-01",
+      "slug": "tomb-raider-2-golden-mask"
+    },
+    {
+      "id": 998261,
+      "name": "Tomb Raider I-VI Remastered",
+      "released": "2025-02-14",
+      "slug": "tomb-raider-i-vi-remastered"
+    },
+    {
+      "id": 573282,
+      "name": "Tomb Raider: Definitive Survivor Trilogy",
+      "released": "2021-03-18",
+      "slug": "tomb-raider-definitive-survivor-trilogy"
+    },
+    {
+      "id": 54917,
+      "name": "Tomb Raider: Curse of the Sword",
+      "released": "2001-07-01",
+      "slug": "tomb-raider-curse-of-the-sword"
+    },
+    {
+      "id": 1120,
+      "name": "Rise of the Tomb Raider: 20 Year Celebration",
+      "released": "2016-02-08",
+      "slug": "rise-of-the-tomb-raider-20-year-celebration"
+    },
+    {
+      "id": 394399,
+      "name": "Tomb Raider: Underworld - Beneath the Ashes",
+      "released": "2009-02-24",
+      "slug": "tomb-raider-underworld-beneath-the-ashes"
+    },
+    {
+      "id": 31218,
+      "name": "Tomb Raider 3: The Lost Artifact",
+      "released": "2000-03-01",
+      "slug": "tomb-raider-3-the-lost-artifact"
+    }
+  ],
+  "Sonic the Hedgehog": [
+    {
+      "id": 283965,
+      "name": "Sonic The Hedgehog (2006)",
+      "released": "2006-11-14",
+      "slug": "sonic-the-hedgehog-4"
+    },
+    {
+      "id": 53551,
+      "name": "Sonic the Hedgehog (1991)",
+      "released": "1991-06-23",
+      "slug": "sonic-the-hedgehog"
+    },
+    {
+      "id": 534630,
+      "name": "Sonic the Hedgehog (lloydluigi123)",
+      "released": "2020-12-20",
+      "slug": "sonic-the-hedgehog-5"
+    },
+    {
+      "id": 2552,
+      "name": "Sonic the Hedgehog 2",
+      "released": "1992-11-21",
+      "slug": "sonic-the-hedgehog-2"
+    },
+    {
+      "id": 57179,
+      "name": "Sonic the Hedgehog 3 (1994)",
+      "released": "1994-02-02",
+      "slug": "sonic-the-hedgehog-3"
+    },
+    {
+      "id": 14930,
+      "name": "Sonic the Hedgehog 4 - Episode II",
+      "released": "2012-05-14",
+      "slug": "sonic-the-hedgehog-4-episode-ii-2"
+    },
+    {
+      "id": 14938,
+      "name": "Sonic the Hedgehog 4 - Episode I",
+      "released": "2010-10-07",
+      "slug": "sonic-the-hedgehog-4-episode-1"
+    },
+    {
+      "id": 683005,
+      "name": "Sonic the Hedgehog T.E.S.T",
+      "released": "2021-10-18",
+      "slug": "sonic-the-hedgehog-test"
+    },
+    {
+      "id": 684703,
+      "name": "Sonic the Hedgehog Adventures - Sonic's Fantastic Adventure",
+      "released": "2021-10-22",
+      "slug": "sonic-the-hedgehog-adventures-sonics-fantastic-adv"
+    },
+    {
+      "id": 671266,
+      "name": "Sonic The Hedgehog: Frenzy",
+      "released": "2021-09-29",
+      "slug": "sonic-the-hedgehog-frenzy"
+    },
+    {
+      "id": 534628,
+      "name": "Sonic the Hedgehog 1.1",
+      "released": "2020-12-20",
+      "slug": "sonic-the-hedgehog-11"
+    },
+    {
+      "id": 718447,
+      "name": "Sonic the Hedgehog - Blasting Adventure",
+      "released": "2022-01-06",
+      "slug": "sonic-the-hedgehog-blasting-adventure"
+    },
+    {
+      "id": 684702,
+      "name": "Sonic the Hedgehog Adventures - Games",
+      "released": "2021-10-22",
+      "slug": "sonic-the-hedgehog-adventures-games"
+    },
+    {
+      "id": 665512,
+      "name": "Sonic the Hedgehog: Boss Dash!",
+      "released": "2021-09-15",
+      "slug": "sonic-the-hedgehog-boss-dash"
+    },
+    {
+      "id": 24143,
+      "name": "Sonic the Hedgehog: Triple Trouble",
+      "released": "1994-11-13",
+      "slug": "sonic-the-hedgehog-triple-trouble"
+    },
+    {
+      "id": 450606,
+      "name": "Sonic the Hedgehog: Labyrinth Leakage",
+      "released": "2020-06-03",
+      "slug": "sonic-the-hedgehog-labyrinth-leakage"
+    },
+    {
+      "id": 765205,
+      "name": "sonic the hedgehog 7 v0.2",
+      "released": "2022-04-07",
+      "slug": "sonic-the-hedgehog-7-v02"
+    },
+    {
+      "id": 71008,
+      "name": "Sonic The Hedgehog 4 Ep. II",
+      "released": "2012-05-17",
+      "slug": "sonic-the-hedgehog-4-ep-ii"
+    },
+    {
+      "id": 830332,
+      "name": "Sonic The Hedgehog: RPGBoot - Demo v1.5",
+      "released": "2022-08-05",
+      "slug": "sonic-the-hedgehog-rpgboot-demo-v15"
+    },
+    {
+      "id": 965443,
+      "name": "Sonic the Hedgehog Megamix",
+      "released": "2008-08-13",
+      "slug": "sonic-the-hedgehog-megamix"
+    },
+    {
+      "id": 439402,
+      "name": "Sonic The Hedgehog 2 HD: The Lost Demo",
+      "released": "2020-05-02",
+      "slug": "sonic-the-hedgehog-2-hd-the-lost-demo"
+    },
+    {
+      "id": 684706,
+      "name": "Sonic the Hedgehog Adventures - Vector's Lost World",
+      "released": "2021-10-22",
+      "slug": "sonic-the-hedgehog-adventures-vectors-lost-world"
+    },
+    {
+      "id": 596680,
+      "name": "Sonic the Hedgehog 2 HD - SAGE Demo",
+      "released": "2021-04-26",
+      "slug": "sonic-the-hedgehog-2-hd-sage-demo"
+    },
+    {
+      "id": 778963,
+      "name": "sonic the hedgehog: eggman empire final boss",
+      "released": "2022-04-30",
+      "slug": "sonic-the-hedgehog-eggman-empire-final-boss"
+    },
+    {
+      "id": 782431,
+      "name": "Sonic the Hedgehog: Chaos Delta SAGE 2022 demo",
+      "released": "2022-05-08",
+      "slug": "sonic-the-hedgehog-chaos-delta-sage-2022-demo"
+    },
+    {
+      "id": 949868,
+      "name": "The Murder of Sonic the Hedgehog",
+      "released": "2023-03-31",
+      "slug": "the-murder-of-sonic-the-hedgehog"
+    },
+    {
+      "id": 288388,
+      "name": "Sonic the Hedgehog: The Movie: The Game: The First Chapter Of The Buff Sonic Chronicles",
+      "released": "2019-01-26",
+      "slug": "sonic-the-hedgehog-the-movie-the-game-the-first-ch"
+    },
+    {
+      "id": 320781,
+      "name": "Sonic: The Hedgehog: The Movie: The Game",
+      "released": "2019-05-19",
+      "slug": "sonic-the-hedgehog-the-movie-the-game-2"
+    },
+    {
+      "id": 953820,
+      "name": "Windows Zone - Sonic the Hedgehog",
+      "released": "2023-04-03",
+      "slug": "windows-zone-sonic-the-hedgehog"
+    },
+    {
+      "id": 547209,
+      "name": "Sonic The Hedgehog 360",
+      "released": "2021-01-24",
+      "slug": "sonic-the-hedgehog-360"
+    }
+  ],
+  "Sonic CD": [
+    {
+      "id": 54320,
+      "name": "Sonic CD (1993)",
+      "released": "1993-09-23",
+      "slug": "sonic-cd-1993"
+    },
+    {
+      "id": 1559,
+      "name": "Sonic CD",
+      "released": "2011-12-14",
+      "slug": "sonic-cd"
+    },
+    {
+      "id": 4331,
+      "name": "Sonic Generations",
+      "released": "2011-11-01",
+      "slug": "sonic-generations"
+    },
+    {
+      "id": 42238,
+      "name": "The Walking Dead: 400 Days",
+      "released": "2013-07-02",
+      "slug": "the-walking-dead-400-days"
+    },
+    {
+      "id": 343595,
+      "name": "Sonic Adventure",
+      "released": "1998-12-23",
+      "slug": "sonic-adventure"
+    },
+    {
+      "id": 27943,
+      "name": "Sonic Forces",
+      "released": "2017-11-07",
+      "slug": "sonic-forces"
+    },
+    {
+      "id": 28413,
+      "name": "Sonic's UGC",
+      "released": "2009-02-10",
+      "slug": "sonics-ugc"
+    },
+    {
+      "id": 608563,
+      "name": "Sonic Colors: Ultimate",
+      "released": "2021-09-07",
+      "slug": "sonic-colors-ultimate"
+    },
+    {
+      "id": 57180,
+      "name": "Sonic Spinball (1993)",
+      "released": "1993-11-15",
+      "slug": "sonic-spinball-1993"
+    },
+    {
+      "id": 14988,
+      "name": "Sonic Lost World",
+      "released": "2013-10-18",
+      "slug": "sonic-lost-world"
+    },
+    {
+      "id": 2552,
+      "name": "Sonic the Hedgehog 2",
+      "released": "1992-11-21",
+      "slug": "sonic-the-hedgehog-2"
+    },
+    {
+      "id": 343597,
+      "name": "Sonic Adventure 2",
+      "released": "2001-06-18",
+      "slug": "sonic-adventure-2"
+    },
+    {
+      "id": 283965,
+      "name": "Sonic The Hedgehog (2006)",
+      "released": "2006-11-14",
+      "slug": "sonic-the-hedgehog-4"
+    },
+    {
+      "id": 57177,
+      "name": "Sonic 3D Blast (1996)",
+      "released": "1996-11-01",
+      "slug": "sonic-3d-blast-1996"
+    },
+    {
+      "id": 53551,
+      "name": "Sonic the Hedgehog (1991)",
+      "released": "1991-06-23",
+      "slug": "sonic-the-hedgehog"
+    },
+    {
+      "id": 35613,
+      "name": "Sonic Adventure DX: Director's Cut",
+      "released": "2003-06-06",
+      "slug": "sonic-adventure-dx"
+    },
+    {
+      "id": 24800,
+      "name": "Sonic Riders: Zero Gravity",
+      "released": "2008-01-08",
+      "slug": "sonic-riders-zero-gravity"
+    },
+    {
+      "id": 57179,
+      "name": "Sonic the Hedgehog 3 (1994)",
+      "released": "1994-02-02",
+      "slug": "sonic-the-hedgehog-3"
+    },
+    {
+      "id": 966,
+      "name": "Sonic & All-Stars Racing Transformed",
+      "released": "2012-11-16",
+      "slug": "sonic-all-stars-racing-transformed"
+    },
+    {
+      "id": 14930,
+      "name": "Sonic the Hedgehog 4 - Episode II",
+      "released": "2012-05-14",
+      "slug": "sonic-the-hedgehog-4-episode-ii-2"
+    },
+    {
+      "id": 14938,
+      "name": "Sonic the Hedgehog 4 - Episode I",
+      "released": "2010-10-07",
+      "slug": "sonic-the-hedgehog-4-episode-1"
+    },
+    {
+      "id": 53546,
+      "name": "Sonic Advance",
+      "released": "2001-12-20",
+      "slug": "sonic-advance"
+    },
+    {
+      "id": 772537,
+      "name": "Sonic Origins",
+      "released": "2022-06-23",
+      "slug": "sonic-origins"
+    },
+    {
+      "id": 683,
+      "name": "Sonic & SEGA All-Stars Racing",
+      "released": "2010-02-23",
+      "slug": "sonic-sega-all-stars-racing"
+    },
+    {
+      "id": 1281,
+      "name": "Sonic Dash",
+      "released": "2013-03-07",
+      "slug": "sonic-dash"
+    },
+    {
+      "id": 26563,
+      "name": "Sonic Colors",
+      "released": "2010-11-11",
+      "slug": "sonic-colors"
+    },
+    {
+      "id": 36189,
+      "name": "Sonic Heroes",
+      "released": "2003-12-30",
+      "slug": "sonic-heroes"
+    },
+    {
+      "id": 244724,
+      "name": "Mario & Sonic at the Olympic Games",
+      "released": "2007-11-06",
+      "slug": "mario-sonic-at-the-olympic-games"
+    },
+    {
+      "id": 5278,
+      "name": "Sonic Rivals",
+      "released": "2009-10-01",
+      "slug": "sonic-rivals"
+    },
+    {
+      "id": 341585,
+      "name": "Sonic R",
+      "released": "1997-11-18",
+      "slug": "sonic-r-2"
+    }
+  ],
+  "The Legend of Zelda: Link's Awakening": [
+    {
+      "id": 292842,
+      "name": "The Legend of Zelda: Link's Awakening (2019)",
+      "released": "2019-09-20",
+      "slug": "the-legend-of-zelda-links-awakening"
+    },
+    {
+      "id": 27057,
+      "name": "The Legend of Zelda: Link's Awakening (1993)",
+      "released": "1993-06-06",
+      "slug": "the-legend-of-zelda-links-awakening-dx"
+    },
+    {
+      "id": 761170,
+      "name": "Legend Of Zelda: Link's Awakening DX",
+      "released": "2022-03-25",
+      "slug": "legend-of-zelda-links-awakening-dx"
+    },
+    {
+      "id": 25096,
+      "name": "The Legend of Zelda: A Link to the Past",
+      "released": "1991-11-21",
+      "slug": "the-legend-of-zelda-a-link-to-the-past"
+    },
+    {
+      "id": 27977,
+      "name": "The Legend of Zelda: A Link Between Worlds",
+      "released": "2013-11-22",
+      "slug": "the-legend-of-zelda-a-link-between-worlds"
+    },
+    {
+      "id": 624566,
+      "name": "Zelda RPG: Link's Reawakening",
+      "released": "2021-06-20",
+      "slug": "zelda-rpg-links-reawakening"
+    },
+    {
+      "id": 56092,
+      "name": "The Legend of Zelda: The Wind Waker",
+      "released": "2002-12-13",
+      "slug": "the-legend-of-zelda-the-wind-waker"
+    },
+    {
+      "id": 26824,
+      "name": "The Legend of Zelda: Skyward Sword",
+      "released": "2011-11-20",
+      "slug": "the-legend-of-zelda-skyward-sword"
+    },
+    {
+      "id": 53205,
+      "name": "Zelda II: The Adventure of Link",
+      "released": "1987-01-14",
+      "slug": "zelda-ii-the-adventure-of-link-2"
+    },
+    {
+      "id": 290864,
+      "name": "The Legend of Zelda: Four Swords",
+      "released": "2002-12-02",
+      "slug": "the-legend-of-zelda-four-swords"
+    },
+    {
+      "id": 27015,
+      "name": "The Legend of Zelda: Twilight Princess",
+      "released": "2006-11-19",
+      "slug": "the-legend-of-zelda-twilight-princess"
+    },
+    {
+      "id": 25924,
+      "name": "The Legend of Zelda: Majora's Mask",
+      "released": "2000-04-27",
+      "slug": "the-legend-of-zelda-majoras-mask"
+    },
+    {
+      "id": 327239,
+      "name": "The Legend of Zelda: Tears of the Kingdom",
+      "released": "2023-05-12",
+      "slug": "the-legend-of-zelda-breath-of-the-wild-sequel"
+    },
+    {
+      "id": 983717,
+      "name": "The Legend of Zelda: Echoes of Wisdom",
+      "released": "2024-09-26",
+      "slug": "the-legend-of-zelda-echoes-of-wisdom"
+    },
+    {
+      "id": 27256,
+      "name": "The Legend of Zelda: Oracle of Ages",
+      "released": "2001-02-27",
+      "slug": "the-legend-of-zelda-oracle-of-ages"
+    },
+    {
+      "id": 27418,
+      "name": "The Legend of Zelda: The Minish Cap",
+      "released": "2004-11-04",
+      "slug": "the-legend-of-zelda-the-minish-cap"
+    },
+    {
+      "id": 27023,
+      "name": "The Legend of Zelda: Phantom Hourglass",
+      "released": "2007-10-01",
+      "slug": "the-legend-of-zelda-phantom-hourglass"
+    },
+    {
+      "id": 23850,
+      "name": "The Legend of Zelda: Spirit Tracks",
+      "released": "2009-12-07",
+      "slug": "the-legend-of-zelda-spirit-tracks"
+    },
+    {
+      "id": 27255,
+      "name": "The Legend of Zelda: Oracle of Seasons",
+      "released": "2001-02-27",
+      "slug": "the-legend-of-zelda-oracle-of-seasons"
+    },
+    {
+      "id": 27975,
+      "name": "The Legend of Zelda: The Wind Waker HD",
+      "released": "2013-08-08",
+      "slug": "the-legend-of-zelda-the-wind-waker-hd"
+    },
+    {
+      "id": 739635,
+      "name": "The Legend of Zelda: The Missing Link",
+      "released": "2021-07-30",
+      "slug": "the-legend-of-zelda-the-missing-link"
+    },
+    {
+      "id": 25097,
+      "name": "The Legend of Zelda: Ocarina of Time",
+      "released": "1998-11-21",
+      "slug": "the-legend-of-zelda-ocarina-of-time"
+    },
+    {
+      "id": 22511,
+      "name": "The Legend of Zelda: Breath of the Wild",
+      "released": "2017-03-03",
+      "slug": "the-legend-of-zelda-breath-of-the-wild"
+    },
+    {
+      "id": 27991,
+      "name": "The Legend of Zelda: Tri Force Heroes",
+      "released": "2015-10-23",
+      "slug": "the-legend-of-zelda-tri-force-heroes"
+    },
+    {
+      "id": 23768,
+      "name": "The Legend of Zelda: Majora's Mask 3D",
+      "released": "2015-02-13",
+      "slug": "the-legend-of-zelda-majoras-mask-3d"
+    },
+    {
+      "id": 27969,
+      "name": "The Legend of Zelda: Ocarina of Time 3D",
+      "released": "2011-06-19",
+      "slug": "the-legend-of-zelda-ocarina-of-time-3d"
+    },
+    {
+      "id": 24182,
+      "name": "The Legend of Zelda: Twilight Princess HD",
+      "released": "2016-03-04",
+      "slug": "the-legend-of-zelda-twilight-princess-hd"
+    },
+    {
+      "id": 56093,
+      "name": "The Legend of Zelda: Four Swords Adventures",
+      "released": "2004-03-18",
+      "slug": "the-legend-of-zelda-four-swords-adventures"
+    },
+    {
+      "id": 558974,
+      "name": "The Legend of Zelda: Skyward Sword HD",
+      "released": "2021-07-16",
+      "slug": "the-legend-of-zelda-skyward-sword-hd"
+    },
+    {
+      "id": 833946,
+      "name": "The Legend Of Zelda: A Link Between The Screens",
+      "released": "2022-08-10",
+      "slug": "the-legend-of-zelda-a-link-between-the-screens"
+    }
+  ]
+}
