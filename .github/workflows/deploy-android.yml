@@ -72,4 +72,5 @@ jobs:
           PLAY_CONFIG_JSON_PATH: "play_config.json"
         run: |
           cd android
+          chmod +x gradlew
           fastlane deploy_internal
