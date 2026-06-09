@@ -9,10 +9,19 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-firebase': ['firebase/app', 'firebase/firestore', 'firebase/functions', 'firebase/auth'],
-          'vendor-capacitor': ['@capacitor/core', '@capacitor/android', '@capacitor/app', '@capacitor/filesystem', '@capacitor/haptics', '@capacitor/keyboard', '@capacitor/share']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('firebase')) {
+              return 'vendor-firebase';
+            }
+            if (id.includes('@capacitor')) {
+              return 'vendor-capacitor';
+            }
+            return 'vendor';
+          }
         }
       }
     }
