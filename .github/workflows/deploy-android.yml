@@ -1,0 +1,75 @@
+name: Deploy Android to Google Play Internal
+
+on:
+  workflow_dispatch: # Permette di avviare l'azione manualmente da GitHub
+  push:
+    tags:
+      - 'v*' # Si avvia automaticamente quando si crea un tag (es. v1.0.0)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Web App
+        run: npm run build
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Ruby and Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      
+      - name: Install Fastlane
+        run: gem install fastlane
+
+      - name: Prepare Android Keystore and Properties
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          cd android
+          # Ricrea il file keystore.jks dal Base64
+          echo $KEYSTORE_BASE64 | base64 --decode > app/keystore.jks
+          # Ricrea il file keystore.properties
+          cat <<EOF > keystore.properties
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          storeFile=app/keystore.jks
+          EOF
+
+      - name: Prepare Google Play Config JSON
+        env:
+          PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG_JSON }}
+        run: |
+          echo "$PLAY_CONFIG_JSON" > android/fastlane/play_config.json
+
+      - name: Run Fastlane Deploy
+        env:
+          PLAY_CONFIG_JSON_PATH: "play_config.json"
+        run: |
+          cd android
+          fastlane deploy_internal

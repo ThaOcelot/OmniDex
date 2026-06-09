@@ -60,7 +60,7 @@ export default function SearchResults() {
     <div className="animate-fade-in" style={{ paddingBottom: '60px' }}>
       <div style={{ marginBottom: '40px', textAlign: 'center' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
-          <Search size={32} color={isAiSearch ? "#00f2fe" : "var(--accent-primary)"} />
+          <Search size={32} color={isAiSearch ? "var(--accent-ultra)" : "var(--accent-primary)"} />
           <h1 className="search-title" style={{ fontSize: '2rem', fontWeight: '800' }}>
             {isAiSearch ? "Il Sommelier consiglia:" : "Risultati per"} "<span className="text-gradient">{displayQuery}</span>"
           </h1>
@@ -74,7 +74,7 @@ export default function SearchResults() {
         {results.map((game) => (
           <div key={game.id} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {game.aiReason && (
-              <div style={{ padding: '12px 16px', background: 'rgba(0,242,254,0.1)', borderLeft: '3px solid #00f2fe', borderRadius: '4px', fontSize: '0.9rem', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.4' }}>
+              <div style={{ padding: '12px 16px', background: 'rgba(0,242,254,0.1)', borderLeft: '3px solid var(--accent-ultra)', borderRadius: '4px', fontSize: '0.9rem', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.4' }}>
                 " {game.aiReason} "
               </div>
             )}

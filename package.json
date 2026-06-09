@@ -1,7 +1,7 @@
 {
-  "name": "outer-games",
+  "name": "omni-dex",
   "private": true,
-  "version": "1.5.5",
+  "version": "1.6.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,11 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "vite build && gh-pages -d dist",
-    "postinstall": "node scripts/patch-admob.cjs"
+    "postinstall": "node scripts/patch-admob.cjs",
+    "bump-versioncode": "node scripts/increment_versioncode.js",
+    "preversion": "npm run bump-versioncode && git add android/app/build.gradle",
+    "postversion": "git push origin main && git push origin --tags",
+    "release": "npm version patch"
   },
   "dependencies": {
     "@capacitor-community/admob": "^8.0.0",
@@ -18,9 +22,12 @@
     "@capacitor/core": "^8.3.3",
     "@capacitor/filesystem": "^8.1.2",
     "@capacitor/haptics": "^8.0.2",
+    "@capacitor/keyboard": "^8.0.3",
     "@capacitor/local-notifications": "^8.2.0",
     "@capacitor/share": "^8.0.1",
-    "@google/generative-ai": "^0.24.1",
+    "@capawesome-team/capacitor-android-battery-optimization": "^8.0.1",
+    "@eslint-community/eslint-utils": "^4.9.1",
+    "algoliasearch": "^5.53.0",
     "commander": "^14.0.3",
     "cordova-plugin-purchase": "^13.16.0",
     "firebase": "^12.13.0",
@@ -32,6 +39,7 @@
     "react-router-dom": "^7.15.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.3.3",
     "@eslint/js": "^10.0.1",
     "@types/react": "^19.2.14",

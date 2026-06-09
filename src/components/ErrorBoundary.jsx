@@ -28,7 +28,7 @@ export class ErrorBoundary extends React.Component {
           </details>
           <button 
             onClick={() => window.location.href = '/'} 
-            style={{ marginTop: '20px', padding: '10px 20px', background: '#00f2fe', border: 'none', borderRadius: '5px', color: '#000', fontWeight: 'bold' }}
+            style={{ marginTop: '20px', padding: '10px 20px', background: 'var(--accent-ultra)', border: 'none', borderRadius: '5px', color: '#000', fontWeight: 'bold' }}
           >
             Torna alla Home
           </button>

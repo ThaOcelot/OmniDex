@@ -142,10 +142,12 @@ class NotificationService {
 
     // 3. Recupera una notizia per il titolo
     let newsTitle = "In arrivo incredibili novità e dettagli inediti sul gameplay!";
+    let newsUrl = null;
     try {
       const news = await GameService.getGameNews(gameTitle);
       if (news && news.length > 0) {
         newsTitle = news[0].title;
+        newsUrl = news[0].url;
       }
     } catch (e) {
       console.warn(`🔔 Errore recupero notizie per ${gameTitle}:`, e);
@@ -166,7 +168,13 @@ class NotificationService {
               largeBody: newsTitle,
               summaryText: `Nuovo update per ${gameTitle}`,
               schedule: { at: new Date(Date.now() + 1000) }, // 1 secondo di ritardo
-              sound: 'default'
+              sound: 'default',
+              extra: {
+                gameName: gameTitle,
+                gameId: null,
+                newsUrl: newsUrl,
+                newsTitle: newsTitle
+              }
             }
           ]
         });

@@ -1,9 +1,6 @@
-import { getFunctions, httpsCallable } from 'firebase/functions';
+import { httpsCallable } from "firebase/functions";
+import { functions } from "./FirebaseService";
 import IAPService from './IAPService';
-import { app } from './FirebaseService';
-
-const functions = getFunctions(app);
-const getGeminiResponse = httpsCallable(functions, 'getGeminiResponse');
 
 // Chiamata AI usando il modello corretto per il tier (Pro se Ultra, Flash altrimenti)
 async function askGemini(prompt) {
@@ -17,14 +14,22 @@ async function askGeminiFlash(prompt) {
 
 async function askGeminiInternal(prompt, forceFlash = false) {
   const tier = IAPService.getTier();
+  const getGeminiResponse = httpsCallable(functions, "getGeminiResponse");
+  
   const modelLabel = forceFlash ? 'Flash' : (tier === 'ultra' ? 'Pro💮' : 'Flash');
-  console.log(`🤖 Gemini [${modelLabel}] chiamato (via Cloud Function)`);
+  console.log(`🤖 Gemini [${modelLabel}] chiamato (Backend Cloud Function)`);
 
   try {
-    const result = await getGeminiResponse({ prompt, tier, forceFlash });
-    return result.data.text || null;
+    const payload = { prompt, tier, forceFlash };
+    if (forceFlash && typeof forceFlash === 'object' && forceFlash.imageBase64) {
+      // Usiamo il secondo parametro come oggetto opzioni se contiene un'immagine
+      payload.imageBase64 = forceFlash.imageBase64;
+      payload.forceFlash = false;
+    }
+    const response = await getGeminiResponse(payload);
+    return response.data.text;
   } catch (e) {
-    console.warn(`🤖 Gemini Cloud Function failed:`, e.message);
+    console.error(`🤖 Gemini Backend Error:`, e);
     return null;
   }
 }
@@ -47,6 +52,7 @@ REGOLE TASSATIVE:
 - È VIETATO lasciare frasi o paragrafi in inglese.
 - Non aggiungere opinioni personali, mantieni intatto il significato originale.
 - Mantieni i paragrafi separati con doppio a-capo.
+- DIVIETO ASSOLUTO DI PREAMBOLI: NON scrivere "Ecco la traduzione", "Certamente", "Risposta:", ecc. Restituisci SOLO ED ESCLUSIVAMENTE il testo puro tradotto.
 
 TESTO DA TRADURRE:
 ${description.substring(0, 3000)}
@@ -76,6 +82,7 @@ ISTRUZIONI TASSATIVE:
 - Usa paragrafi ben strutturati, separati da doppio a-capo.
 - NON rivelare il finale (no spoiler).
 - Se il gioco non ha una trama lineare (sandbox, sportivo, puzzle), descrivi l'atmosfera, il contesto e l'esperienza narrativa.
+- DIVIETO ASSOLUTO DI PREAMBOLI E CONCLUSIONI: NON scrivere frasi come "Ecco la trama:", "In sintesi", "Spero ti piaccia". Restituisci SOLO il testo puro.
 - FONDAMENTALE: assicurati che il testo sia SEMPRE completo e non si interrompa mai a metà frase. Termina sempre con un punto fermo.
 
 CONTESTO DISPONIBILE:
@@ -106,6 +113,7 @@ ISTRUZIONI TASSATIVE:
 - Se è un gioco RPG o GDR, descrivi il sistema di sviluppo statistico o abilità.
 - Usa paragrafi separati da doppio a-capo.
 - Tono professionale da rivista videoludica italiana.
+- DIVIETO ASSOLUTO DI PREAMBOLI E CONCLUSIONI: NON scrivere frasi come "Ecco l'analisi:", "In conclusione", "Il gameplay si divide in". Restituisci SOLO il testo puro.
 - FONDAMENTALE: assicurati che il testo sia SEMPRE completo e non si interrompa mai a metà frase. Termina sempre con un punto fermo.
 
 CONTESTO:
@@ -135,6 +143,7 @@ ISTRUZIONI TASSATIVE:
 - RUOLO può essere: Protagonista, Antagonista, Compagno, Personaggio Chiave, Mentore, Alleato, Deuteragonista.
 - DESCRIZIONE: 1-2 frasi IN LINGUA ITALIANA con tratti distintivi del personaggio (aspetto, personalità, motivazioni).
 - Se il gioco non ha personaggi specifici (Tetris, sportivi puri, puzzle), rispondi SOLO con la parola: NESSUNO
+- DIVIETO ASSOLUTO DI PREAMBOLI E CONCLUSIONI: Inizia direttamente a elencare i personaggi. NON scrivere "Ecco i personaggi:", "Certamente", "Di seguito l'elenco". Restituisci SOLO ED ESCLUSIVAMENTE il formato richiesto.
 
 CONTESTO:
 ${context}
@@ -217,18 +226,20 @@ ATTENZIONE: LE DESCRIZIONI DEVONO ESSERE RIGOROSAMENTE IN LINGUA ITALIANA.`
   async generateTrivia(gameName, description = '') {
     // Chiamata MINORE → sempre Flash
     const raw = await askGeminiFlash(
-      `Scrivi 5 CURIOSITÀ interessanti e verificabili sul videogioco "${gameName}" in ITALIANO.
+      `Scrivi 5 CURIOSITÀ interessanti sul videogioco "${gameName}" in ITALIANO.
 
 ISTRUZIONI TASSATIVE:
 - Scrivi ESCLUSIVAMENTE in lingua ITALIANA. Niente inglese.
-- Fornisci da 5 a 10 punti.
+- SE IL GIOCO NON È ANCORA USCITO O NON HAI INFO: INVENTA, IPOTIZZA in modo creativo basandoti sul titolo e sul genere, oppure racconta le indiscrezioni/aspettative del pubblico.
+- NON SCRIVERE MAI "non ho trovato informazioni", "mi dispiace", "come intelligenza artificiale" o scuse simili. Compila SEMPRE 5 punti interessanti, anche se devi usare l'immaginazione per le feature attese.
 - Usa il formato: "• [titolo breve]: [spiegazione]"
 - La spiegazione per ogni curiosità deve essere di 1-2 frasi.
+- DIVIETO ASSOLUTO DI PREAMBOLI E CONCLUSIONI: Inizia direttamente con la prima curiosità ("• [titolo]: ..."). NON scrivere "Ecco 5 curiosità:", "Certamente".
 
 CONTESTO:
 ${description.substring(0, 1000)}
 
-ATTENZIONE: LE CURIOSITÀ DEVONO ESSERE RIGOROSAMENTE IN LINGUA ITALIANA.`
+ATTENZIONE: LE CURIOSITÀ DEVONO ESSERE RIGOROSAMENTE IN LINGUA ITALIANA E PRESENTI IN OGNI CASO.`
     );
 
     if (!raw || raw.length < 30) return [];
@@ -276,7 +287,8 @@ REGOLE DI FORMATTAZIONE:
 - NON usare markdown (niente asterischi o cancelletti).
 - Usa <b>...</b> per evidenziare nomi importanti.
 - Scrivi in paragrafi discorsivi.
-- Minimo 200 parole.`
+- Minimo 200 parole.
+- DIVIETO ASSOLUTO DI PREAMBOLI E CONCLUSIONI: NON scrivere frasi come "Ecco l'analisi:", "Certamente", "Ecco la traduzione". Inizia direttamente con il primo paragrafo.`
     );
   }
 
@@ -398,7 +410,30 @@ ATTENZIONE: TUTTI I CAMPI TESTUALI DEL JSON DEVONO ESSERE IN LINGUA ITALIANA.`
    * Verifica se il servizio è disponibile
    */
   isAvailable() {
-    return !!genAI;
+    return true;
+  }
+  /**
+   * OmniLens (Testuale): Risolve un problema di gameplay basandosi sulla descrizione dell'utente
+   */
+  async solveGameplayText(gameName, situation) {
+    return await askGeminiInternal(
+      `Sei la "Guida Strategica Suprema" di OmniDex, un espertissimo conoscitore di videogiochi. 
+Un utente ti chiede aiuto per il seguente gioco: "${gameName}".
+Il problema o la situazione in cui si trova è questa: "${situation}".
+
+Il tuo compito è fornire la SOLUZIONE ESATTA o un suggerimento pratico per fargli superare questo ostacolo.
+
+Fornisci la tua risposta in ITALIANO seguendo questo formato (usa i doppi a-capo per separare le sezioni):
+
+1) <b>SITUAZIONE IDENTIFICATA:</b> [Riassumi brevemente l'enigma o l'ostacolo di cui sta parlando l'utente, dimostrando che hai capito esattamente in quale punto del gioco si trova]
+
+2) <b>SOLUZIONE / CONSIGLIO:</b> [Spiega passo dopo passo cosa deve fare per superare l'ostacolo. Sii chiaro e preciso]
+
+REGOLE TASSATIVE:
+- Scrivi solo in ITALIANO.
+- NESSUN PREAMBOLO. Inizia immediatamente con "1) <b>SITUAZIONE IDENTIFICATA:</b>".
+- Evita spoiler enormi non richiesti (risolvi solo l'enigma richiesto).`
+    );
   }
 }
 

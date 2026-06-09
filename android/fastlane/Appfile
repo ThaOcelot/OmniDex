@@ -1,0 +1,2 @@
+json_key_file(ENV["PLAY_CONFIG_JSON_PATH"] || "play_config.json")
+package_name("com.omnidex.myapp")

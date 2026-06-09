@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp, increment, initializeFirestore, persistentLocalCache } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp, increment, initializeFirestore, persistentLocalCache, collection, query, where, getDocs, documentId } from "firebase/firestore";
+import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCSNlFH72VJtcfZkrxdtjmqfLqfzMfZOU8",
@@ -13,6 +14,7 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 const db = initializeFirestore(app, { localCache: persistentLocalCache() });
+export const functions = getFunctions(app, 'europe-west3'); // Assicuriamoci di puntare a Frankfurt
 
 class FirebaseService {
   /**
@@ -128,6 +130,35 @@ class FirebaseService {
       console.warn("Firebase Write Error (Votes):", e);
       return false;
     }
+  }
+
+  /**
+   * Verifica in batch quali ID di gioco esistono già in Firestore
+   */
+  async checkGamesExistInFirestore(gameIds) {
+    const existingIds = new Set();
+    if (!gameIds || gameIds.length === 0) return existingIds;
+    
+    try {
+      // Spezziamo la lista in blocchi di 30 (limite dell'operatore 'in' di Firestore)
+      for (let i = 0; i < gameIds.length; i += 30) {
+        const chunk = gameIds.slice(i, i + 30).map(String);
+        
+        const q = query(
+          collection(db, "games"),
+          where(documentId(), "in", chunk)
+        );
+        
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(docSnap => {
+          existingIds.add(parseInt(docSnap.id));
+        });
+      }
+    } catch (e) {
+      console.warn("Firebase Batch Exist Check Error:", e);
+    }
+    
+    return existingIds;
   }
 }
 

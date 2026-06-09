@@ -6,7 +6,8 @@ import Home from './pages/Home';
 import GameDetails from './pages/GameDetails';
 import SearchResults from './pages/SearchResults';
 import Favorites from './pages/Favorites';
-import Upcoming from './pages/Upcoming';
+import ReleaseRadar from './pages/ReleaseRadar';
+import ChangelogPopup from './components/ChangelogPopup';
 import CharacterDetails from './pages/CharacterDetails';
 import SettingsPopup from './components/SettingsPopup';
 import FloatingSearchBar from './components/FloatingSearchBar';
@@ -55,7 +56,6 @@ function SystemHandler() {
           navigate(`/game/${encodeURIComponent(gameName)}`, {
             state: {
               game: gameId ? { id: gameId } : undefined,
-              // Se la notifica ha una notizia specifica, la passiamo per aprirla direttamente
               openNewsUrl: newsUrl || null,
               openNewsTitle: newsTitle || null,
             }
@@ -64,8 +64,38 @@ function SystemHandler() {
       });
     };
 
+    // --- LOGICA NOTIFICHE PERIODICA E AVVISO BACKGROUND ---
+    const checkNotificationPermissions = async () => {
+      if (window.Capacitor?.isNativePlatform?.()) {
+        try {
+          const status = await LocalNotifications.checkPermissions();
+          if (status.display !== 'granted') {
+            const lastPrompt = localStorage.getItem('last_notification_prompt');
+            const now = Date.now();
+            const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+            
+            // Se non abbiamo mai chiesto o sono passati 7 giorni
+            if (!lastPrompt || (now - parseInt(lastPrompt, 10)) > SEVEN_DAYS_MS) {
+              localStorage.setItem('last_notification_prompt', now.toString());
+              
+              const granted = await NotificationService.requestPermissions();
+              if (granted) {
+                // Mostra un avviso informativo per il background play invece di forzarlo
+                setTimeout(() => {
+                  alert("Permessi concessi! 🔔\n\nAttenzione: se vuoi ricevere le notifiche in modo tempestivo, ricordati di abilitare l'esecuzione in background o rimuovere le ottimizzazioni batteria per OmniDex nelle impostazioni del telefono.");
+                }, 1000);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Impossibile controllare i permessi notifiche:", e);
+        }
+      }
+    };
+
     handleBackButton();
     handleNotificationTaps();
+    checkNotificationPermissions();
 
     return () => {
       CapApp.removeAllListeners();
@@ -97,8 +127,16 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handleBannerHeight = (e) => setBannerHeight(e.detail || 60);
+    const handleBannerHeight = (e) => {
+      const height = e.detail || 60;
+      setBannerHeight(height);
+      document.documentElement.style.setProperty('--banner-height', `${IAPService.isPro() ? 0 : height}px`);
+    };
     window.addEventListener('ad-banner-height', handleBannerHeight);
+    
+    // Inizializza la variabile CSS al mount
+    document.documentElement.style.setProperty('--banner-height', `${IAPService.isPro() ? 0 : 60}px`);
+    
     return () => window.removeEventListener('ad-banner-height', handleBannerHeight);
   }, []);
 
@@ -107,7 +145,7 @@ function App() {
       <SystemHandler />
       <WelcomePopup />
       {isSettingsOpen && <SettingsPopup onClose={() => setIsSettingsOpen(false)} />}
-      <div className="app-wrapper" style={{ paddingBottom: isPro ? '0' : `${bannerHeight}px` }}>
+      <div className="app-wrapper" style={{ paddingBottom: 'calc(var(--banner-height, 0px) + 80px)' }}>
         <Navbar />
         <FloatingSearchBar />
         <main className="main-content container">
@@ -118,7 +156,7 @@ function App() {
               <Route path="/game/:gameName" element={<GameDetails />} />
               <Route path="/character/:characterName" element={<CharacterDetails />} />
               <Route path="/favorites" element={<Favorites />} />
-              <Route path="/upcoming" element={<Upcoming />} />
+              <Route path="/release-radar" element={<ReleaseRadar />} />
             </Routes>
           </ErrorBoundary>
         </main>

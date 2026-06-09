@@ -10,6 +10,7 @@ import { db } from '../services/db';
 import NewsCard from '../components/NewsCard';
 import LoadingScreen from '../components/LoadingScreen';
 import Modal from '../components/Modal';
+import StatusBadge from '../components/StatusBadge';
 import { LOADING_MESSAGES } from '../data/loadingMessages';
 import NotificationService from '../services/NotificationService';
 import HapticService from '../services/HapticService';
@@ -29,6 +30,7 @@ export default function GameDetails() {
   const [newsData, setNewsData] = useState([]);
   const [error, setError] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [gameStatus, setGameStatus] = useState(null);
   const [activeTab, setActiveTab] = useState('info');
 
   // Modal States
@@ -38,7 +40,7 @@ export default function GameDetails() {
   const [newsSummary, setNewsSummary] = useState(null);
   const [modalLoading, setModalLoading] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
+  const [loadingMessage, setLoadingMessage] = useState(() => LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)]);
   const [selectedScreenshotIndex, setSelectedScreenshotIndex] = useState(null);
   const [zoomScale, setZoomScale] = useState(1);
   const [touchStartX, setTouchStartX] = useState(0);
@@ -71,11 +73,14 @@ export default function GameDetails() {
   const [votesLoading, setVotesLoading] = useState(false);
 
   useEffect(() => {
-    if (modalLoading) {
-      const msg = LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)];
-      setLoadingMessage(msg);
+    let interval;
+    if (loading || modalLoading) {
+      interval = setInterval(() => {
+        setLoadingMessage(LOADING_MESSAGES[Math.floor(Math.random() * LOADING_MESSAGES.length)]);
+      }, 3000);
     }
-  }, [modalLoading]);
+    return () => clearInterval(interval);
+  }, [loading, modalLoading]);
 
   const decodedName = decodeURIComponent(gameName);
 
@@ -93,6 +98,8 @@ export default function GameDetails() {
       if (info) {
         const isFav = await db.isFavorite(info.id);
         setIsFavorite(isFav);
+        const libGame = await db.getLibraryGame(info.id);
+        setGameStatus(libGame?.status || null);
       }
       GameService.getGameNews(decodedName).then(setNewsData).catch(console.error);
     } catch (err) {
@@ -127,25 +134,33 @@ export default function GameDetails() {
 
   // Quando le notizie si caricano e c'è un deep-link da notifica, apri quella notizia
   useEffect(() => {
-    if (!openNewsUrl || newsData.length === 0) return;
+    if (!openNewsUrl) return;
+
+    // Se i dati non sono ancora stati scaricati, attendi.
+    if (loading || !gameData) return;
 
     // Switcha al tab notizie
     setActiveTab('news');
 
-    // Cerca la notizia specifica nella lista caricata
-    const targetNews = newsData.find(n => n.url === openNewsUrl);
-    const newsToOpen = targetNews || {
-      title: openNewsTitle || 'Notizia',
-      url: openNewsUrl,
-      source: '',
-      date: '',
-      summary: null
-    };
+    // Mettiamo un piccolo timeout per essere certi che il rendering del tab sia avvenuto
+    setTimeout(() => {
+      const targetNews = newsData?.find(n => n.url === openNewsUrl);
+      const newsToOpen = targetNews || {
+        title: openNewsTitle || 'Notizia',
+        url: openNewsUrl,
+        source: '',
+        date: '',
+        summary: null
+      };
 
-    // Simula il click sulla notizia per aprire il modal con il riassunto AI
-    const fakeEvent = { preventDefault: () => {} };
-    handleNewsClick(newsToOpen, fakeEvent);
-  }, [newsData, openNewsUrl]);
+      // Simula il click sulla notizia per aprire il modal con il riassunto AI
+      const fakeEvent = { preventDefault: () => {} };
+      handleNewsClick(newsToOpen, fakeEvent);
+
+      // Pulisce lo state per non riattivare l'apertura al rerender
+      navigate(location.pathname, { replace: true, state: { ...location.state, openNewsUrl: null } });
+    }, 500);
+  }, [openNewsUrl, newsData, loading, gameData]);
 
   // Caricamento dei voti dei personaggi quando si apre il tab
   useEffect(() => {
@@ -167,22 +182,32 @@ export default function GameDetails() {
 
   const handleToggleFavorite = async () => {
     if (!gameData) return;
-    if (isFavorite) {
-      await db.removeFavorite(gameData.id);
-      setIsFavorite(false);
-      await HapticService.light();
-    } else {
+    const newValue = !isFavorite;
+    setIsFavorite(newValue);
+    
+    await HapticService.medium();
+    
+    if (newValue) {
       await db.addFavorite({
         id: gameData.id,
         title: gameData.title,
         cover: gameData.cover,
         rating: gameData.rating,
         genres: gameData.genres || [],
-        status: 'backlog',
-      });
+        status: gameStatus || 'backlog',
+      }, true);
       setIsFavorite(true);
+      if (!gameStatus) setGameStatus('backlog');
       await HapticService.success();
       NotificationService.initFavoriteLatestNews(gameData.id, gameData.title);
+    } else {
+      // Se non è più preferito ma ha uno stato, lo manteniamo in libreria rimuovendo solo il flag preferito
+      if (gameStatus) {
+        await db.addFavorite(gameData, false);
+      } else {
+        await db.removeFavorite(gameData.id);
+      }
+      setIsFavorite(false);
     }
   };
 
@@ -209,32 +234,7 @@ export default function GameDetails() {
 
   // ─── Early returns ──────────────────────────────────────────────────────────
   if (loading) {
-    return (
-      <div className="game-details-page animate-fade-in" style={{ padding: 'clamp(15px, 4vw, 30px)', maxWidth: '1400px', margin: '0 auto' }}>
-        <div style={{ display: 'flex', gap: '6px', marginBottom: '24px' }}>
-          <div className="skeleton" style={{ width: '120px', height: '20px', borderRadius: '4px' }} />
-        </div>
-        <div className="glass-panel" style={{ padding: 'clamp(20px, 5vw, 40px)', marginBottom: '30px', minHeight: '400px', display: 'flex', flexDirection: 'column' }}>
-          <div className="skeleton" style={{ width: '40%', height: '48px', marginBottom: '16px', borderRadius: '8px' }} />
-          <div className="skeleton" style={{ width: '20%', height: '24px', marginBottom: '32px', borderRadius: '8px' }} />
-          <div className="skeleton" style={{ width: '100%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
-          <div className="skeleton" style={{ width: '90%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
-          <div className="skeleton" style={{ width: '95%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
-          <div className="skeleton" style={{ width: '80%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
-        </div>
-        <div style={{ display: 'flex', gap: '8px', marginBottom: '28px' }}>
-          <div className="skeleton" style={{ width: '100px', height: '40px', borderRadius: '20px' }} />
-          <div className="skeleton" style={{ width: '100px', height: '40px', borderRadius: '20px' }} />
-          <div className="skeleton" style={{ width: '100px', height: '40px', borderRadius: '20px' }} />
-        </div>
-        <div className="glass-panel" style={{ padding: '24px', minHeight: '200px' }}>
-          <div className="skeleton" style={{ width: '30%', height: '24px', marginBottom: '20px', borderRadius: '8px' }} />
-          <div className="skeleton" style={{ width: '100%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
-          <div className="skeleton" style={{ width: '95%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
-          <div className="skeleton" style={{ width: '90%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
-        </div>
-      </div>
-    );
+    return <LoadingScreen title={loadingMessage} />;
   }
 
   if (!gameData && !error) {
@@ -358,8 +358,8 @@ export default function GameDetails() {
         IAPService.addExtraAiToken();
         // Aggiorna lo stato localmente per ricaricare i dati o rimuovere il blocco
         setGameData(prev => ({ ...prev, _aiLimitReached: false }));
-        // Ricarica i dati per sicurezza o solo il tab corrente
-        fetchData(); 
+        // Ricarica forzatamente i dati ignorando la cache bloccata
+        handleRegenerate(); 
       },
       (errorMsg) => {
         setLoadingAd(false);
@@ -483,13 +483,42 @@ export default function GameDetails() {
                   </span>
                 )}
               </div>
+              
+              {gameData._aiLimitReached && (
+                <div className="animate-fade-in" style={{ marginTop: '16px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <button 
+                    onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))} 
+                    className="btn-primary" 
+                    style={{ background: 'var(--accent-ultra-gradient)', color: '#002538', padding: '8px 16px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Sparkles size={16} /> Scopri Ultra
+                  </button>
+                  {tier === 'free' && (
+                    <button 
+                      onClick={handleWatchAdForTokens} 
+                      disabled={loadingAd} 
+                      style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.05)', color: 'var(--text-primary)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', cursor: loadingAd ? 'wait' : 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      {loadingAd ? <Loader2 size={16} className="spin" /> : '📺 Guarda Pubblicità (+1)'}
+                    </button>
+                  )}
+                </div>
+              )}
+
 
             </div>
             <div className="hero-stats" style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-end' }}>
-              <button className="btn-icon" onClick={handleToggleFavorite}
-                style={{ color: isFavorite ? 'var(--accent-secondary)' : 'var(--text-primary)', border: `1px solid ${isFavorite ? 'var(--accent-secondary)' : 'var(--glass-border)'}` }}>
-                <Heart fill={isFavorite ? 'var(--accent-secondary)' : 'none'} />
-              </button>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <StatusBadge 
+                  status={gameStatus} 
+                  gameId={gameData.id} 
+                  gameData={gameData} 
+                  onChange={(s) => setGameStatus(s)} 
+                />
+                <button className="btn-icon" onClick={handleToggleFavorite}
+                  title="Aggiungi ai Preferiti"
+                  style={{ color: isFavorite ? 'var(--accent-secondary)' : 'var(--text-primary)', border: `1px solid ${isFavorite ? 'var(--accent-secondary)' : 'var(--glass-border)'}` }}>
+                  <Heart fill={isFavorite ? 'var(--accent-secondary)' : 'none'} />
+                </button>
+              </div>
               <button className="btn-icon" onClick={handleShare}
                 style={{ color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }} title="Condividi">
                 <Share2 size={18} />
@@ -553,16 +582,16 @@ export default function GameDetails() {
 
       {/* Matchmaker AI Banner */}
       {!gameData._aiLimitReached && (
-        <div className="glass-panel" style={{ padding: '16px 20px', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'linear-gradient(to right, rgba(0, 242, 254, 0.05), rgba(79, 172, 254, 0.05))', borderLeft: '3px solid #00f2fe' }}>
+        <div className="glass-panel" style={{ padding: '16px 20px', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'linear-gradient(to right, rgba(0, 242, 254, 0.05), rgba(79, 172, 254, 0.05))', borderLeft: '3px solid var(--accent-ultra)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Sparkles size={20} color="#00f2fe" />
+              <Sparkles size={20} color="var(--accent-ultra)" />
               <strong style={{ color: 'var(--text-primary)', fontSize: '1rem' }}>Matchmaker AI</strong>
             </div>
             {!compatibility && !loadingCompatibility && (
               <button 
                 onClick={handleCompatibilityCheck}
-                style={{ background: 'rgba(0, 242, 254, 0.1)', border: '1px solid #00f2fe', color: '#00f2fe', padding: '6px 14px', borderRadius: 'var(--radius-full)', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                style={{ background: 'rgba(0, 242, 254, 0.1)', border: '1px solid var(--accent-ultra)', color: 'var(--accent-ultra)', padding: '6px 14px', borderRadius: 'var(--radius-full)', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
               >
                 Analizza Compatibilità
                 {tier !== 'ultra' && <Lock size={12} />}
@@ -817,7 +846,7 @@ export default function GameDetails() {
               <div style={{ display: 'flex', gap: '15px', overflowX: 'auto', paddingBottom: '10px' }}>
                 {gameData.dlc.map((d, i) => (
                   <div key={i} onClick={() => navigate(`/game/${encodeURIComponent(d.name)}`, { state: { game: { id: d.id } } })} style={{ minWidth: '200px', cursor: 'pointer', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--glass-border)', background: 'var(--bg-glass)', transition: 'all 0.2s' }}>
-                    {d.cover && <img src={d.cover} alt={d.name} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />}
+                    {d.cover && <img src={d.cover} alt={d.name} loading="lazy" style={{ width: '100%', height: '120px', objectFit: 'cover' }} />}
                     <div style={{ padding: '12px' }}>
                       <div style={{ fontSize: '0.85rem', fontWeight: '600', lineHeight: '1.3' }}>{d.name}</div>
                       {d.released && <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>{new Date(d.released).toLocaleDateString('it-IT')}</div>}
@@ -835,7 +864,7 @@ export default function GameDetails() {
               <div style={{ display: 'flex', gap: '15px', overflowX: 'auto', paddingBottom: '10px' }}>
                 {gameData.gameSeries.map((s, i) => (
                   <div key={i} onClick={() => navigate(`/game/${encodeURIComponent(s.name)}`, { state: { game: { id: s.id } } })} style={{ minWidth: '200px', cursor: 'pointer', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--glass-border)', background: 'var(--bg-glass)', transition: 'all 0.2s' }}>
-                    {s.cover && <img src={s.cover} alt={s.name} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />}
+                    {s.cover && <img src={s.cover} alt={s.name} loading="lazy" style={{ width: '100%', height: '120px', objectFit: 'cover' }} />}
                     <div style={{ padding: '12px' }}>
                       <div style={{ fontSize: '0.85rem', fontWeight: '600', lineHeight: '1.3' }}>{s.name}</div>
                       <div style={{ display: 'flex', gap: '8px', marginTop: '6px', alignItems: 'center' }}>
@@ -856,7 +885,7 @@ export default function GameDetails() {
               <div style={{ display: 'flex', gap: '15px', overflowX: 'auto', paddingBottom: '10px' }}>
                 {gameData.suggested.map((s, i) => (
                   <div key={i} onClick={() => navigate(`/game/${encodeURIComponent(s.name)}`, { state: { game: { id: s.id } } })} style={{ minWidth: '200px', cursor: 'pointer', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--glass-border)', background: 'var(--bg-glass)', transition: 'all 0.2s' }}>
-                    {s.cover && <img src={s.cover} alt={s.name} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />}
+                    {s.cover && <img src={s.cover} alt={s.name} loading="lazy" style={{ width: '100%', height: '120px', objectFit: 'cover' }} />}
                     <div style={{ padding: '12px' }}>
                       <div style={{ fontSize: '0.85rem', fontWeight: '600', lineHeight: '1.3' }}>{s.name}</div>
                       <div style={{ display: 'flex', gap: '8px', marginTop: '6px', alignItems: 'center' }}>
@@ -943,12 +972,12 @@ export default function GameDetails() {
           <div style={{ fontSize: '3.5rem', marginBottom: '20px', filter: 'drop-shadow(0 0 20px rgba(0, 242, 254, 0.4))' }}>💎</div>
           <h2 style={{ marginBottom: '16px', color: 'var(--text-primary)', fontSize: '1.8rem' }}>Limite Giornaliero Raggiunto</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', maxWidth: '500px', margin: '0 auto 24px' }}>
-            Hai esaurito le tue analisi gratuite per oggi. Passa al piano <strong style={{ color: '#00f2fe' }}>Ultra</strong> per sbloccare richieste illimitate e accedere a <b>Gemini 2.5 Pro</b>, oppure guarda una pubblicità per sbloccare +1 analisi.
+            Hai esaurito le tue analisi gratuite per oggi. Passa al piano <strong style={{ color: 'var(--accent-ultra)' }}>Ultra</strong> per sbloccare richieste illimitate e accedere a <b>Gemini 2.5 Pro</b>, oppure guarda una pubblicità per sbloccare +1 analisi.
           </p>
           <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button 
               className="btn-primary" 
-              style={{ padding: '14px 28px', fontSize: '1.1rem', fontWeight: 'bold', background: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)', color: '#002538', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)' }}
+              style={{ padding: '14px 28px', fontSize: '1.1rem', fontWeight: 'bold', background: 'var(--accent-ultra-gradient)', color: '#002538', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)' }}
               onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))}
             >
               Scopri OmniDex Ultra
@@ -973,7 +1002,7 @@ export default function GameDetails() {
             <div style={{ display: 'flex', gap: '10px' }}>
               <button 
                 onClick={handlePreviousSummary} 
-                style={{ background: 'rgba(0,242,254,0.1)', border: '1px solid #00f2fe', borderRadius: 'var(--radius-full)', padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', color: '#00f2fe', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
+                style={{ background: 'rgba(0,242,254,0.1)', border: '1px solid var(--accent-ultra)', borderRadius: 'var(--radius-full)', padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-ultra)', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s' }}
               >
                 <Sparkles size={14} /> Cosa è successo prima? {tier !== 'ultra' && <Lock size={12} />}
               </button>
@@ -987,14 +1016,14 @@ export default function GameDetails() {
           </div>
           
           {loadingPrevious && (
-            <div style={{ padding: '20px', background: 'rgba(0,242,254,0.05)', borderLeft: '3px solid #00f2fe', borderRadius: '4px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
+            <div style={{ padding: '20px', background: 'rgba(0,242,254,0.05)', borderLeft: '3px solid var(--accent-ultra)', borderRadius: '4px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--text-muted)' }}>
               <Loader2 size={18} className="spin" /> Generazione riassunto saga in corso...
             </div>
           )}
           
           {previousSummary && (
-            <div className="animate-fade-in" style={{ padding: '20px', background: 'rgba(0,242,254,0.05)', borderLeft: '3px solid #00f2fe', borderRadius: '4px', marginBottom: '24px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: '#00f2fe', fontWeight: 'bold' }}>
+            <div className="animate-fade-in" style={{ padding: '20px', background: 'rgba(0,242,254,0.05)', borderLeft: '3px solid var(--accent-ultra)', borderRadius: '4px', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px', color: 'var(--accent-ultra)', fontWeight: 'bold' }}>
                 <BookOpen size={16} /> Riassunto Precedenti
                 <button onClick={() => setPreviousSummary(null)} style={{ marginLeft: 'auto', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><X size={16}/></button>
               </div>
@@ -1239,7 +1268,7 @@ export default function GameDetails() {
                 style={{ width: '48px', height: '48px', objectFit: 'contain' }} 
               />
             </div>
-            <p style={{ marginTop: '24px', color: 'var(--text-secondary)', fontStyle: 'italic', maxWidth: '300px' }}>
+            <p key={loadingMessage} className="animate-fade-in" style={{ marginTop: '24px', color: 'var(--text-secondary)', fontStyle: 'italic', maxWidth: '300px' }}>
               "{loadingMessage}"
             </p>
           </div>
@@ -1295,7 +1324,7 @@ export default function GameDetails() {
                 style={{ width: '48px', height: '48px', objectFit: 'contain' }} 
               />
             </div>
-            <p style={{ marginTop: '24px', color: 'var(--text-secondary)', fontStyle: 'italic', maxWidth: '400px' }}>
+            <p key={loadingMessage} className="animate-fade-in" style={{ marginTop: '24px', color: 'var(--text-secondary)', fontStyle: 'italic', maxWidth: '400px' }}>
               "{loadingMessage}"
             </p>
           </div>

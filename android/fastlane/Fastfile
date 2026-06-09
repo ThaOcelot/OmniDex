@@ -1,0 +1,29 @@
+default_platform(:android)
+
+platform :android do
+  desc "Incrementa il versionCode e pubblica una nuova versione nel canale Internal"
+  lane :deploy_internal do
+    
+    # (Il versionCode viene incrementato in locale dal tuo PC prima del push)
+
+    # 2. Compila l'Android App Bundle (AAB) in modalità Release
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+
+    # Copiamo le note di rilascio
+    sh("mkdir -p metadata/android/it-IT/changelogs")
+    sh("cp ../../RELEASE_NOTES.txt metadata/android/it-IT/changelogs/default.txt")
+    sh("mkdir -p metadata/android/en-US/changelogs")
+    sh("cp ../../RELEASE_NOTES.txt metadata/android/en-US/changelogs/default.txt")
+
+    # 3. Carica su Google Play Console nel canale 'internal' (Test Interno)
+    upload_to_play_store(
+      track: 'internal',
+      aab: 'app/build/outputs/bundle/release/app-release.aab',
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+  end
+end

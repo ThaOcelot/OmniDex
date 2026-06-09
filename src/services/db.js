@@ -84,11 +84,13 @@ export const db = {
       return [];
     }
   },
-  async addFavorite(game) {
+  async addFavorite(game, isFav = true) {
     if (!game || !game.id) return null;
     try {
       const database = await dbPromise;
-      return await database.put(FAV_STORE, { ...game, addedAt: Date.now() });
+      // Preserve existing status if it exists
+      const existing = await database.get(FAV_STORE, game.id);
+      return await database.put(FAV_STORE, { ...existing, ...game, isFavorite: isFav, addedAt: existing?.addedAt || Date.now() });
     } catch (e) {
       console.warn("❌ db.addFavorite failed:", e);
       return null;
@@ -109,10 +111,30 @@ export const db = {
     try {
       const database = await dbPromise;
       const fav = await database.get(FAV_STORE, id);
-      return !!fav;
+      return fav && fav.isFavorite === true;
     } catch (e) {
       console.warn("❌ db.isFavorite failed:", e);
       return false;
+    }
+  },
+  async isInLibrary(id) {
+    if (!id) return false;
+    try {
+      const database = await dbPromise;
+      const fav = await database.get(FAV_STORE, id);
+      return !!fav;
+    } catch (e) {
+      console.warn("❌ db.isInLibrary failed:", e);
+      return false;
+    }
+  },
+  async getLibraryGame(id) {
+    if (!id) return null;
+    try {
+      const database = await dbPromise;
+      return await database.get(FAV_STORE, id);
+    } catch (e) {
+      return null;
     }
   },
   async importFavorites(jsonStr) {
@@ -165,7 +187,7 @@ export const db = {
   async getFavoritesForNotifications() {
     try {
       const all = await this.getFavorites();
-      return all.filter(g => g.isFavorite !== false);
+      return all.filter(g => g.isFavorite === true);
     } catch (e) {
       console.warn("❌ db.getFavoritesForNotifications failed:", e);
       return [];

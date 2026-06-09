@@ -15,6 +15,9 @@
   --accent-secondary: #ec4899; /* Pink */
   --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   
+  --accent-ultra: #00f2fe; /* Ultra Blue */
+  --accent-ultra-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
@@ -39,11 +42,37 @@
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
+
+  --accent-ultra: #0284c7; /* Darker Blue for light mode */
+  --accent-ultra-gradient: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
   
   --shadow-glass: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
   --shadow-glow: 0 0 20px rgba(109, 40, 217, 0.12);
   
   --radial-bg: radial-gradient(circle at 50% 50%, rgba(109, 40, 217, 0.05) 0%, rgba(248, 250, 252, 0) 60%);
+}
+
+[data-theme="amoled"] {
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+  --bg-glass: #000000;
+  --bg-glass-hover: #0a0a0c;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+  --text-muted: #666677;
+  
+  --accent-primary: #6d28d9;
+  --accent-secondary: #ec4899;
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  
+  --accent-ultra: #00f2fe;
+  --accent-ultra-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+  
+  --shadow-glass: none;
+  --shadow-glow: none;
+  --radial-bg: none;
 }
 
 * {
@@ -346,3 +375,6 @@ h1, h2, h3 {
   background: linear-gradient(90deg, rgba(0,0,0,0.05) 25%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 75%);
   background-size: 200% 100%;
 }
+
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

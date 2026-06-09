@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Sparkles, Shuffle, X, Star, Lock } from 'lucide-react';
+import { Search, Sparkles, Shuffle, X, Star, Lock, CalendarClock, ChevronRight } from 'lucide-react';
 import { CHANGELOG } from '../data/changelog';
 import RAWGService from '../services/RAWGService';
 import IAPService from '../services/IAPService';
@@ -13,10 +13,42 @@ export default function Home() {
   const [tier, setTier] = useState(IAPService.getTier());
   const [discovering, setDiscovering] = useState(false);
   const [discoveredGame, setDiscoveredGame] = useState(null);
+  const [upcomingNear, setUpcomingNear] = useState([]);
+  const [upcomingFar, setUpcomingFar] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    return IAPService.subscribe((t) => setTier(t));
+    RAWGService.getUpcomingGames().then(games => {
+      const now = new Date();
+      const nextMonth = new Date();
+      nextMonth.setDate(now.getDate() + 30);
+      
+      const near = games.filter(g => new Date(g.released) <= nextMonth);
+      const far = games.filter(g => new Date(g.released) > nextMonth);
+
+      setUpcomingNear(near);
+      setUpcomingFar(far);
+    }).catch(console.error);
+
+    let scrollInterval;
+    const startAutoScroll = () => {
+      scrollInterval = setInterval(() => {
+        const container = document.getElementById('upcoming-near-carousel');
+        if (container) {
+          if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
+            container.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            container.scrollBy({ left: 176, behavior: 'smooth' });
+          }
+        }
+      }, 3000);
+    };
+    startAutoScroll();
+    
+    return () => {
+      IAPService.subscribe((t) => setTier(t));
+      clearInterval(scrollInterval);
+    };
   }, []);
 
   const handleSearch = (e) => {
@@ -146,7 +178,7 @@ export default function Home() {
               onClick={(e) => { e.preventDefault(); setSearchType('character'); }}
               style={{
                 padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', border: 'none',
-                background: searchType === 'character' ? '#00f2fe' : 'transparent',
+                background: searchType === 'character' ? 'var(--accent-ultra)' : 'transparent',
                 color: searchType === 'character' ? '#002538' : 'var(--text-secondary)',
                 transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '4px'
               }}
@@ -163,16 +195,16 @@ export default function Home() {
               style={{ 
                 display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', 
                 fontSize: '0.85rem', fontWeight: 'bold', width: 'fit-content',
-                color: aiMode ? '#00f2fe' : 'var(--text-secondary)',
+                color: aiMode ? 'var(--accent-ultra)' : 'var(--text-secondary)',
                 background: aiMode ? 'rgba(0, 242, 254, 0.1)' : 'var(--bg-glass)',
-                border: aiMode ? '1px solid #00f2fe' : '1px solid var(--glass-border)',
+                border: aiMode ? '1px solid var(--accent-ultra)' : '1px solid var(--glass-border)',
                 borderRadius: 'var(--radius-full)',
                 padding: '6px 14px',
                 transition: 'all 0.2s ease',
                 boxShadow: aiMode ? '0 0 10px rgba(0, 242, 254, 0.2)' : 'var(--shadow-glass)'
               }}
             >
-              <Sparkles size={14} color={aiMode ? "#00f2fe" : "currentColor"} />
+              <Sparkles size={14} color={aiMode ? "var(--accent-ultra)" : "currentColor"} />
               Sommelier AI
               {tier !== 'ultra' && <Lock size={12} style={{ marginLeft: '4px' }} />}
             </button>
@@ -192,12 +224,12 @@ export default function Home() {
             borderRadius: 'var(--radius-full)',
             border: '2px solid rgba(0,242,254,0.4)',
             background: 'rgba(0,242,254,0.08)',
-            color: '#00f2fe',
+            color: 'var(--accent-ultra)',
             fontWeight: '700', fontSize: '1rem', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
             transition: 'all 0.3s ease',
           }}
-          onMouseOver={e => { e.currentTarget.style.background = 'rgba(0,242,254,0.18)'; e.currentTarget.style.borderColor = '#00f2fe'; }}
+          onMouseOver={e => { e.currentTarget.style.background = 'rgba(0,242,254,0.18)'; e.currentTarget.style.borderColor = 'var(--accent-ultra)'; }}
           onMouseOut={e => { e.currentTarget.style.background = 'rgba(0,242,254,0.08)'; e.currentTarget.style.borderColor = 'rgba(0,242,254,0.4)'; }}
         >
           <Sparkles size={20} />
@@ -205,28 +237,84 @@ export default function Home() {
           {tier !== 'ultra' && <Lock size={14} style={{ marginLeft: '4px' }} />}
         </button>
 
-        <button
-          onClick={handleDiscover}
-          disabled={discovering}
-          style={{
-            width: '100%', padding: '14px 24px',
-            borderRadius: 'var(--radius-full)',
-            border: '2px solid rgba(109,40,217,0.4)',
-            background: discovering ? 'rgba(109,40,217,0.05)' : 'rgba(109,40,217,0.08)',
-            color: discovering ? 'var(--text-muted)' : 'var(--accent-primary)',
-            fontWeight: '700', fontSize: '1rem', cursor: discovering ? 'not-allowed' : 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-            transition: 'all 0.3s ease',
-            boxShadow: discovering ? 'none' : '0 0 0 0 rgba(109,40,217,0)',
-            animation: !discovering ? 'subtle-glow 3s ease-in-out infinite' : 'none',
-          }}
-          onMouseOver={e => { if (!discovering) { e.currentTarget.style.background = 'rgba(109,40,217,0.18)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}}
-          onMouseOut={e => { e.currentTarget.style.background = 'rgba(109,40,217,0.08)'; e.currentTarget.style.borderColor = 'rgba(109,40,217,0.4)'; }}
-        >
-          <Shuffle size={20} style={{ animation: discovering ? 'spin-anim 0.7s linear infinite' : 'none' }} />
-          {discovering ? 'Sto cercando una gemma nascosta...' : '🎲 Scopri un Gioco a Caso'}
-        </button>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button
+            onClick={handleDiscover}
+            disabled={discovering}
+            style={{
+              flex: 1, padding: '14px 16px',
+              borderRadius: 'var(--radius-full)',
+              border: '2px solid rgba(109,40,217,0.4)',
+              background: discovering ? 'rgba(109,40,217,0.05)' : 'rgba(109,40,217,0.08)',
+              color: discovering ? 'var(--text-muted)' : 'var(--accent-primary)',
+              fontWeight: '700', fontSize: '0.95rem', cursor: discovering ? 'not-allowed' : 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseOver={e => { if (!discovering) { e.currentTarget.style.background = 'rgba(109,40,217,0.18)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}}
+            onMouseOut={e => { e.currentTarget.style.background = 'rgba(109,40,217,0.08)'; e.currentTarget.style.borderColor = 'rgba(109,40,217,0.4)'; }}
+          >
+            <Shuffle size={18} style={{ animation: discovering ? 'spin-anim 0.7s linear infinite' : 'none' }} />
+            {discovering ? 'Ricerca...' : '🎲 Gioco del Giorno'}
+          </button>
+
+        </div>
       </div>
+
+      {/* Carosello Prossimo Futuro */}
+      {upcomingNear.length > 0 && (
+        <div style={{ width: '100%', maxWidth: '800px', marginTop: '40px', textAlign: 'left' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', padding: '0 10px' }}>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.2rem', margin: 0, color: 'var(--text-primary)' }}>
+              <Sparkles size={20} color="var(--accent-primary)" />
+              Prossimamente (Nei prossimi 30 giorni)
+            </h3>
+          </div>
+          
+          <div id="upcoming-near-carousel" style={{ 
+            display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '16px', padding: '0 10px',
+            scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch'
+          }} className="hide-scrollbar">
+            {upcomingNear.map((game) => (
+              <div 
+                key={game.id}
+                onClick={() => navigate(`/game/${encodeURIComponent(game.name)}`, { state: { game: { id: game.id } } })}
+                style={{
+                  minWidth: '160px', width: '160px', scrollSnapAlign: 'start', cursor: 'pointer',
+                  background: 'var(--bg-glass)', borderRadius: '16px', border: '1px solid var(--glass-border)',
+                  overflow: 'hidden', position: 'relative', transition: 'transform 0.2s',
+                  boxShadow: 'var(--shadow-glass)'
+                }}
+                onMouseOver={e => e.currentTarget.style.transform = 'translateY(-4px)'}
+                onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <div style={{ height: '220px', width: '100%', position: 'relative' }}>
+                  <img 
+                    src={game.background_image || 'https://via.placeholder.com/160x220?text=No+Cover'} 
+                    alt={game.name} 
+                    loading="lazy"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                  />
+                  <div style={{
+                    position: 'absolute', bottom: 0, left: 0, right: 0, padding: '40px 12px 12px',
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)',
+                  }}>
+                    <h4 style={{ margin: '0 0 4px', fontSize: '0.95rem', color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {game.name}
+                    </h4>
+                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', fontWeight: 'bold' }}>
+                      {new Date(game.released).toLocaleDateString('it-IT')}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+
 
       {/* Overlay Discovery Result */}
       {discoveredGame && (

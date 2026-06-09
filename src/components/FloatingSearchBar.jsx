@@ -121,11 +121,11 @@ export default function FloatingSearchBar() {
                 style={{ 
                   display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', 
                   fontSize: '0.65rem', fontWeight: 'bold', width: 'fit-content',
-                  color: aiMode ? '#00f2fe' : 'var(--text-muted)',
+                  color: aiMode ? 'var(--accent-ultra)' : 'var(--text-muted)',
                   opacity: aiMode ? 1 : 0.6, transition: 'all 0.2s', padding: '2px 0'
                 }}
               >
-                <Sparkles size={10} color={aiMode ? "#00f2fe" : "currentColor"} />
+                <Sparkles size={10} color={aiMode ? "var(--accent-ultra)" : "currentColor"} />
                 Sommelier AI
                 {tier !== 'ultra' && <Lock size={8} style={{ marginLeft: '2px' }} />}
               </div>

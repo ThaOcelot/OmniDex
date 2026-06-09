@@ -3,7 +3,10 @@ import GeminiCloudService from './GeminiCloudService';
 import IAPService from './IAPService';
 import FirebaseService from './FirebaseService';
 import { db } from './db';
-const NEWS_PROXY = 'https://api.allorigins.win/raw?url=';
+import { liteClient as algoliasearch } from 'algoliasearch/lite';
+
+const algoliaClient = algoliasearch('TXFAPWRDB1', 'ccce008e6d7ef0ef672dc4251ed98ca5');
+const NEWS_PROXY = 'https://api.allorigins.win/get?url=';
 const isNative = window.Capacitor?.isNativePlatform?.();
 const getNewsFetchUrl = (rssUrl) => {
   return `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
@@ -52,8 +55,34 @@ class GameService {
    * Ricerca giochi — ritorna lista con info base per le card
    */
   async searchGames(query) {
-    const results = await RAWGService.searchGames(query);
-    return results.map(g => ({
+    let algoliaHits = [];
+    try {
+      const response = await algoliaClient.search({
+        requests: [{ indexName: 'omnidex_games', query }]
+      });
+      algoliaHits = response.results[0]?.hits || [];
+    } catch (e) {
+      console.warn("Algolia search fallita (forse l'indice non esiste ancora), fallback su RAWG:", e);
+    }
+
+    const rawgPromise = RAWGService.searchGames(query);
+    const rawgResults = await rawgPromise;
+
+    const formattedAlgolia = algoliaHits.map(h => ({
+      id: parseInt(h.objectID),
+      title: h.title,
+      slug: h.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, ''),
+      cover: h.cover || null,
+      rating: h.rating || 0,
+      year: h.releaseDate ? new Date(h.releaseDate).getFullYear() : "N/D",
+      platforms: [], // Omettiamo le piattaforme, non vitali per le card di ricerca
+      genre: h.genres?.[0] || "Videogioco",
+      metacritic: 0,
+      added: 0,
+      _fromAlgolia: true
+    }));
+
+    const formattedRawg = rawgResults.map(g => ({
       id: g.id,
       title: g.name,
       slug: g.slug,
@@ -63,8 +92,29 @@ class GameService {
       platforms: g.parent_platforms?.map(p => p.platform.name) || g.platforms?.map(p => p.platform.name) || [],
       genre: g.genres?.[0]?.name || "Videogioco",
       metacritic: g.metacritic,
-      added: g.added || 0
+      added: g.added || 0,
+      _fromAlgolia: false
     }));
+
+    // Merge: Mettiamo prima i risultati Algolia (che supportano typo e sono in DB), poi RAWG. Evitiamo doppioni.
+    const merged = [...formattedAlgolia];
+    for (const rg of formattedRawg) {
+      if (!merged.find(m => m.id === rg.id)) {
+        merged.push(rg);
+      }
+    }
+
+    // Se un gioco trovato su Algolia non ha la cover nel nostro DB storico, proviamo a recuperarla dai risultati live di RAWG
+    for (const m of merged) {
+      if (m._fromAlgolia && !m.cover) {
+        const matchingRawg = formattedRawg.find(r => r.id === m.id);
+        if (matchingRawg && matchingRawg.cover) {
+          m.cover = matchingRawg.cover;
+        }
+      }
+    }
+
+    return merged;
   }
 
   /**
@@ -74,114 +124,109 @@ class GameService {
     const identifier = gameId || gameTitle?.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '');
     if (!identifier) return null;
 
-    // 1. Check Cache
+    // 1. Check Cache Locale (IndexedDB)
     const cacheKey = `game_v${CACHE_VERSION}_${identifier}`;
     const cached = await db.getGame(cacheKey);
-    if (!forceRegenerate && cached && cached._version === CACHE_VERSION) {
-      console.log("📦 Cache hit:", identifier);
+    if (!forceRegenerate && cached && cached._version === CACHE_VERSION && !cached._isRaw) {
+      console.log("📦 Cache hit locale:", identifier);
       return cached;
     }
 
-    // 2. Fetch RAWG + Wikipedia in parallelo
-    console.log("📡 Fetching RAWG + Wikipedia per:", identifier);
-    const [rawg, wikiContent] = await Promise.all([
-      RAWGService.getGameDetails(identifier),
-      fetchWikipediaIt(gameTitle || String(identifier))
-    ]);
-    if (!rawg) return null;
+    // 2. Controlla la cache globale di Firestore prima di chiamare RAWG
+    let firestoreCache = null;
+    let rawg = null;
+    
+    if (gameId) {
+      firestoreCache = await FirebaseService.getGameFromCache(gameId);
+    }
+    
+    // Se il gioco è già in Firestore (anche grezzo), ed ha i dati RAWG salvati in esso
+    if (firestoreCache && (firestoreCache._isRaw || firestoreCache.screenshots)) {
+      rawg = firestoreCache;
+      console.log("☁️ Caricato dati RAWG grezzi da Firestore Global Cache per:", rawg.title || rawg.name);
+    } else {
+      // Fallback: Fetch RAWG live
+      console.log("📡 Fetching RAWG per ID/Slug:", identifier);
+      rawg = await RAWGService.getGameDetails(identifier);
+    }
 
-    if (wikiContent) console.log("📖 Wikipedia trovata per:", rawg.title);
+    if (!rawg) return null;
 
     const tagNames = rawg.tags?.map(t => t.name).slice(0, 15) || [];
     const platformNames = rawg.platforms?.map(p => p.name) || [];
     const genreNames = rawg.genres || [];
 
-    // 3. Giochi consigliati per genere (endpoint /suggested richiede pagamento)
-    const genresStr = rawg.genres?.map(g => {
-      // genres in RAWG sono stringhe qui, ma RAWGService ritorna già i nomi
-      return g;
-    }).join(',') || '';
-
-    let suggested = [];
-    try {
-      // Usiamo gli slug dai tags originali
-      const rawgFull = await RAWGService.get('/games', {
-        genres: rawg.tags?.filter(t => ['action', 'rpg', 'shooter', 'adventure', 'puzzle',
-          'strategy', 'simulation', 'sports', 'racing', 'fighting', 'platformer']
-          .some(g => t.slug?.includes(g)))
-          .slice(0, 3).map(t => t.slug).join(',') || '',
-        page_size: 10,
-        ordering: '-rating'
-      });
-      suggested = rawgFull?.results?.map(s => ({
-        id: s.id,
-        name: s.name,
-        slug: s.slug,
-        released: s.released,
-        cover: s.background_image,
-        metacritic: s.metacritic,
-        rating: s.rating
-      })).filter(s => s.id !== rawg.id) || [];
-    } catch (e) {
-      console.warn("Impossibile caricare giochi consigliati:", e);
-    }
-
-    // Fallback generi per suggeriti
-    if (suggested.length === 0 && genreNames.length > 0) {
+    // 3. Esegui in parallelo il fetch dei Suggested Games
+    const fetchSuggested = async () => {
+      let suggested = [];
       try {
-        const similarData = await RAWGService.get('/games', {
-          genres: genreNames.slice(0, 2).join(','),
+        const rawgFull = await RAWGService.get('/games', {
+          genres: rawg.tags?.filter(t => ['action', 'rpg', 'shooter', 'adventure', 'puzzle',
+            'strategy', 'simulation', 'sports', 'racing', 'fighting', 'platformer']
+            .some(g => t.slug?.includes(g)))
+            .slice(0, 3).map(t => t.slug).join(',') || '',
           page_size: 10,
           ordering: '-rating'
         });
-        suggested = similarData?.results?.map(s => ({
-          id: s.id,
-          name: s.name,
-          slug: s.slug,
-          released: s.released,
-          cover: s.background_image,
-          metacritic: s.metacritic,
-          rating: s.rating
+        suggested = rawgFull?.results?.map(s => ({
+          id: s.id, name: s.name, slug: s.slug, released: s.released,
+          cover: s.background_image, metacritic: s.metacritic, rating: s.rating
         })).filter(s => s.id !== rawg.id) || [];
-      } catch { /* ignore */ }
+      } catch (e) {
+        console.warn("Impossibile caricare giochi consigliati:", e);
+      }
+      if (suggested.length === 0 && genreNames.length > 0) {
+        try {
+          const similarData = await RAWGService.get('/games', { genres: genreNames.slice(0, 2).join(','), page_size: 10, ordering: '-rating' });
+          suggested = similarData?.results?.map(s => ({
+            id: s.id, name: s.name, slug: s.slug, released: s.released,
+            cover: s.background_image, metacritic: s.metacritic, rating: s.rating
+          })).filter(s => s.id !== rawg.id) || [];
+        } catch { /* ignore */ }
+      }
+      return suggested;
+    };
+
+    let getDbCachePromise = Promise.resolve(firestoreCache);
+    if (!firestoreCache) {
+      getDbCachePromise = FirebaseService.getGameFromCache(rawg.id);
     }
 
-    // --- FIREBASE GLOBAL CACHE CHECK ---
-    // Prima di chiedere a Gemini, controlliamo se qualcuno nel mondo ha già cercato questo gioco!
-    // Usiamo rawg.id come chiave univoca universale.
-    const firestoreCache = await FirebaseService.getGameFromCache(rawg.id);
-    // Usiamo il cache se ha CONTENUTO AI reale (description o gameplay), indipendentemente dal flag _aiGenerated
-    // (documenti vecchi potrebbero avere _aiGenerated mancante o false per un bug storico)
-    const firestoreHasContent = firestoreCache && (firestoreCache.description || firestoreCache.plot || firestoreCache.gameplay);
+    const [retrievedCache, suggested] = await Promise.all([
+      getDbCachePromise,
+      fetchSuggested()
+    ]);
+    
+    firestoreCache = retrievedCache;
 
-    // --- LOGICA UPGRADE ULTRA ---
-    // Se l'utente ha Omnidex Ultra e il contenuto in Firestore è stato generato da un tier
-    // inferiore (free / pro / senza campo), lo scartiamo e rigeneriamo con l'AI.
-    // Questo garantisce che la cache globale venga progressivamente migliorata.
-    const currentTier = IAPService.getTier(); // 'free' | 'pro' | 'ultra'
-    const cachedTier = firestoreCache?._generatedByTier || 'free'; // default: generato da free
+    const firestoreHasContent = firestoreCache && !firestoreCache._isRaw && (firestoreCache.description || firestoreCache.plot || firestoreCache.gameplay);
+
+    const currentTier = IAPService.getTier();
+    const cachedTier = firestoreCache?._generatedByTier || 'free';
     const isUltraUser = currentTier === 'ultra';
-    const cacheNeedsUpgrade = firestoreHasContent && isUltraUser && cachedTier !== 'ultra';
+    const isEnglishCache = firestoreHasContent && (firestoreCache.plot === rawg.descriptionRaw || firestoreCache.description === rawg.descriptionRaw);
+
+    const cacheNeedsUpgrade = firestoreHasContent && ((isUltraUser && cachedTier !== 'ultra') || isEnglishCache);
 
     if (!forceRegenerate && firestoreHasContent && !cacheNeedsUpgrade) {
-      // Uniamo i dati freschi (come store e recensioni RAWG) con i testi IA storici di Firestore
       const finalData = {
         ...rawg,
         suggested,
-        description: firestoreCache.description || rawg.descriptionRaw,
-        plot: firestoreCache.plot || rawg.descriptionRaw,
+        description: firestoreCache.description || '',
+        plot: firestoreCache.plot || firestoreCache.translations?.it || firestoreCache.translated?.it || '',
         gameplay: firestoreCache.gameplay || '',
         protagonists: firestoreCache.protagonists || [],
         trivia: firestoreCache.trivia || [],
         _version: CACHE_VERSION,
         _cached: Date.now(),
-        _aiGenerated: true, // Se arriva da Firestore con contenuto, è AI generated
+        _aiGenerated: true,
         _wikiUsed: firestoreCache._wikiUsed || false,
         _aiLimitReached: false,
-        _fromGlobalCache: true
+        _fromGlobalCache: true,
+        _isRaw: false
       };
-      await db.setGame(cacheKey, finalData); // Aggiorniamo anche la cache locale per velocizzare al prossimo avvio
-      console.log("☁️ Usato cache Firestore per:", rawg.title);
+      await db.setGame(cacheKey, finalData);
+      console.log("☁️ Usato cache Firestore globale per:", rawg.title);
       return finalData;
     }
 
@@ -189,8 +234,12 @@ class GameService {
       console.log(`⬆️ Ultra upgrade: rigenero i testi di "${rawg.title}" (cache precedente generata da tier: ${cachedTier})`);
     }
 
-    // 4. Generazione contenuti AI in italiano
-    let descriptionIt = null, plot = null, gameplay = null, characters = [], trivia = [];
+    // 4. Se serve l'AI, fetchiamo Wikipedia e parallelizziamo le richieste Gemini
+    console.log("📖 Fetching Wikipedia e invocando Gemini...");
+    const wikiContent = await fetchWikipediaIt(gameTitle || String(identifier));
+    
+    let descriptionIt = firestoreCache?.translations?.it || null;
+    let plot = null, gameplay = null, characters = [], trivia = [];
     let aiLimitReached = false;
 
     if (GeminiCloudService.isAvailable()) {
@@ -198,21 +247,43 @@ class GameService {
         console.warn("🤖 AI Limit Reached! Skipping generation for free tier.");
         aiLimitReached = true;
       } else {
-        console.log("🤖 Generazione AI per:", rawg.title);
-        try {
-          // Incrementiamo il contatore solo ora che stiamo per chiamare l'API
-          IAPService.incrementDailyAiCount();
+        console.log("🤖 Generazione AI parallela per:", rawg.title);
+        
+        const tasks = [];
+        
+        if (!descriptionIt) {
+          tasks.push(
+            GeminiCloudService.translateDescription(rawg.descriptionRaw)
+              .then(res => { descriptionIt = res; })
+              .catch(e => console.warn("AI translate error:", e))
+          );
+        }
+        
+        tasks.push(
+          GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, genreNames, tagNames, wikiContent)
+            .then(res => { plot = res; })
+            .catch(e => console.warn("AI plot error:", e))
+        );
+        tasks.push(
+          GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames)
+            .then(res => { gameplay = res; })
+            .catch(e => console.warn("AI gameplay error:", e))
+        );
+        tasks.push(
+          GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw, wikiContent)
+            .then(res => { characters = res; })
+            .catch(e => console.warn("AI characters error:", e))
+        );
+        tasks.push(
+          GeminiCloudService.generateTrivia(rawg.title, rawg.descriptionRaw)
+            .then(res => { trivia = res; })
+            .catch(e => console.warn("AI trivia error:", e))
+        );
 
-          // Le chiamate devono essere sequenziali per non attivare il limite di concorrenza 
-          // (HTTP 429 Too Many Requests) del piano gratuito di Gemini.
-          descriptionIt = await GeminiCloudService.translateDescription(rawg.descriptionRaw);
-          plot = await GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, genreNames, tagNames, wikiContent);
-          gameplay = await GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames);
-          characters = await GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw, wikiContent);
-          
-          trivia = await GeminiCloudService.generateTrivia(rawg.title, rawg.descriptionRaw);
-        } catch (e) {
-          console.warn("🤖 AI generation partial failure:", e);
+        await Promise.allSettled(tasks);
+
+        if (descriptionIt || plot || gameplay) {
+          IAPService.incrementDailyAiCount();
         }
       }
     }
@@ -221,49 +292,40 @@ class GameService {
     const finalData = {
       ...rawg,
       suggested,
-      // MAPPING DEFINITIVO:
-      // description = trama narrativa AI (generata da Gemini + Wikipedia) → va nella TAB "Trama"
-      // plot        = descrizione ufficiale tradotta (da RAWG, panoramica del gioco) → appare nell'HEADER hero
-      description: plot || wikiContent || '', // Rimosso rawg.descriptionRaw per evitare inglese
-      plot: descriptionIt || '',               // Rimosso rawg.descriptionRaw per evitare inglese
-      gameplay: gameplay || '',
+      description: plot || wikiContent || "Dati della trama non disponibili. (Ricarica la pagina o riprova più tardi)",
+      plot: descriptionIt || (aiLimitReached ? "Panoramica non disponibile. Hai raggiunto il limite di richieste IA giornaliere." : "Panoramica non disponibile. (Errore temporaneo del server o del servizio IA. Riprova tra poco)"),
+      gameplay: gameplay || "Dati del gameplay non disponibili.",
       protagonists: characters || [],
       trivia: trivia || [],
-      // Metadata
       _version: CACHE_VERSION,
       _cached: Date.now(),
-      // Se plot o gameplay sono nulli, significa che l'API ha fallito (es. 429 Too Many Requests).
-      // Non marchiamo come completato, così al prossimo accesso riproverà.
       _aiGenerated: GeminiCloudService.isAvailable() && !aiLimitReached && !!plot && !!gameplay,
       _wikiUsed: !!wikiContent,
       _aiLimitReached: aiLimitReached,
+      _isRaw: false
     };
 
     // 6. Salva in cache LOCALE
     await db.setGame(cacheKey, finalData);
     
-    // 7. Salva in cache GLOBALE (Firestore) solo se almeno la traduzione italiana è disponibile.
-    // IMPORTANTE: usiamo le variabili AI grezze (plot, descriptionIt) e NON finalData.description/plot,
-    // perché quelle contengono rawg.descriptionRaw come fallback (testo inglese da RAWG).
-    // Salvare testo inglese su Firestore propagherebbe l'errore a tutti gli utenti futuri.
+    // 7. Salva in cache GLOBALE (Firestore)
     if (GeminiCloudService.isAvailable() && !aiLimitReached && descriptionIt) {
       const firestorePayload = {
+        ...rawg,
         _aiGenerated: true,
         _wikiUsed: !!wikiContent,
-        // Salviamo il tier che ha generato il contenuto.
-        // Un utente Ultra sovrascriverà contenuti generati da tier inferiori.
         _generatedByTier: IAPService.getTier(),
-        // Solo testi realmente generati in italiano dall'AI — mai fallback RAWG in inglese.
-        description: plot || '',         // trama narrativa AI in italiano → tab Trama
-        plot: descriptionIt || '',       // panoramica tradotta in italiano → hero header
+        description: plot || '',
+        plot: descriptionIt || '',
         gameplay: gameplay || '',
         protagonists: characters || [],
         trivia: trivia || [],
-        // Campi leggeri da RAWG (solo quelli necessari per il merge al prossimo accesso)
         title: rawg.title || '',
+        cover: rawg.background_image || '',
         genres: rawg.genres || [],
         rating: rawg.rating || 0,
         releaseDate: rawg.releaseDate || '',
+        _isRaw: false
       };
       FirebaseService.saveGameToCache(rawg.id, firestorePayload);
       if (cacheNeedsUpgrade) {
@@ -308,7 +370,8 @@ class GameService {
       let items = [];
 
       if (res.ok) {
-        text = await res.text();
+        const json = await res.json();
+        text = json.contents || '';
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
         items = Array.from(xmlDoc.querySelectorAll("item"));
@@ -322,7 +385,8 @@ class GameService {
         fetchUrl = getNewsFetchUrl(rssUrl);
         res = await fetchWithTimeout(fetchUrl);
         if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
-        text = await res.text();
+        const json = await res.json();
+        text = json.contents || '';
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
         items = Array.from(xmlDoc.querySelectorAll("item"));
@@ -499,6 +563,64 @@ class GameService {
   async summarizePreviousGames(gameTitle) {
     if (!GeminiCloudService.isAvailable()) return "AI non disponibile.";
     return await GeminiCloudService.summarizePreviousGames(gameTitle);
+  }
+
+  /**
+   * Pre-fetch in background per i giochi del Release Radar
+   */
+  async preFetchUpcomingGames(upcomingGames) {
+    if (!upcomingGames || upcomingGames.length === 0) return;
+    
+    try {
+      const gameIds = upcomingGames.map(g => g.id);
+      
+      // 1. Batch check su quali ID sono già presenti in Firestore
+      const existingIds = await FirebaseService.checkGamesExistInFirestore(gameIds);
+      
+      // 2. Filtra quelli non presenti in Firestore
+      const missingGames = upcomingGames.filter(g => !existingIds.has(g.id));
+      console.log(`🔍 Pre-fetch Release Radar: ${missingGames.length} su ${upcomingGames.length} giochi mancanti in Firestore.`);
+      
+      if (missingGames.length === 0) return;
+      
+      // 3. Esegui il pre-fetch in modo sequenziale per non saturare le API
+      // Limite di max 8 giochi per sessione per non abusare della chiave API
+      const limit = Math.min(missingGames.length, 8);
+      
+      for (let i = 0; i < limit; i++) {
+        const game = missingGames[i];
+        
+        // Attendi 3 secondi tra una chiamata e l'altra (tranne la prima che ha un ritardo minimo)
+        await new Promise(resolve => setTimeout(resolve, i === 0 ? 500 : 3000));
+        
+        console.log(`📥 Pre-fetching dati grezzi per: ${game.name} (ID: ${game.id})`);
+        
+        try {
+          // Recupera i dettagli completi RAWG (compreso media, publisher, developer, ecc.)
+          const rawgDetails = await RAWGService.getGameDetails(game.id);
+          if (rawgDetails) {
+            // Salva come gioco raw in Firestore cache
+            const rawPayload = {
+              ...rawgDetails,
+              _isRaw: true,
+              _aiGenerated: false,
+              _generatedByTier: 'raw',
+              description: '',
+              plot: '',
+              gameplay: '',
+              protagonists: [],
+              trivia: []
+            };
+            await FirebaseService.saveGameToCache(game.id, rawPayload);
+            console.log(`✅ Pre-fetch completato e salvato per: ${game.name}`);
+          }
+        } catch (err) {
+          console.warn(`⚠️ Pre-fetch fallito per ${game.name}:`, err);
+        }
+      }
+    } catch (e) {
+      console.warn("⚠️ Errore durante il pre-fetch dei giochi in arrivo:", e);
+    }
   }
 }
 

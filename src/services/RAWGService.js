@@ -1,28 +1,18 @@
-const API_KEY = "f0f8782547814b088437efdb1cc88399";
-const BASE_URL = "https://api.rawg.io/api";
+import { httpsCallable } from "firebase/functions";
+import { functions } from "./FirebaseService";
 
 class RAWGService {
-
   /**
-   * Helper per chiamate HTTP — usa fetch standard (funziona sia in browser che Capacitor)
+   * Effettua una chiamata al backend di Firebase (che a sua volta chiamerà RAWG).
    */
   async get(endpoint, params = {}) {
     try {
-      const query = Object.keys(params)
-        .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-        .join('&');
-      const connector = endpoint.includes('?') ? '&' : '?';
-      const url = `${BASE_URL}${endpoint}${connector}${query}&key=${API_KEY}`;
-
-      const res = await fetch(url);
-      if (!res.ok) {
-        console.warn(`📡 RAWG ${res.status} for ${endpoint}`);
-        return null;
-      }
-      return await res.json();
-    } catch (e) {
-      console.error("📡 RAWG Error:", e);
-      return null;
+      const getRawgGames = httpsCallable(functions, "getRawgGames");
+      const response = await getRawgGames({ endpoint, params });
+      return response.data.data; // Le funzioni Firebase avvolgono la risposta in 'data'
+    } catch (error) {
+      console.error("❌ Errore Backend RAWG:", error);
+      throw error;
     }
   }
 
@@ -227,12 +217,12 @@ class RAWGService {
   async getUpcomingGames() {
     const today = new Date();
     const future = new Date();
-    future.setDate(today.getDate() + 60);
+    future.setDate(today.getDate() + 180);
     const fmt = d => d.toISOString().split('T')[0];
     const data = await this.get("/games", {
       dates: `${fmt(today)},${fmt(future)}`,
       ordering: 'released',
-      page_size: 20,
+      page_size: 40,
     });
     return data?.results || [];
   }

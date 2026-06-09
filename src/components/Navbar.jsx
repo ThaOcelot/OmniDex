@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { User, Settings, Calendar, Search } from 'lucide-react';
+import { User, Settings, Calendar, Search, Wand } from 'lucide-react';
 import logoUrl from '../assets/logo.png';
 import IAPService from '../services/IAPService';
+import SosGamerModal from './SosGamerModal';
 
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [tier, setTier] = useState(IAPService.getTier());
   const [searchOpen, setSearchOpen] = useState(false);
+  const [sosModalOpen, setSosModalOpen] = useState(false);
   const [query, setQuery] = useState('');
   const isHome = location.pathname === '/';
 
@@ -28,7 +30,7 @@ export default function Navbar() {
 
   return (
     <>
-      <nav style={{ padding: '16px 0', borderBottom: '1px solid var(--glass-border)', background: 'var(--bg-glass)', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(12px)' }}>
+      <nav style={{ padding: '16px 0', borderBottom: '1px solid var(--glass-border)', background: 'var(--bg-glass)', position: 'sticky', top: '0px', zIndex: 100, backdropFilter: 'blur(12px)' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
           
           {/* Logo OmniDex sempre visibile con Versione sotto */}
@@ -51,7 +53,7 @@ export default function Navbar() {
                     letterSpacing: '1px',
                     padding: '2px 6px',
                     borderRadius: '20px',
-                    background: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)',
+                    background: 'var(--accent-ultra-gradient)',
                     color: '#002538',
                     boxShadow: '0 0 10px rgba(0, 242, 254, 0.5), 0 2px 4px rgba(0,0,0,0.3)',
                     textTransform: 'uppercase',
@@ -90,10 +92,24 @@ export default function Navbar() {
                 <Search size={18} />
               </button>
             )}
-            <Link to="/upcoming" className="btn-icon" title="Uscite in arrivo">
+            <button 
+              onClick={() => {
+                if (tier === 'ultra') {
+                  setSosModalOpen(true);
+                } else {
+                  window.dispatchEvent(new CustomEvent('open-settings'));
+                  alert("SOS Gamer è una funzionalità esclusiva per gli utenti ULTRA.");
+                }
+              }} 
+              title="SOS Gamer" 
+              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#002538', borderRadius: '50%', width: '36px', height: '36px', transition: 'all 0.2s', boxShadow: '0 0 10px rgba(0,242,254,0.5)' }}
+            >
+              <Wand size={18} />
+            </button>
+            <Link to="/release-radar" className="btn-icon" title="Release Radar">
               <Calendar size={20} />
             </Link>
-            <Link to="/favorites" className="btn-icon" title="Profilo & Preferiti">
+            <Link to="/favorites" className="btn-icon" title="Raccolta & Profilo">
               <User size={20} />
             </Link>
             <button 
@@ -143,6 +159,10 @@ export default function Navbar() {
             <Search size={24} style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', color: 'var(--accent-primary)' }} />
           </form>
         </div>
+      )}
+
+      {sosModalOpen && (
+        <SosGamerModal onClose={() => setSosModalOpen(false)} />
       )}
     </>
   );

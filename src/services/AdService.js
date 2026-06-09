@@ -1,4 +1,5 @@
 import { AdMob, BannerAdSize, BannerAdPosition, BannerAdPluginEvents, RewardAdPluginEvents } from '@capacitor-community/admob';
+import { Keyboard } from '@capacitor/keyboard';
 import IAPService from './IAPService';
 
 class AdService {
@@ -19,6 +20,20 @@ class AdService {
         console.log("📢 [AdService] Utente passato a PRO. Annunci rimossi permanentemente.");
       }
     });
+
+    const isNative = window.Capacitor?.isNativePlatform?.();
+    if (isNative) {
+      Keyboard.addListener('keyboardWillShow', () => {
+        if (this.bannerVisible && !IAPService.isPro()) {
+          AdMob.hideBanner().catch(console.error);
+        }
+      });
+      Keyboard.addListener('keyboardDidHide', () => {
+        if (this.bannerVisible && !IAPService.isPro()) {
+          AdMob.resumeBanner().catch(console.error);
+        }
+      });
+    }
   }
 
   /**

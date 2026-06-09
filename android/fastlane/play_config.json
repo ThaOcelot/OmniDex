@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "omnidex-a751d",
+  "private_key_id": "b3210dad557c3a5ed3569f82e89680d2524ecc05",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDNFYBHrjOAqPl4\ni48jaK7TspB9Xv4Lgaknvul9izBtN+Qkl8OZZlWasNsffeRsQFb6wr9PCjGr39af\nP5gCn0s3ildBTR7sL2h96Tux9t0CI708FxBUM+ubhBfUCJ9wCSl3dLC6o1LqJRne\nxnyzHIgemA13UuF+csc3SekRJ1AQppNTOMzsUrYHAYRlReap4aUjV3eTPg7Uly6S\nbLFeCH81pSUOab3VWTZCpXgm1iMuPMKVVLmPVNfw//0bicO+Z5pG9YLLqa6lGR45\nFoICRn+3ffhNXjb1cU+75JzHjK14yeog4l91a06d7OsMyWppvGIPdBb5UNzcKf8R\nJK0OoJTrAgMBAAECggEAAyvpc3JUtpEmZoBWAtisF3cD+ARfjmL/cC9qIfhkk9PQ\n8eXs7vLfsQg6I0cJoMjv72nSlpDUStGn2oebvLKk8aNwjQB50XI8PfI865gjO9S8\nqPC8Xmj9JEcLLUrC2HMz0naaAxDih99yAnl0VTrEOiDk2GsONKvmu8qnUY4XlWJO\n9d8anQcGxYuZ2Xsv8m55s+K1tdie2keaewSB0Npkyvb5nIz5kfpvQhU/owsIP7sm\nDK3CIF1K/OyXFatlFOqCP8AJfZk8tpu8lC44TOkhyH0TQfnQOaI0RZEWR/W62sxo\nrTEMsOZULBghz3JB9L7PNPUMaMnXMif6UxE3VrXlUQKBgQD+PaqMRZ9J2TLYdKl9\nAn7NZA9PXmO/2HV42z11w/wM0LV4SO0bQyCV7UZUHW+kGssUTMUzzzdUzOEdbQdj\n4y9O1pRbzozj1H1+JnsxSn14hZkT10nyK1WNYYFFQ6tv4PMRz5qT9Ab12FcblSr+\ndOPsAv69ZoY0xdgjDD5e3o65sQKBgQDOgMONiBomstQAqcALyWEKbTZTQkhjN6Cy\nZrzaAtIPyyrjUwqvt7rG2VkmPIHUId4Y64eddoFy66Wg2PMXqdDRPw1bnpYVPd2h\nW0b0fVPnVo4xHANLXsaIsbGOkWQAtjWy6KasEh7+HIaNhX5+ZQ4FtH4ZE+2k7j2H\n5TB234+DWwKBgQCoXB+/ai90kN+J1Z+TR/6+dp9o2MHHfkk0ckK95L3ZorA5almR\nrx86CXmEJEYU7yVCWSBSEcu7XT1J5jR5oi1m0NRIA3zrNoCv9D2qQ4DZOedH605t\njuLFkCcxvgEeQmHUjpz3kya00MHGYz6oaLGyTb1xoR4IfmeFtgrreggb0QKBgHzs\n2uChSKjGoIhyKPM4dZNYNHgz7hTPz1B95JvC/w986koxr5JUBRNM46jFDAmoH3NV\n8WnqCi/arQ1ckdtr6R7dFRirHMJm9dAqpwc7VmnqLAU7nCaZhGOnk/HatPPVRzEf\nm80W/VbfLOsqqjaOref3pB1JuAeB9QlkNmiDoI9nAoGAdk/p0SUlaRFSfxlCJ2ge\nptSHCUwfuL4VJ+ZUzQZZv4dGsaGcGPWqBdwszcP34+0o2WcUAB9my1cifaNOvCot\nxxvfQltVlSY85M23g1loVd1Ia1WhTthxx7eWGzEvl7NCHija9G5q6Lwd5JEEJKHB\nunKqJGIm30EPokwwnR8IV9s=\n-----END PRIVATE KEY-----\n",
+  "client_email": "fastlane-deploy@omnidex-a751d.iam.gserviceaccount.com",
+  "client_id": "110893936819264516959",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fastlane-deploy%40omnidex-a751d.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

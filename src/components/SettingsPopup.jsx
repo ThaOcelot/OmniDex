@@ -13,6 +13,7 @@ export default function SettingsPopup({ onClose }) {
   const [restoring, setRestoring] = useState(false);
   const [ultraPlan, setUltraPlan] = useState('monthly'); // 'monthly' | 'yearly'
 
+
   // Sincronizza il tema con l'attributo data-theme del documento
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -123,7 +124,30 @@ export default function SettingsPopup({ onClose }) {
               }}
             >
               <Moon size={14} />
-              <span>Tema Scuro</span>
+              <span>Scuro</span>
+            </button>
+            <button 
+              onClick={() => setTheme('amoled')}
+              style={{
+                flex: 1,
+                padding: '8px 12px',
+                borderRadius: 'var(--radius-full)',
+                border: 'none',
+                background: theme === 'amoled' ? 'var(--accent-gradient)' : 'transparent',
+                color: theme === 'amoled' ? 'white' : 'var(--text-secondary)',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                fontSize: '0.85rem',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.2s'
+              }}
+            >
+              <Moon size={14} fill="currentColor" />
+              <span>AMOLED</span>
             </button>
             <button 
               onClick={() => setTheme('light')}
@@ -146,10 +170,11 @@ export default function SettingsPopup({ onClose }) {
               }}
             >
               <Sun size={14} />
-              <span>Tema Chiaro</span>
+              <span>Chiaro</span>
             </button>
           </div>
         </div>
+
 
         {/* OmniDex Tiers Promo Card */}
         <div style={{ 
@@ -172,11 +197,9 @@ export default function SettingsPopup({ onClose }) {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span 
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
                 style={{ 
                   fontSize: '1.4rem', 
                   userSelect: 'none',
-                  pointerEvents: 'none',
                   display: 'inline-block',
                   animation: tier === 'free' ? 'pulse 2s infinite' : 'none'
                 }}
@@ -187,7 +210,7 @@ export default function SettingsPopup({ onClose }) {
                 <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '800', color: 'white' }}>
                   {tier === 'ultra' ? 'OmniDex Ultra' : tier === 'pro' ? 'OmniDex Pro' : 'OmniDex Base'}
                 </h4>
-                <p style={{ margin: 0, fontSize: '0.75rem', color: tier === 'ultra' ? '#00f2fe' : tier === 'pro' ? '#10B981' : 'var(--accent-primary)', fontWeight: 'bold' }}>
+                <p style={{ margin: 0, fontSize: '0.75rem', color: tier === 'ultra' ? 'var(--accent-ultra)' : tier === 'pro' ? '#10B981' : 'var(--accent-primary)', fontWeight: 'bold' }}>
                   {tier === 'ultra' ? 'AI Sbloccata al 100%' : tier === 'pro' ? 'No Pubblicità' : 'Versione Gratuita'}
                 </p>
               </div>
@@ -204,7 +227,7 @@ export default function SettingsPopup({ onClose }) {
               <span style={{ color: tier === 'free' ? 'var(--text-muted)' : 'var(--text-primary)' }}>Richieste AI illimitate</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Sparkles size={14} color={tier === 'ultra' ? '#00f2fe' : 'var(--text-muted)'} />
+              <Sparkles size={14} color={tier === 'ultra' ? 'var(--accent-ultra)' : 'var(--text-muted)'} />
               <span style={{ color: tier === 'ultra' ? 'var(--text-primary)' : 'var(--text-muted)' }}>Modello AI Supremo (Gemini 2.5 Pro)</span>
             </div>
           </div>
@@ -231,7 +254,7 @@ export default function SettingsPopup({ onClose }) {
                 className="btn-primary"
                 style={{
                   width: '100%', padding: '10px', borderRadius: 'var(--radius-full)', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: purchasing ? 'not-allowed' : 'pointer',
-                  background: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)', color: '#002538', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)'
+                  background: 'var(--accent-ultra-gradient)', color: '#002538', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)'
                 }}
               >
                 <Sparkles size={14} />
@@ -245,9 +268,9 @@ export default function SettingsPopup({ onClose }) {
                   style={{
                     flex: 1, padding: '10px 8px', borderRadius: 'var(--radius-md)',
                     fontWeight: 'bold', fontSize: '0.78rem', cursor: 'pointer',
-                    border: ultraPlan === 'monthly' ? '2px solid #00f2fe' : '1.5px solid rgba(255,255,255,0.12)',
+                    border: ultraPlan === 'monthly' ? '2px solid var(--accent-ultra)' : '1.5px solid rgba(255,255,255,0.12)',
                     background: ultraPlan === 'monthly' ? 'rgba(0,242,254,0.12)' : 'rgba(255,255,255,0.04)',
-                    color: ultraPlan === 'monthly' ? '#00f2fe' : 'var(--text-secondary)',
+                    color: ultraPlan === 'monthly' ? 'var(--accent-ultra)' : 'var(--text-secondary)',
                     transition: 'all 0.2s', textAlign: 'center'
                   }}
                 >
@@ -259,9 +282,9 @@ export default function SettingsPopup({ onClose }) {
                   style={{
                     flex: 1, padding: '10px 8px', borderRadius: 'var(--radius-md)',
                     fontWeight: 'bold', fontSize: '0.78rem', cursor: 'pointer', position: 'relative',
-                    border: ultraPlan === 'yearly' ? '2px solid #00f2fe' : '1.5px solid rgba(255,255,255,0.12)',
+                    border: ultraPlan === 'yearly' ? '2px solid var(--accent-ultra)' : '1.5px solid rgba(255,255,255,0.12)',
                     background: ultraPlan === 'yearly' ? 'rgba(0,242,254,0.12)' : 'rgba(255,255,255,0.04)',
-                    color: ultraPlan === 'yearly' ? '#00f2fe' : 'var(--text-secondary)',
+                    color: ultraPlan === 'yearly' ? 'var(--accent-ultra)' : 'var(--text-secondary)',
                     transition: 'all 0.2s', textAlign: 'center'
                   }}
                 >

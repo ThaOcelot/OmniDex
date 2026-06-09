@@ -119,7 +119,7 @@ export default function CharacterDetails() {
           <div style={{ fontSize: '4rem', marginBottom: '20px', filter: 'drop-shadow(0 0 20px rgba(139, 92, 246, 0.4))' }}>🔒</div>
           <h2 style={{ marginBottom: '16px', color: 'var(--text-primary)', fontSize: '1.8rem' }}>Ricerca Personaggi Bloccata</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: '1.6', maxWidth: '500px', margin: '0 auto 24px' }}>
-            La generazione enciclopedica dei personaggi è un'esclusiva per gli utenti <strong style={{ color: '#00f2fe' }}>Ultra</strong>.
+            La generazione enciclopedica dei personaggi è un'esclusiva per gli utenti <strong style={{ color: 'var(--accent-ultra)' }}>Ultra</strong>.
           </p>
           <button 
             className="btn-primary" 
@@ -249,7 +249,7 @@ export default function CharacterDetails() {
         {/* Trivia */}
         {profile.trivia?.length > 0 && (
           <div className="glass-panel" style={{ padding: '24px' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', color: '#00f2fe', fontSize: '1.1rem' }}>
+            <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px', color: 'var(--accent-ultra)', fontSize: '1.1rem' }}>
               <Star size={20} /> Curiosità
             </h3>
             <ul style={{ paddingLeft: '20px', margin: 0, display: 'flex', flexDirection: 'column', gap: '12px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>

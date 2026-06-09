@@ -74,18 +74,22 @@ class IAPService {
         this.store.register([{
           id: this.PRODUCT_PRO,
           type: ProductType.NON_CONSUMABLE,
+          platform: Platform.GOOGLE_PLAY,
         }, {
           // Legacy: acquisto singolo Ultra (per chi l'ha già comprato)
           id: this.PRODUCT_ULTRA,
           type: ProductType.NON_CONSUMABLE,
+          platform: Platform.GOOGLE_PLAY,
         }, {
           // Nuovo abbonamento mensile Ultra
           id: this.PRODUCT_ULTRA_MONTHLY,
           type: ProductType.PAID_SUBSCRIPTION,
+          platform: Platform.GOOGLE_PLAY,
         }, {
           // Nuovo abbonamento annuale Ultra
           id: this.PRODUCT_ULTRA_YEARLY,
           type: ProductType.PAID_SUBSCRIPTION,
+          platform: Platform.GOOGLE_PLAY,
         }]);
 
         // Gestisce gli aggiornamenti del prodotto
@@ -145,6 +149,9 @@ class IAPService {
 
         // Inizializza lo store per la piattaforma Google Play
         this.store.initialize([Platform.GOOGLE_PLAY]);
+        
+        // Forza l'aggiornamento dei prodotti e dello stato degli acquisti (consigliato nella v13)
+        this.store.update();
       };
 
       // Risolve la race condition: se CdvPurchase non è ancora stato iniettato, attendiamo 'deviceready'
@@ -212,20 +219,38 @@ class IAPService {
         ]);
 
         console.log(`💰 [IAP] Ordinazione prodotto nativo: ${productId}`);
-        const product = this.store.get(productId);
-        const offer = product?.getOffer();
+        const Platform = window.CdvPurchase.Platform;
+        const product = this.store.get(productId, Platform.GOOGLE_PLAY) || this.store.get(productId);
+        
+        if (!product) {
+          const errorMsg = `Prodotto '${productId}' non registrato nello store locale.`;
+          console.error("💰 [IAP]", errorMsg);
+          alert("⚠️ Errore: " + errorMsg);
+          return false;
+        }
+
+        if (!product.valid) {
+          const errorMsg = `Prodotto '${productId}' non valido o non trovato sul Play Store. Assicurati che l'In-App Purchase sia attivo, pubblicato nella Google Play Console e di star usando una build di Test Interno.`;
+          console.error("💰 [IAP]", errorMsg);
+          alert("⚠️ Errore: " + errorMsg);
+          return false;
+        }
+
+        if (!product.canPurchase) {
+          const errorMsg = `Il prodotto '${productId}' risulta valido ma attualmente non acquistabile (forse lo possiedi già o il tuo account non è abilitato ai pagamenti).`;
+          console.error("💰 [IAP]", errorMsg);
+          alert("ℹ️ Avviso: " + errorMsg);
+          return false;
+        }
+
+        const offer = product.getOffer ? product.getOffer() : null;
         
         if (offer) {
           this.store.order(offer);
           return true;
-        } else if (product) {
+        } else {
           this.store.order(product);
           return true;
-        } else {
-          const errorMsg = `Prodotto '${productId}' non trovato sul Play Store. Assicurati che l'In-App Purchase sia attivo e configurato sulla console Google Play per questo pacchetto.`;
-          console.error("💰 [IAP]", errorMsg);
-          alert("⚠️ Errore: " + errorMsg);
-          return false;
         }
       } catch (err) {
         const errorMsg = "Impossibile avviare il pagamento: " + err.message;
@@ -318,7 +343,7 @@ class IAPService {
 
   addExtraAiToken() {
     const extra = this.getExtraAiTokens();
-    localStorage.setItem('extra_ai_tokens', (extra + 1).toString());
+    localStorage.setItem('extra_ai_tokens', (extra + 5).toString());
     // Emette un evento globale in modo che la UI sappia che c'è un token in più
     window.dispatchEvent(new CustomEvent('ai-usage-updated'));
   }

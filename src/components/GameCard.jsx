@@ -135,7 +135,7 @@ const GameCard = ({ game, onClick }) => {
       {/* Immagine — overflow:hidden solo qui */}
       <div style={{ height: '180px', position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}>
         {game.cover ? (
-          <img src={game.cover} alt={game.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={game.cover} alt={game.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, rgba(109,40,217,0.3) 0%, rgba(236,72,153,0.1) 100%)' }} />
         )}

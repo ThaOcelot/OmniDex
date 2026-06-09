@@ -1,0 +1,1502 @@
+[
+  {
+    "q": "Qual è il vero nome di Solid Snake nella saga di Metal Gear Solid?",
+    "options": [
+      "Jack",
+      "John",
+      "David",
+      "George"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il nome della gigantesca astronave mineraria in cui è ambientato il primo Dead Space?",
+    "options": [
+      "USG Kellion",
+      "USG Ishimura",
+      "USG Valor",
+      "USG Aegis"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Disco Elysium, qual è il nome del misurato e metodico tenente che ti affianca nelle indagini?",
+    "options": [
+      "Jean Vicquemare",
+      "Titus Hardie",
+      "Kim Kitsuragi",
+      "Klaasje Amandou"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Chi è il protagonista principale di Silent Hill 2?",
+    "options": [
+      "Harry Mason",
+      "James Sunderland",
+      "Travis Grady",
+      "Henry Townshend"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Quale iconica abilità in Disco Elysium rappresenta una sorta di connessione paranormale e \"sesto senso\" con la città stessa?",
+    "options": [
+      "Inland Empire",
+      "Encyclopedia",
+      "Shivers",
+      "Half Light"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Come si chiama la letale squadra di forze speciali guidata da The Boss in Metal Gear Solid 3: Snake Eater?",
+    "options": [
+      "Foxhound",
+      "Dead Cell",
+      "Beauty and the Beast Unit",
+      "L'Unità Cobra"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "In Dead Space, come viene chiamato il misterioso manufatto alieno che causa la follia e le mutazioni?",
+    "options": [
+      "Il Monolito",
+      "Il Cristallo",
+      "Il Marchio (The Marker)",
+      "L'Elica"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Chi è lo storico compositore che ha curato le iconiche e inquietanti colonne sonore dei primi Silent Hill?",
+    "options": [
+      "Nobuo Uematsu",
+      "Akira Yamaoka",
+      "Keiichi Okabe",
+      "Koji Kondo"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Metal Gear Solid, qual è la vera identità del cyborg ninja apparso nell'incidente di Shadow Moses?",
+    "options": [
+      "Raiden",
+      "Frank Jaeger (Gray Fox)",
+      "Vamp",
+      "Decoy Octopus"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è il nome della fittizia e decadente città in cui è ambientato Disco Elysium?",
+    "options": [
+      "Revachol",
+      "Martinaise",
+      "Sur-la-Clef",
+      "Graad"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Come si chiama il protagonista silenzioso della serie Half-Life?",
+    "options": [
+      "Adrian Shephard",
+      "Gordon Freeman",
+      "Barney Calhoun",
+      "Alyx Vance"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In The Legend of Zelda, qual è il nome del protagonista che il giocatore controlla?",
+    "options": [
+      "Zelda",
+      "Ganon",
+      "Link",
+      "Tingle"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è l'intelligenza artificiale che accompagna Master Chief in Halo?",
+    "options": [
+      "EDI",
+      "GLaDOS",
+      "Cortana",
+      "SHODAN"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Come si chiama il leggendario cacciatore di mostri mutato protagonista di The Witcher?",
+    "options": [
+      "Vesemir",
+      "Dandelion",
+      "Eskel",
+      "Geralt di Rivia"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Qual è l'antagonista principale di Final Fantasy VII?",
+    "options": [
+      "Kefka",
+      "Kuja",
+      "Sephiroth",
+      "Sin"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Metroid, qual è l'identità della persona sotto la potente Tuta Energia?",
+    "options": [
+      "Samus Aran",
+      "Ridley Scott",
+      "Adam Malkovich",
+      "Capitano Falcon"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Come si chiama il drago viola protagonista dell'omonima serie platform creata da Insomniac Games?",
+    "options": [
+      "Croc",
+      "Gex",
+      "Spyro",
+      "Rayman"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il nome del compagno volpe a due code di Sonic the Hedgehog?",
+    "options": [
+      "Knuckles",
+      "Tails",
+      "Shadow",
+      "Silver"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Chi è l'arcinemico storico di Crash Bandicoot?",
+    "options": [
+      "Nitros Oxide",
+      "Dingodile",
+      "Dr. Neo Cortex",
+      "Uka Uka"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Come si chiama la spalla/fratello di Super Mario?",
+    "options": [
+      "Wario",
+      "Waluigi",
+      "Toad",
+      "Luigi"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Come si chiama la città sottomarina in cui è ambientato il primo BioShock?",
+    "options": [
+      "Columbia",
+      "Rapture",
+      "Arcadia",
+      "Dunwall"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è la valuta principale utilizzata nel mondo post-apocalittico di Fallout?",
+    "options": [
+      "Proiettili d'argento",
+      "Dollari pre-bellici",
+      "Tappi di bottiglia (Caps)",
+      "Razioni di cibo"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In The Elder Scrolls V: Skyrim, in quale continente si svolge l'avventura?",
+    "options": [
+      "Akavir",
+      "Atmora",
+      "Yokuda",
+      "Tamriel"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Quale fittizia città americana viene distrutta a seguito dell'epidemia del Virus T in Resident Evil?",
+    "options": [
+      "Silent Hill",
+      "Raccoon City",
+      "Willamette",
+      "Los Perdidos"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è il regno maledetto in cui si svolgono gli eventi del primo Dark Souls?",
+    "options": [
+      "Drangleic",
+      "Lothric",
+      "Lordran",
+      "Yharnam"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Cyberpunk 2077, come si chiama la megalopoli in cui opera V?",
+    "options": [
+      "Neo-Tokyo",
+      "Night City",
+      "Los Angeles 2049",
+      "Mega-City One"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Nel primo capitolo di Grand Theft Auto: San Andreas, in quale città il protagonista CJ fa il suo ritorno?",
+    "options": [
+      "Vice City",
+      "Liberty City",
+      "San Fierro",
+      "Los Santos"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Come si chiama il fungo parassita responsabile dell'infezione globale in The Last of Us?",
+    "options": [
+      "T-Virus",
+      "Plasmidi",
+      "Cordyceps",
+      "Flagello"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Bloodborne, qual è il nome della città gotica infetta dalla piaga delle belve?",
+    "options": [
+      "Boletaria",
+      "Anor Londo",
+      "Yharnam",
+      "Majula"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Assassin's Creed, come si chiama il macchinario in grado di leggere i ricordi genetici?",
+    "options": [
+      "La Mela dell'Eden",
+      "Il Frutto",
+      "Il Sincronizzatore",
+      "L'Animus"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Qual è l'arma iconica e devastante storicamente legata alla serie DOOM?",
+    "options": [
+      "Fucile a impulsi",
+      "Lanciarazzi",
+      "BFG 9000",
+      "Raggio della Morte"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Quale console detiene il record di vendite più alto nella storia dei videogiochi?",
+    "options": [
+      "Nintendo DS",
+      "PlayStation 2",
+      "Nintendo Switch",
+      "Game Boy"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Come si chiamano le iconiche lame incatenate ai polsi di Kratos nei primi God of War?",
+    "options": [
+      "Lame dell'Olimpo",
+      "Ascia Leviatano",
+      "Lame del Caos",
+      "Lame di Atena"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Kingdom Hearts, quale tipo di arma magica a forma di chiave brandisce Sora?",
+    "options": [
+      "Master Sword",
+      "Buster Sword",
+      "Soul Edge",
+      "Keyblade"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Di che colore è l'iconica torta promessa in Portal (che si rivela essere una bugia)?",
+    "options": [
+      "Cioccolato con ciliegie",
+      "Cioccolata nera con panna e ciliegie",
+      "Vaniglia con fragole",
+      "Red Velvet"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Minecraft, qual è il materiale tradizionalmente considerato il più prezioso per forgiare armi e armature (prima del Netherite)?",
+    "options": [
+      "Oro",
+      "Ferro",
+      "Smeraldo",
+      "Diamante"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Quale dei seguenti fantasmi di Pac-Man è di colore rosso?",
+    "options": [
+      "Pinky",
+      "Inky",
+      "Clyde",
+      "Blinky"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Nella serie Castlevania, quale storica famiglia è votata alla caccia del Conte Dracula?",
+    "options": [
+      "Redfield",
+      "Belmont",
+      "Joestar",
+      "Helsing"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Quanti colossi giganti deve sconfiggere Wander nel gioco Shadow of the Colossus?",
+    "options": [
+      "12",
+      "14",
+      "16",
+      "20"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il nome in codice del progetto durante lo sviluppo del Nintendo GameCube?",
+    "options": [
+      "Project Reality",
+      "Project Cafe",
+      "Revolution",
+      "Project Dolphin"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Chi è l'ingegnere informatico russo creatore originale del puzzle game Tetris?",
+    "options": [
+      "Shigeru Miyamoto",
+      "Aleksej Pažitnov",
+      "Hironobu Sakaguchi",
+      "Gunpei Yokoi"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Quale famoso attore ha prestato il volto e la voce al personaggio di Johnny Silverhand in Cyberpunk 2077?",
+    "options": [
+      "Willem Dafoe",
+      "Norman Reedus",
+      "Keanu Reeves",
+      "Mads Mikkelsen"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Quale studio di sviluppo è l'autore della serie The Last of Us e Uncharted?",
+    "options": [
+      "Insomniac Games",
+      "Sucker Punch",
+      "Naughty Dog",
+      "Santa Monica Studio"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In World of Warcraft, quali sono le due fazioni principali in guerra perenne?",
+    "options": [
+      "Umani e Orchi",
+      "L'Alleanza e L'Orda",
+      "I Protoss e gli Zerg",
+      "L'Impero e la Ribellione"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Come si chiama la mappa principale e più famosa su cui avvengono le partite di League of Legends?",
+    "options": [
+      "Abisso Ululante",
+      "Selva Demoniaca",
+      "Dominio di Cristallo",
+      "Landa degli Evocatori"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "In Street Fighter, quale personaggio esegue la famosa mossa speciale \"Hadouken\"?",
+    "options": [
+      "Guile",
+      "Chun-Li",
+      "Ryu",
+      "M. Bison"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è l'identità dell'androide da combattimento protagonista principale di NieR: Automata?",
+    "options": [
+      "9S",
+      "A2",
+      "2B",
+      "6O"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Chi era il volto in copertina e il personaggio simbolo all'uscita originale di Overwatch?",
+    "options": [
+      "Winston",
+      "Widowmaker",
+      "Reaper",
+      "Tracer"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "In Persona 5, come si fa chiamare il gruppo di vigilanti guidato dal protagonista?",
+    "options": [
+      "S.E.E.S.",
+      "The Investigation Team",
+      "Ladri Fantasma (Phantom Thieves)",
+      "I Ribelli di Tokyo"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Nella serie Yakuza (Like a Dragon), chi è lo storico e leggendario \"Drago di Dojima\"?",
+    "options": [
+      "Goro Majima",
+      "Kazuma Kiryu",
+      "Akira Nishikiyama",
+      "Ichiban Kasuga"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Donkey Kong (1981), qual era il nome originale di Mario?",
+    "options": [
+      "Plumber",
+      "Jumpman",
+      "Mr. Video",
+      "Ossan"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Quale famoso videogioco arcade del 1978 presentava alieni che scendevano progressivamente verso il basso?",
+    "options": [
+      "Galaga",
+      "Asteroids",
+      "Space Invaders",
+      "Defender"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In quale anno è stato lanciato il Super Nintendo (SNES) in Giappone?",
+    "options": [
+      "1988",
+      "1989",
+      "1990",
+      "1991"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il livello massimo raggiungibile nell'originale Pac-Man prima che il gioco vada in crash (il famoso \"kill screen\")?",
+    "options": [
+      "100",
+      "255",
+      "256",
+      "999"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Come si chiamava il controverso controller a forma di guanto rilasciato per il NES nel 1989?",
+    "options": [
+      "Power Pad",
+      "Power Glove",
+      "U-Force",
+      "R.O.B."
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Street Fighter II, qual è la nazionalità del combattente Blanka?",
+    "options": [
+      "Brasiliana",
+      "Americana",
+      "Indiana",
+      "Russa"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Quale di questi NON è uno dei fantasmi originali di Pac-Man?",
+    "options": [
+      "Blinky",
+      "Pinky",
+      "Inky",
+      "Kinky"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Chi è il game designer giapponese creatore della serie Metal Gear?",
+    "options": [
+      "Shigeru Miyamoto",
+      "Hideo Kojima",
+      "Shinji Mikami",
+      "Yuji Naka"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Mortal Kombat (1992), quale personaggio esegue una fatality in cui strappa la spina dorsale all'avversario?",
+    "options": [
+      "Scorpion",
+      "Sub-Zero",
+      "Raiden",
+      "Kano"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Quale console portatile SEGA aveva uno schermo a colori molto prima del Game Boy Color, ma consumava enormi quantità di batterie?",
+    "options": [
+      "Sega Nomad",
+      "Sega Game Gear",
+      "Sega Master System",
+      "Sega Pico"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Final Fantasy VIII, come si chiama la peculiare arma usata dal protagonista Squall Leonhart?",
+    "options": [
+      "Buster Sword",
+      "Gunblade",
+      "Masamune",
+      "Keyblade"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Come si chiama il regno magico e iper-tecnologico che fluttua nel cielo in Chrono Trigger?",
+    "options": [
+      "Guardia",
+      "Zeal",
+      "Porre",
+      "Medina"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Persona 4, qual è il vero nome del serial killer che si nasconde dietro gli omicidi a Inaba?",
+    "options": [
+      "Taro Namatame",
+      "Tohru Adachi",
+      "Ryotaro Dojima",
+      "Yosuke Hanamura"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Mass Effect, quale razza aliena ha un'attitudine militaristica e ha guidato l'assedio di Shanxi durante la Guerra del Primo Contatto?",
+    "options": [
+      "Asari",
+      "Salarian",
+      "Krogan",
+      "Turian"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "In The Elder Scrolls IV: Oblivion, chi è il Principe Daedrico della Distruzione?",
+    "options": [
+      "Sheogorath",
+      "Mehrunes Dagon",
+      "Molag Bal",
+      "Nocturnal"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è il nome della città natale di Cloud Strife e Tifa Lockhart in Final Fantasy VII?",
+    "options": [
+      "Midgar",
+      "Kalm",
+      "Nibelheim",
+      "Wutai"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Fallout: New Vegas, qual è il vero nome dell'uomo che guida la Legione di Caesar?",
+    "options": [
+      "Mr. House",
+      "Edward Sallow",
+      "Lanius",
+      "Joshua Graham"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In The Witcher 3: Wild Hunt, come si chiama il fedele cavallo di Geralt di Rivia?",
+    "options": [
+      "Rutilia (Roach)",
+      "Bucefalo",
+      "Ombra",
+      "Pegaso"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Qual è l'inquietante antagonista principale del gioco EarthBound (Mother 2)?",
+    "options": [
+      "Porky Minch",
+      "Giygas",
+      "Starman",
+      "Mr. Carpainter"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Dragon Quest, qual è il nemico base che è diventato la mascotte ufficiale della serie?",
+    "options": [
+      "Goblin",
+      "Chocobo",
+      "Slime",
+      "Poring"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Come si chiama la misteriosa e letale isola in cui fa naufragio Lara Croft in Tomb Raider (2013)?",
+    "options": [
+      "Yamatai",
+      "Poveglia",
+      "Isola di Pasqua",
+      "Okinawa"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "In Red Dead Redemption 2, qual è il nome del protagonista giocabile per gran parte della storia?",
+    "options": [
+      "John Marston",
+      "Dutch van der Linde",
+      "Arthur Morgan",
+      "Micah Bell"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il nome dell'arma da mischia principale di Ratchet in Ratchet & Clank?",
+    "options": [
+      "Spada di luce",
+      "Onnichiave (Omniwrench)",
+      "Martello gravitazionale",
+      "Pistola laser"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In God of War (2018), come si chiama il figlio di Kratos?",
+    "options": [
+      "Deimos",
+      "Atreus",
+      "Baldur",
+      "Modi"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è il nome del regno in rovina popolato da insetti in cui è ambientato Hollow Knight?",
+    "options": [
+      "Lordran",
+      "Nidosacro (Hallownest)",
+      "Nibel",
+      "Boletaria"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Chi è l'imprevedibile e iconico villain di Far Cry 3 che definisce la \"follia\"?",
+    "options": [
+      "Pagan Min",
+      "Joseph Seed",
+      "Vaas Montenegro",
+      "Anton Castillo"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è il nome dell'agenzia segreta per cui lavora l'Agente 47 in Hitman?",
+    "options": [
+      "IMF",
+      "ICA",
+      "CIA",
+      "MI6"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Come si chiama il mondo dipinto in Super Mario 64 al quale si accede saltando nel quadrante del grande orologio a pendolo?",
+    "options": [
+      "Bob-omb Battlefield",
+      "Tick Tock Clock (Pendente di Piombo)",
+      "Rainbow Ride",
+      "Cool, Cool Mountain"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Horizon Zero Dawn, qual è il nome della tribù matriarcale in cui cresce Aloy?",
+    "options": [
+      "Carja",
+      "Nora",
+      "Oseram",
+      "Banuk"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Nel videogioco Control, come si chiama l'edificio brutalista in cui ha sede il Federal Bureau of Control?",
+    "options": [
+      "Il Monolito",
+      "La Piramide",
+      "The Oldest House (La Casa Più Antica)",
+      "The Black Rock"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Quale studio indipendente ha sviluppato il pluripremiato roguelike Hades?",
+    "options": [
+      "Team Cherry",
+      "Supergiant Games",
+      "Motion Twin",
+      "Re-Logic"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In League of Legends, quale regione è conosciuta per il suo spietato militarismo e la filosofia \"la forza fa il diritto\"?",
+    "options": [
+      "Demacia",
+      "Ionia",
+      "Noxus",
+      "Piltover"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Come si chiama il protagonista controllato dal giocatore in Undertale?",
+    "options": [
+      "Chara",
+      "Sans",
+      "Frisk",
+      "Asriel"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Introdotto nelle versioni più recenti di Minecraft, qual è il materiale più resistente per forgiare armature (superiore al diamante)?",
+    "options": [
+      "Titanio",
+      "Netherite",
+      "Ossidiana",
+      "Cobalto"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Stardew Valley, qual è il nome della spietata corporazione che minaccia lo stile di vita della cittadina?",
+    "options": [
+      "Nook Inc.",
+      "Joja Corporation",
+      "Vault-Tec",
+      "Umbrella Corporation"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Quale gioco indie ti mette nei panni di un agente di frontiera nel fittizio e totalitario stato di Arstotzka?",
+    "options": [
+      "Beholder",
+      "Papers, Please",
+      "The Stanley Parable",
+      "Return of the Obra Dinn"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Dota 2, quale eroe pronuncia la famosa frase \"Fresh Meat!\" prima di agganciare la vittima?",
+    "options": [
+      "Axe",
+      "Tidehunter",
+      "Pudge",
+      "Doom"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Celeste, come si chiama la montagna titolare che la protagonista Madeline cerca di scalare?",
+    "options": [
+      "Monte Olimpo",
+      "Monte Ebott",
+      "Monte Celeste",
+      "Monte Fuji"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è l'obiettivo principale del gioco Subnautica?",
+    "options": [
+      "Salvare la Terra da una minaccia aliena",
+      "Sconfiggere un antico dio sottomarino",
+      "Sopravvivere e fuggire dal pianeta oceanico 4546B",
+      "Costruire una città sottomarina per l'umanità"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Su quale famoso motore grafico si basa il sandbox Garry's Mod?",
+    "options": [
+      "Unreal Engine",
+      "Unity",
+      "Source Engine",
+      "CryEngine"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Dark Souls, chi è il signore della luce e padre di Gwynevere, Gwyndolin e del Re Senza Nome?",
+    "options": [
+      "Artorias",
+      "Havel la Roccia",
+      "Gwyn, Lord dei Tizzoni",
+      "Nito, il Re Tombale"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Resident Evil 4, come si chiama il parassita antico che infetta gli abitanti del villaggio europeo?",
+    "options": [
+      "T-Virus",
+      "G-Virus",
+      "Las Plagas",
+      "Uroboros"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Bloodborne, quale istituzione fondò la pratica della \"Guarigione del Sangue\" che portò alla rovina di Yharnam?",
+    "options": [
+      "I Cacciatori dei Powder Keg",
+      "Il Coro",
+      "La Chiesa della Cura (Healing Church)",
+      "L'Accademia di Byrgenwerth"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Chi è l'intelligenza artificiale ostile e megalomane della serie System Shock?",
+    "options": [
+      "GLaDOS",
+      "SHODAN",
+      "Icarus",
+      "Skynet"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è il nome della fittizia lingua parlata dai personaggi della serie The Sims?",
+    "options": [
+      "Simiano",
+      "Simlish",
+      "Gibberish",
+      "Simspeak"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Nel videogioco Destiny, come si chiama la misteriosa entità sferica che ha innescato l'Età dell'Oro dell'umanità?",
+    "options": [
+      "Il Monolito",
+      "Il Viaggiatore (The Traveler)",
+      "L'Oracolo",
+      "La Luce"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Nel primo capitolo di Gears of War, come si chiama il pianeta dilaniato dalla guerra contro le Locuste?",
+    "options": [
+      "Reach",
+      "Sera",
+      "Pandora",
+      "Char"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Half-Life 2, qual è il nome dell'impero militare transdimensionale che ha conquistato la Terra in sole sette ore?",
+    "options": [
+      "I Covenant",
+      "I Combine",
+      "I Borg",
+      "L'Impero Grox"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Dead Space, qual è il mantra religioso ripetuto ossessivamente dai membri di Unitology?",
+    "options": [
+      "\"Loda il Marchio\"",
+      "\"Rendici Uno\" (Make Us Whole)",
+      "\"La Carne è Debole\"",
+      "\"Risorgi e Uccidi\""
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Qual è il leggendario \"Konami Code\", originariamente usato in Gradius e reso celebre da Contra?",
+    "options": [
+      "Su, Su, Giù, Giù, Sinistra, Destra, Sinistra, Destra, B, A",
+      "A, B, B, A, C, C, C",
+      "Giù, R, Su, L, Y, B",
+      "IDDQD"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "In Metal Gear Solid 3: Snake Eater, quale fiore bianco simboleggia l'epico e drammatico scontro finale tra Naked Snake e The Boss?",
+    "options": [
+      "Giglio Ragno Rosso",
+      "Stella di Betlemme (Star of Bethlehem)",
+      "Lacrima di Luna",
+      "Fior di Loto"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Disco Elysium, quale fazione politica e ideologica è storicamente associata alla figura rivoluzionaria di Kras Mazov?",
+    "options": [
+      "I Moralisti",
+      "Gli Ultraliberali",
+      "I Comunisti",
+      "I Fascisti"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Silent Hill 3, come si chiama la protagonista adolescente che scopre di essere legata all'oscuro passato di Alessa Gillespie?",
+    "options": [
+      "Angela Orosco",
+      "Maria",
+      "Heather Mason",
+      "Cybil Bennett"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Dead Space 2, in quale immensa e caotica stazione spaziale civile si risveglia Isaac Clarke all'inizio dell'incubo?",
+    "options": [
+      "The Citadel",
+      "The Sprawl (Stazione Titan)",
+      "Talos I",
+      "Sevastopol"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Nell'universo di Metal Gear, come si chiama il filosofico e onnipresente network di IA che controlla segretamente l'economia e l'informazione globale?",
+    "options": [
+      "FOXALIVE",
+      "I Patriots",
+      "Skynet",
+      "Philanthropy"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Disco Elysium, quale sfuggente criptide l'anziana crittocologa Lena è convinta di aver avvistato tra i canneti di Martinaise?",
+    "options": [
+      "L'Uomo Falena",
+      "L'Insetto Stecco Insulare (Insulindian Phasmid)",
+      "Il Mostro del Pale",
+      "Il Leviatano"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Silent Hill 2, qual è la mostruosa e iconica creatura con una titanica lama che incarna i sensi di colpa di James Sunderland?",
+    "options": [
+      "The Butcher",
+      "Valtiel",
+      "Pyramid Head",
+      "Lying Figure"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Dead Space, qual è l'ingegneristico e brutale attrezzo minerario che diventa l'arma simbolo per smembrare i Necromorfi?",
+    "options": [
+      "Sparachiodi Industriale",
+      "Lama al Plasma (Plasma Cutter)",
+      "Fucile a Impulsi",
+      "Raggio Traente"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Metal Gear Solid: Peace Walker, come si chiama l'Intelligenza Artificiale progettata dalla Dr. Strangelove per replicare esattamente la mente e le tattiche di The Boss?",
+    "options": [
+      "GW",
+      "JD",
+      "Mammal Pod",
+      "ALICE"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Nel celebre e spaventoso teaser interattivo P.T., qual è il nome dell'entità femminile che infesta il corridoio a forma di L?",
+    "options": [
+      "Alma",
+      "Lisa",
+      "Sadako",
+      "Mia"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Final Fantasy X, qual è il nome della colossale entità apocalittica che ciclicamente terrorizza il mondo di Spira?",
+    "options": [
+      "Seymour Omnis",
+      "Omega Weapon",
+      "Sin",
+      "Yu Yevon"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Dark Souls III, chi è il Signore dei Tizzoni opzionale che cavalca un wyvern e brandisce una lancia in grado di evocare fulmini?",
+    "options": [
+      "Re Vendrick",
+      "Artorias",
+      "Il Re Senza Nome (Nameless King)",
+      "Ornstein l'Ammazzadraghi"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Batman: Arkham City, quale villain organizza un contorto tribunale farsa per processare l'Uomo Pipistrello all'interno del Solomon Wayne Courthouse?",
+    "options": [
+      "Il Joker",
+      "Due Facce",
+      "L'Enigmista",
+      "Il Pinguino"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In The Legend of Zelda: Ocarina of Time, come si chiama la fiera tribù di donne guerriere del deserto a cui appartiene Ganondorf?",
+    "options": [
+      "Sheikah",
+      "Zora",
+      "Gerudo",
+      "Goron"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Portal 2, chi è il goffo nucleo di personalità britannico che finisce per prendere disastrosamente il controllo della struttura Aperture Science?",
+    "options": [
+      "GLaDOS",
+      "Rick l'Avventuriero",
+      "Wheatley",
+      "Space Core"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Resident Evil 3, qual è la bio-arma inarrestabile programmata dalla Umbrella per dare la caccia implacabile ai membri della S.T.A.R.S.?",
+    "options": [
+      "Mr. X",
+      "Nemesis",
+      "William Birkin",
+      "Albert Wesker"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Sekiro: Shadows Die Twice, qual è il nome del leggendario fondatore del clan Ashina che affronti nell'epico scontro finale tra i fiori bianchi?",
+    "options": [
+      "Genichiro Ashina",
+      "Isshin Ashina",
+      "Kuro",
+      "Il Gufo"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Hollow Knight, chi è la divinità dimenticata e reale boss finale del gioco, origine dell'Infezione che piaga Nidosacro?",
+    "options": [
+      "Il Re Pallido",
+      "Il Ricettacolo Puro",
+      "La Radiosità (The Radiance)",
+      "Hornet"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Cuphead, qual è l'avversario finale che risiede nel profondità del casinò sotterraneo di Inkwell Isle?",
+    "options": [
+      "King Dice",
+      "Il Diavolo (The Devil)",
+      "Grim Matchstick",
+      "Dr. Kahl's Robot"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Persona 5, come si chiama il professore di ginnastica abusivo il cui \"Palazzo\" della lussuria è il primo a essere infiltrato dai Ladri Fantasma?",
+    "options": [
+      "Masayoshi Shido",
+      "Ichiryusai Madarame",
+      "Suguru Kamoshida",
+      "Junya Kaneshiro"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Slay the Spire, qual è il nome del personaggio giocabile iniziale, caratterizzato da un approccio incentrato sulla forza bruta e la rigenerazione vitale?",
+    "options": [
+      "La Silenziosa (The Silent)",
+      "Il Difetto (The Defect)",
+      "Il Corazzato (The Ironclad)",
+      "La Custode (The Watcher)"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Five Nights at Freddy's, quale letale animatrone ha l'aspetto di un pirata e scatta correndo dal suo \"Covo\"?",
+    "options": [
+      "Bonnie",
+      "Chica",
+      "Freddy",
+      "Foxy"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Qual è il vero nome del visionario e controverso creatore di capolavori indie come The Binding of Isaac e Super Meat Boy?",
+    "options": [
+      "Toby Fox",
+      "Edmund McMillen",
+      "Phil Fish",
+      "Jonathan Blow"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Con quale iconico e versatile motore grafico proprietario della Valve sono stati sviluppati capolavori storici come Half-Life 2 e Left 4 Dead?",
+    "options": [
+      "GoldSrc",
+      "Unreal Engine",
+      "Source Engine",
+      "Creation Engine"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Qual è lo pseudonimo del celebre creatore solista di Stardew Valley, che ha sviluppato l'intero gioco (inclusa la musica) da zero?",
+    "options": [
+      "ConcernedApe (Eric Barone)",
+      "Notch (Markus Persson)",
+      "ZUN (Jun'ya Ota)",
+      "Toby Fox"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "In Among Us, come viene definito il ruolo dei giocatori il cui unico scopo è sabotare la nave ed eliminare silenziosamente l'equipaggio?",
+    "options": [
+      "I Traditori",
+      "Gli Impostori",
+      "Gli Infiltrati",
+      "I Mutanti"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Terraria, quale evento irreversibile e letale viene attivato permanentemente una volta sconfitto il Muro di Carne (Wall of Flesh)?",
+    "options": [
+      "L'Invasione Goblin",
+      "La Luna di Sangue",
+      "L'Hardmode",
+      "L'Eclissi Solare"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Nello spietato e psichedelico Hotline Miami, che tipo di maschera indossa il silenzioso protagonista, soprannominato dai fan \"Jacket\"?",
+    "options": [
+      "Da cavallo (Don Juan)",
+      "Da maiale (Aubrey)",
+      "Da gallo (Richard)",
+      "Da tigre (Tony)"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Quale termine (coniato in parte dagli sviluppatori stessi) descrive perfettamente il mix di morte permanente e mappa interconnessa di Dead Cells?",
+    "options": [
+      "Metroidvania",
+      "Roguelike",
+      "Roguevania",
+      "Souls-lite"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Doki Doki Literature Club!, quale membro del club letterario rompe la quarta parete e altera pesantemente i file di gioco pur di stare sola con te?",
+    "options": [
+      "Sayori",
+      "Yuri",
+      "Natsuki",
+      "Monika"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "In Halo, come si chiama la letale lama al plasma a forma di U spesso brandita con maestria dai Sangheili (Elite)?",
+    "options": [
+      "Spada di Potere",
+      "Spada Energetica (Energy Sword)",
+      "Lama del Profeta",
+      "Daga Fiammante"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Nella serie DOOM, cosa sta a significare l'acronimo BFG, l'arma capace di disintegrare istantaneamente stanze piene di demoni?",
+    "options": [
+      "Big Fire Gun",
+      "Big Fucking Gun",
+      "Bio Force Gun",
+      "Blast Frag Gun"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Assassin's Creed, quale iconica arma da assassinio veniva originariamente donata ai membri della Confraternita dopo il taglio dell'anulare?",
+    "options": [
+      "Dardo Avvelenato",
+      "Lama Celata (Hidden Blade)",
+      "Tirapugni Letale",
+      "Pugnale Fantasma"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Fallout, come si chiama l'indispensabile computer da polso prodotto dalla RobCo che funge da inventario, radio e terminale per il giocatore?",
+    "options": [
+      "Pip-Boy",
+      "Vault-Tec Terminal",
+      "Omni-Tool",
+      "Wrist-Comp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "In Mass Effect, qual è l'utensile olografico multifunzione utilizzato per hackerare sistemi, riparare corazze e sferrare attacchi elementali?",
+    "options": [
+      "Pip-Boy",
+      "Focus",
+      "Omni-Tool",
+      "Cyber-Deck"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In The Legend of Zelda: Ocarina of Time, quale potente strumento musicale permette a Link di manipolare le porte del tempo e teletrasportarsi?",
+    "options": [
+      "L'Arpa delle Ere",
+      "L'Ocarina del Tempo",
+      "Il Flauto di Pan",
+      "La Bacchetta del Vento"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Bloodborne, qual è la brutale e iconica arma da mischia trasformabile presente sulla copertina del gioco?",
+    "options": [
+      "Lancia-Fucile",
+      "Ascia del Cacciatore",
+      "Mannaia Dentata (Saw Cleaver)",
+      "Spada Sacra di Ludwig"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In BioShock Infinite, qual è il nome del rampino magnetico rotante usato da Booker DeWitt per maciullare i nemici e sfrecciare sulle rotaie di Columbia?",
+    "options": [
+      "Plasmid-Hook",
+      "Sky-Hook",
+      "Vigor-Grip",
+      "Aero-Claw"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Half-Life 2, qual è il vero e lungo nome scientifico della celebre \"Gravity Gun\"?",
+    "options": [
+      "Quantum Levitator",
+      "Manipolatore del campo di energia a punto zero",
+      "Cannone a Singolarità",
+      "Fucile a Dislocazione di Massa"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Horizon Zero Dawn, come si chiama il piccolo e sofisticato dispositivo triangolare del Mondo Antico che Aloy indossa sull'orecchio per analizzare le macchine?",
+    "options": [
+      "L'Occhio",
+      "Lo Scanner",
+      "Il Focus",
+      "L'Oracolo"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Super Smash Bros. Ultimate, quale amatissimo personaggio è stato annunciato come l'ultimo, conclusivo combattente DLC del gioco?",
+    "options": [
+      "Sephiroth",
+      "Steve",
+      "Kazuya",
+      "Sora"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "In God of War, come si chiama la moglie di Kratos le cui ceneri, fuse inavvertitamente alla sua pelle, gli doneranno il triste titolo di \"Fantasma di Sparta\"?",
+    "options": [
+      "Atena",
+      "Calliope",
+      "Lysandra",
+      "Faye"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Nella saga di Yakuza (Like a Dragon), come viene spesso soprannominato il folle e imprevedibile Goro Majima?",
+    "options": [
+      "Il Drago di Dojima",
+      "La Tigre del Kansai",
+      "Il Cane Pazzo di Shimano (Mad Dog of Shimano)",
+      "Il Demone di Kamurocho"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In World of Warcraft, chi è il tormentato principe paladino che, impugnata la lama runica Gelidanima, diventa il celebre Re dei Lich?",
+    "options": [
+      "Illidan Grantempesta",
+      "Arthas Menethil",
+      "Sylvanas Ventolesto",
+      "Varian Wrynn"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Nel mondo di The Witcher, qual è la dura Scuola per strighi con sede a Kaer Morhen a cui appartengono Geralt, Vesemir ed Eskel?",
+    "options": [
+      "Scuola del Gatto",
+      "Scuola dell'Orso",
+      "Scuola del Lupo",
+      "Scuola della Vipera"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Grand Theft Auto V, quale dei tre protagonisti è un ex rapinatore di banche che vive una vita agiata, ma frustrante, sotto falsa identità a Los Santos?",
+    "options": [
+      "Trevor Philips",
+      "Franklin Clinton",
+      "Michael De Santa",
+      "Lester Crest"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Cyberpunk 2077, come si chiama il leggendario locale notturno di Night City in cui i mercenari ricevono un drink col loro nome solo dopo aver perso la vita in azione?",
+    "options": [
+      "Il Lizzie's Bar",
+      "Il Totentanz",
+      "L'Afterlife",
+      "El Coyote Cojo"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In Red Dead Redemption, qual è il nome dell'ormai disgregata e spietata banda di fuorilegge di cui faceva parte John Marston?",
+    "options": [
+      "I Ragazzi O'Driscoll",
+      "La Banda di Dutch van der Linde",
+      "I Lemoyne Raiders",
+      "I Del Lobos"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "In Devil May Cry, come si chiama il distaccato e letale fratello gemello di Dante, ossessionato dall'accumulare potere demoniaco?",
+    "options": [
+      "Nero",
+      "Sparda",
+      "Vergil",
+      "Mundus"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "In NieR Replicant, qual è il nome dell'arrogante, saccente ma potente libro magico fluttuante che accompagna il protagonista nel suo viaggio?",
+    "options": [
+      "Grimoire Noir",
+      "Grimoire Weiss",
+      "Grimoire Rubrum",
+      "Il Necronomicon"
+    ],
+    "correct": 1
+  }
+]

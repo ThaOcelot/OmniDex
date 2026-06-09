@@ -213,7 +213,7 @@ function GameCard({ game, onRemove, onToggleFavorite, onStatusChange, showFavori
 // ─── Pagina principale ───────────────────────────────────────────────────────
 export default function Favorites() {
   const [games, setGames] = useState([]);
-  const [activeTab, setActiveTab] = useState('favorites'); // 'favorites' | 'collection'
+  const [activeTab, setActiveTab] = useState('collection'); // 'favorites' | 'collection'
   const [activeFilter, setActiveFilter] = useState('all');
   const [showStats, setShowStats] = useState(true);
   const [sharing, setSharing] = useState(false);
@@ -239,13 +239,13 @@ export default function Favorites() {
 
   const handleToggleFavorite = async (game) => {
     await HapticService.light();
-    const newVal = !(game.isFavorite !== false);
+    const newVal = !(game.isFavorite === true);
     await db.updateFavoriteFlag(game.id, newVal);
     loadGames();
   };
 
   // Giochi preferiti (notifiche attive)
-  const favorites = games.filter(g => g.isFavorite !== false);
+  const favorites = games.filter(g => g.isFavorite === true);
   // Tutta la raccolta
   const collection = games;
 
@@ -256,6 +256,14 @@ export default function Favorites() {
 
   const quizStats = getQuizStats();
   const quizPct = quizStats.total > 0 ? Math.round((quizStats.correct / quizStats.total) * 100) : null;
+
+  const getRank = (correct) => {
+    if (correct >= 150) return { title: 'Sommelier', emoji: '🍷', color: 'var(--accent-ultra)' };
+    if (correct >= 51) return { title: 'Esperto', emoji: '👑', color: '#10B981' };
+    if (correct >= 11) return { title: 'Giocatore', emoji: '🕹️', color: 'var(--accent-secondary)' };
+    return { title: 'Novellino', emoji: '🌱', color: 'var(--text-muted)' };
+  };
+  const userRank = getRank(quizStats.correct);
 
   const TABS = [
     { id: 'favorites', label: 'Preferiti', emoji: '🔔', desc: `${favorites.length} giochi con notifiche attive` },
@@ -334,7 +342,7 @@ export default function Favorites() {
           {games.slice(0, 6).map(g => (
             <div key={g.id} style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '24px', overflow: 'hidden', border: '2px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column' }}>
               {g.cover
-                ? <img src={g.cover} alt={g.title} style={{ width: '100%', height: '280px', objectFit: 'cover' }} crossOrigin="anonymous" />
+                ? <img src={g.cover} alt={g.title} loading="lazy" style={{ width: '100%', height: '280px', objectFit: 'cover' }} crossOrigin="anonymous" />
                 : <div style={{ width: '100%', height: '280px', background: 'linear-gradient(135deg, #6d28d9, #ec4899)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '5rem' }}>🎮</div>
               }
               <div style={{ padding: '24px', flex: 1 }}>
@@ -370,7 +378,7 @@ export default function Favorites() {
             <button
               onClick={handleShareCard}
               disabled={sharing}
-              style={{ background: 'linear-gradient(135deg, #00f2fe 0%, #4facfe 100%)', border: 'none', borderRadius: 'var(--radius-md)', padding: '8px 14px', cursor: sharing ? 'wait' : 'pointer', color: '#002538', fontSize: '0.82rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}
+              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', borderRadius: 'var(--radius-md)', padding: '8px 14px', cursor: sharing ? 'wait' : 'pointer', color: '#002538', fontSize: '0.82rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}
             >
               {sharing ? <Loader2 size={14} className="spin" /> : <Camera size={14} />} Condividi
             </button>
@@ -386,11 +394,13 @@ export default function Favorites() {
 
       {/* Card Quiz Stats */}
       <div className="glass-panel" style={{ padding: '18px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
-        <div style={{ background: 'var(--accent-gradient)', borderRadius: '50%', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <User size={24} color="white" />
+        <div style={{ background: 'var(--bg-glass)', border: `2px solid ${userRank.color}`, borderRadius: '50%', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.5rem', boxShadow: `0 0 15px ${userRank.color}40` }} title={`Grado: ${userRank.title}`}>
+          {userRank.emoji}
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em', marginBottom: '6px' }}>🎮 Quiz Gaming — Risultati Totali</div>
+          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em', marginBottom: '6px' }}>
+            <span style={{ color: userRank.color, marginRight: '6px', fontSize: '0.75rem' }}>{userRank.title}</span> • Quiz Gaming
+          </div>
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--accent-primary)' }}>{quizStats.total}</div>
@@ -413,9 +423,7 @@ export default function Favorites() {
             )}
           </div>
         </div>
-        <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', borderLeft: '1px solid var(--glass-border)', paddingLeft: '14px', lineHeight: '1.6', flexShrink: 0 }}>
-          🗓 Nuove domande<br />ogni lunedì
-        </div>
+
       </div>
 
       {/* Stats Panel */}
