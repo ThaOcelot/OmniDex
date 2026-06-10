@@ -255,7 +255,7 @@ ATTENZIONE: LE CURIOSITÀ DEVONO ESSERE RIGOROSAMENTE IN LINGUA ITALIANA E PRESE
    * Riassume una notizia di videogiochi in italiano
    */
   async summarizeNews(newsTitle, source = '') {
-    return await askGemini(
+    return await askGeminiFlash(
       `Scrivi un riassunto in ITALIANO (3-4 frasi) di questa notizia di videogiochi.
 
 REGOLE TASSATIVE:
