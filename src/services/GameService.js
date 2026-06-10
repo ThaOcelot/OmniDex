@@ -287,7 +287,7 @@ class GameService {
 
     // 5. Componi il risultato finale
     // Utilizziamo SOLO la traduzione Firebase (descriptionIt) invece del plot generato da Gemini.
-    const finalPlot = descriptionIt || (aiLimitReached ? "Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste IA giornaliere." : "Panoramica non disponibile. (Errore temporaneo del server o del servizio IA. Riprova tra poco)");
+    const finalPlot = descriptionIt || (aiLimitReached ? "Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste giornaliere." : "La panoramica non è al momento disponibile.");
     const finalData = {
       ...rawg,
       suggested,
@@ -468,12 +468,12 @@ class GameService {
     }
 
     if (!GeminiCloudService.isAvailable()) {
-      return { name: characterName, description: "Servizio AI non disponibile." };
+      return { name: characterName, description: "Dettagli non disponibili al momento." };
     }
 
     // Se stiamo per usare l'AI, consumiamo un gettone limitato se free
     if (IAPService.hasReachedAiLimit()) {
-      throw new Error("Hai raggiunto il limite giornaliero di richieste AI gratuite. Passa a Ultra per richieste illimitate.");
+      throw new Error("Hai raggiunto il limite giornaliero di richieste gratuite. Passa a Ultra per richieste illimitate.");
     }
     IAPService.incrementDailyAiCount();
 
@@ -499,7 +499,7 @@ class GameService {
    */
   async getGameTrivia(gameTitle) {
     if (!GeminiCloudService.isAvailable()) {
-      return [{ fact: 'Il servizio AI non è disponibile. Controlla la connessione.' }];
+      return [{ fact: 'Curiosità non disponibili al momento. Controlla la connessione.' }];
     }
     try {
       const raw = await GeminiCloudService.generateTrivia(gameTitle, '');
@@ -521,7 +521,7 @@ class GameService {
    */
   async searchGamesAI(query) {
     if (!GeminiCloudService.isAvailable()) {
-      throw new Error("Il servizio AI non è disponibile. Attiva la ricerca normale.");
+      throw new Error("Ricerca conversazionale non disponibile al momento. Usa la ricerca normale.");
     }
     const aiResults = await GeminiCloudService.recommendGames(query);
     if (!aiResults || aiResults.length === 0) {
@@ -555,7 +555,7 @@ class GameService {
   }
 
   async analyzeCompatibility(gameTitle, gameDescription) {
-    if (!GeminiCloudService.isAvailable()) return { score: 50, reason: "AI non disponibile." };
+    if (!GeminiCloudService.isAvailable()) return { score: 50, reason: "Analisi di compatibilità non disponibile al momento." };
     const userFavorites = await db.getFavorites();
     if (userFavorites.length < 3) {
       return { score: 50, reason: "Aggiungi almeno 3 giochi ai tuoi preferiti per sbloccare l'analisi." };
@@ -567,7 +567,7 @@ class GameService {
    * Riassunto precedenti
    */
   async summarizePreviousGames(gameTitle) {
-    if (!GeminiCloudService.isAvailable()) return "AI non disponibile.";
+    if (!GeminiCloudService.isAvailable()) return "Riassunto non disponibile al momento.";
     return await GeminiCloudService.summarizePreviousGames(gameTitle);
   }
 
