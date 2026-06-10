@@ -6,11 +6,7 @@ import { db } from './db';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 
 const algoliaClient = algoliasearch('TXFAPWRDB1', 'ccce008e6d7ef0ef672dc4251ed98ca5');
-const NEWS_PROXY = 'https://api.allorigins.win/get?url=';
 const isNative = window.Capacitor?.isNativePlatform?.();
-const getNewsFetchUrl = (rssUrl) => {
-  return `${NEWS_PROXY}${encodeURIComponent(rssUrl)}`;
-};
 
 const CACHE_VERSION = 21; // Bump per immagini personaggi via OpenVerse invece di Wikipedia
 
@@ -361,35 +357,42 @@ class GameService {
     };
 
     try {
-      // Usiamo le virgolette per il titolo e includiamo ricerche per video ufficiali, trailer o gameplay
+      const fetchRss = async (url) => {
+        const proxies = [
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+          `https://corsproxy.io/?${encodeURIComponent(url)}`
+        ];
+        for (const proxy of proxies) {
+          try {
+            const res = await fetchWithTimeout(proxy);
+            if (res.ok) {
+              const text = await res.text();
+              if (text && text.includes('<rss')) return text;
+            }
+          } catch(e) { /* ignore and try next */ }
+        }
+        return '';
+      };
+
       const baseQuery = `"${gameTitle}" (videogioco OR video OR trailer OR gameplay)`;
-      // Cerca prima le notizie dell'ultimo mese (ultimi 30 giorni)
       let searchQuery = `${baseQuery} when:30d`;
       let rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
-      let fetchUrl = getNewsFetchUrl(rssUrl);
-
-      let res = await fetchWithTimeout(fetchUrl);
-      let text = '';
+      
+      let text = await fetchRss(rssUrl);
       let items = [];
 
-      if (res.ok) {
-        const json = await res.json();
-        text = json.contents || '';
+      if (text) {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
         items = Array.from(xmlDoc.querySelectorAll("item"));
       }
 
-      // Se non ci sono notizie negli ultimi 30 giorni, togli il filtro temporale per evitare un tab vuoto
       if (items.length === 0) {
         console.log(`ℹ️ Nessuna notizia dell'ultimo mese per "${gameTitle}". Ripiego sulla ricerca generica.`);
         searchQuery = baseQuery;
         rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(searchQuery)}&hl=it&gl=IT&ceid=IT:it`;
-        fetchUrl = getNewsFetchUrl(rssUrl);
-        res = await fetchWithTimeout(fetchUrl);
-        if (!res.ok) throw new Error(`News fetch failed: ${res.status}`);
-        const json = await res.json();
-        text = json.contents || '';
+        text = await fetchRss(rssUrl);
+        if (!text) throw new Error(`News fetch failed via tutti i proxy`);
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(text, "text/xml");
         items = Array.from(xmlDoc.querySelectorAll("item"));
