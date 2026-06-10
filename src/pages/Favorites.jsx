@@ -98,16 +98,16 @@ function StatsPanel({ games }) {
       <h3 style={{ fontWeight: '800', fontSize: '1rem', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <BarChart2 size={16} color="var(--accent-primary)" /> Statistiche Raccolta
       </h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))', gap: '10px', marginBottom: '20px' }}>
+      <div className="stats-summary-grid">
         {[
           { label: 'Totale', value: games.length, color: 'var(--accent-primary)' },
           { label: 'In Corso', value: statusCounts.playing, color: '#f59e0b' },
           { label: 'Completati', value: statusCounts.completed, color: '#10B981' },
           { label: 'Da Giocare', value: statusCounts.backlog, color: '#6366f1' },
         ].map(({ label, value, color }) => (
-          <div key={label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 'var(--radius-md)', padding: '12px', textAlign: 'center', border: '1px solid var(--glass-border)' }}>
-            <div style={{ fontSize: '1.8rem', fontWeight: '800', color }}>{value}</div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: '600' }}>{label}</div>
+          <div key={label} className="stats-summary-card">
+            <div className="stats-card-value" style={{ color }}>{value}</div>
+            <div className="stats-card-label">{label}</div>
           </div>
         ))}
       </div>
@@ -371,7 +371,7 @@ export default function Favorites() {
         </div>
       </div>
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+      <div className="favorites-header">
         <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3rem)', margin: 0 }}><span className="text-gradient">Profilo</span></h1>
         <div style={{ display: 'flex', gap: '8px' }}>
           {games.length > 0 && (
@@ -385,7 +385,7 @@ export default function Favorites() {
           )}
           <button
             onClick={() => setShowStats(v => !v)}
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', padding: '8px 14px', cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-md)', padding: '8px 14px', cursor: 'pointer', color: 'var(--text-secondary)', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <BarChart2 size={14} /> Statistiche {showStats ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
           </button>
@@ -393,62 +393,52 @@ export default function Favorites() {
       </div>
 
       {/* Card Quiz Stats */}
-      <div className="glass-panel" style={{ padding: '18px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
-        <div style={{ background: 'var(--bg-glass)', border: `2px solid ${userRank.color}`, borderRadius: '50%', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.5rem', boxShadow: `0 0 15px ${userRank.color}40` }} title={`Grado: ${userRank.title}`}>
+      <div className="glass-panel" style={{ padding: '16px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+        <div className="quiz-badge-rank" style={{ border: `2px solid ${userRank.color}`, boxShadow: `0 0 12px ${userRank.color}25` }} title={`Grado: ${userRank.title}`}>
           {userRank.emoji}
         </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em', marginBottom: '6px' }}>
+          <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700', letterSpacing: '0.05em', marginBottom: '4px' }}>
             <span style={{ color: userRank.color, marginRight: '6px', fontSize: '0.75rem' }}>{userRank.title}</span> • Quiz Gaming
           </div>
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '1.6rem', fontWeight: '800', color: 'var(--accent-primary)' }}>{quizStats.total}</div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Risposte</div>
+              <div style={{ fontSize: '1.4rem', fontWeight: '800', color: 'var(--accent-primary)' }}>{quizStats.total}</div>
+              <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Risposte</div>
             </div>
             <div style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: '1.6rem', fontWeight: '800', color: '#10B981' }}>{quizStats.correct}</div>
-              <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Corrette</div>
+              <div style={{ fontSize: '1.4rem', fontWeight: '800', color: '#10B981' }}>{quizStats.correct}</div>
+              <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Corrette</div>
             </div>
             {quizPct !== null && (
               <div style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: '1.6rem', fontWeight: '800', color: quizPct >= 70 ? '#10B981' : quizPct >= 40 ? '#f59e0b' : '#ef4444' }}>{quizPct}%</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>Precisione</div>
+                <div style={{ fontSize: '1.4rem', fontWeight: '800', color: quizPct >= 70 ? '#10B981' : quizPct >= 40 ? '#f59e0b' : '#ef4444' }}>{quizPct}%</div>
+                <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>Precisione</div>
               </div>
             )}
             {quizStats.total === 0 && (
-              <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.85rem' }}>
+              <span style={{ color: 'var(--text-muted)', fontStyle: 'italic', fontSize: '0.8rem' }}>
                 Apri un gioco per il tuo primo quiz! 🎯
               </span>
             )}
           </div>
         </div>
-
       </div>
 
       {/* Stats Panel */}
       {showStats && <StatsPanel games={collection} />}
 
       {/* Tab Preferiti / Raccolta */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+      <div className="tab-buttons-container">
         {TABS.map(tab => (
           <button
             key={tab.id}
             onClick={() => { setActiveTab(tab.id); setActiveFilter('all'); }}
-            style={{
-              flex: 1, padding: '12px 16px', borderRadius: 'var(--radius-md)',
-              border: '1px solid',
-              borderColor: activeTab === tab.id ? 'var(--accent-primary)' : 'var(--glass-border)',
-              background: activeTab === tab.id ? 'rgba(139,92,246,0.15)' : 'rgba(255,255,255,0.03)',
-              color: activeTab === tab.id ? 'var(--accent-primary)' : 'var(--text-muted)',
-              cursor: 'pointer', fontWeight: '700', fontSize: '0.9rem',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
-              transition: 'all 0.2s',
-            }}
+            className={`tab-filter-btn ${activeTab === tab.id ? 'active' : ''}`}
           >
-            <span style={{ fontSize: '1.2rem' }}>{tab.emoji}</span>
-            {tab.label}
-            <span style={{ fontSize: '0.68rem', fontWeight: '400', opacity: 0.7 }}>{tab.desc}</span>
+            <span className="tab-btn-emoji">{tab.emoji}</span>
+            <span>{tab.label}</span>
+            <span className="tab-btn-subtitle">{tab.desc}</span>
           </button>
         ))}
       </div>

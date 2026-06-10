@@ -1,5 +1,5 @@
-🚀 Prestazioni al Massimo!
-- ⚡ Avvio dell'app fulmineo grazie alla nuova architettura (Code Splitting).
-- 🖼️ Navigazione ultra-fluida e caricamento "lazy" intelligente delle copertine dei giochi.
-- ✨ Nuove icone in alta definizione e splash screen adattivi per tutti i dispositivi Android.
-L'esperienza OmniDex è ora più veloce e reattiva che mai!
+🚀 Novità in OmniDex!
+- 💎 Introdotti i nuovi piani di abbonamento per supportare il progetto e sbloccare funzionalità esclusive.
+- 📜 Aggiornate le informazioni legali e rimossa la dicitura "senza scopo di lucro" per riflettere i nuovi servizi.
+- 🐛 Correzioni di bug minori e miglioramenti generali della stabilità.
+Grazie per il vostro supporto!

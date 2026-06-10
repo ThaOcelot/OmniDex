@@ -100,88 +100,55 @@ export default function Home() {
     } finally {
       setDiscovering(false);
     }
-  };
-
-  return (
-    <div className="animate-fade-in" style={{
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '80vh',
-      textAlign: 'center'
-    }}>
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: '8px',
-        padding: '8px 16px', background: 'rgba(109, 40, 217, 0.1)',
-        border: '1px solid rgba(109, 40, 217, 0.3)', borderRadius: 'var(--radius-full)',
-        color: 'var(--accent-primary)', fontWeight: '600', marginBottom: '24px', fontSize: '0.9rem'
-      }}>
-        <Sparkles size={16} />
+  };  return (
+    <div className="home-container animate-fade-in">
+      <div className="home-badge-ia">
+        <Sparkles size={14} />
         <span>Potenziato dall'IA</span>
       </div>
 
-      <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 2.8rem)', color: 'var(--text-primary)', marginBottom: '16px', fontWeight: '800', lineHeight: '1.2', letterSpacing: '-0.02em' }}>
+      <h1 className="home-title">
         L'Enciclopedia Intelligente dei Videogiochi
       </h1>
 
-      <p style={{ color: 'var(--text-secondary)', fontSize: 'clamp(1rem, 3vw, 1.15rem)', maxWidth: '650px', marginBottom: '40px', lineHeight: '1.6' }}>
+      <p className="home-description">
         Il tuo hub local-first per esplorare in profondità qualsiasi titolo. Trova all'istante biografie dettagliate dei personaggi, approfondimenti sulle trame, analisi di gameplay e ultime notizie in tempo reale.
       </p>
 
-      <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <div style={{ position: 'relative', width: '100%' }}>
+      <form onSubmit={handleSearch} className="search-form">
+        <div className="search-input-wrapper">
           <input
             type="text"
             placeholder={searchType === 'character' ? "Cerca un personaggio..." : (aiMode ? "Es: Voglio un gioco nello spazio lungo 20 ore..." : "Cerca un videogioco...")}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            style={{
-              width: '100%', padding: '20px 24px', paddingLeft: '56px',
-              borderRadius: 'var(--radius-full)', border: '2px solid rgba(255, 255, 255, 0.1)',
-              background: 'var(--bg-glass)', color: 'var(--text-primary)', fontSize: '1.2rem',
-              outline: 'none', boxShadow: '0 8px 32px rgba(0,0,0,0.4)', transition: 'all 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
-            onBlur={(e) => e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'}
+            className="search-input-field"
           />
-          <div style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Search size={20} color="var(--text-secondary)" />
-            <div style={{ width: '1px', height: '24px', background: 'rgba(255,255,255,0.2)', marginLeft: '4px' }}></div>
+          <div className="search-icon-container">
+            <Search size={18} color="var(--text-secondary)" />
+            <div className="search-input-divider"></div>
           </div>
-          <button type="submit" className="btn-primary" style={{ position: 'absolute', right: '10px', top: '10px', bottom: '10px', padding: '0 24px' }}>
+          <button type="submit" className="btn-primary search-submit-btn">
             Cerca
           </button>
         </div>
         
         {/* Toggles Container */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center' }}>
-          
+        <div className="toggles-container">
           {/* Toggle Type */}
-          <div style={{
-            display: 'flex', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-full)', border: '1px solid var(--glass-border)', overflow: 'hidden'
-          }}>
+          <div className="toggle-group">
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); setSearchType('game'); }}
-              style={{
-                padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', border: 'none',
-                background: searchType === 'game' ? 'var(--accent-primary)' : 'transparent',
-                color: searchType === 'game' ? 'white' : 'var(--text-secondary)',
-                transition: 'all 0.2s'
-              }}
+              className={`toggle-group-btn ${searchType === 'game' ? 'active-game' : ''}`}
             >
               Giochi
             </button>
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); setSearchType('character'); }}
-              style={{
-                padding: '6px 14px', fontSize: '0.85rem', fontWeight: 'bold', cursor: 'pointer', border: 'none',
-                background: searchType === 'character' ? 'var(--accent-ultra)' : 'transparent',
-                color: searchType === 'character' ? '#002538' : 'var(--text-secondary)',
-                transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '4px'
-              }}
+              className={`toggle-group-btn ${searchType === 'character' ? 'active-char' : ''}`}
+              style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
             >
               Personaggi {tier !== 'ultra' && <Lock size={12} />}
             </button>
@@ -192,19 +159,9 @@ export default function Home() {
             <button 
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAiMode(!aiMode); }}
-              style={{ 
-                display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', 
-                fontSize: '0.85rem', fontWeight: 'bold', width: 'fit-content',
-                color: aiMode ? 'var(--accent-ultra)' : 'var(--text-secondary)',
-                background: aiMode ? 'rgba(0, 242, 254, 0.1)' : 'var(--bg-glass)',
-                border: aiMode ? '1px solid var(--accent-ultra)' : '1px solid var(--glass-border)',
-                borderRadius: 'var(--radius-full)',
-                padding: '6px 14px',
-                transition: 'all 0.2s ease',
-                boxShadow: aiMode ? '0 0 10px rgba(0, 242, 254, 0.2)' : 'var(--shadow-glass)'
-              }}
+              className={`toggle-sommelier-btn ${aiMode ? 'active' : ''}`}
             >
-              <Sparkles size={14} color={aiMode ? "var(--accent-ultra)" : "currentColor"} />
+              <Sparkles size={12} color={aiMode ? "var(--accent-ultra)" : "currentColor"} />
               Sommelier AI
               {tier !== 'ultra' && <Lock size={12} style={{ marginLeft: '4px' }} />}
             </button>
@@ -212,98 +169,56 @@ export default function Home() {
         </div>
       </form>
 
-
-
       {/* Pulsanti Azione Rapida */}
-      <div style={{ marginTop: '24px', width: '100%', maxWidth: '600px', display: 'flex', gap: '12px', flexDirection: 'column' }}>
-        
+      <div className="home-actions-column">
         <button
           onClick={handlePersonalizedSuggestions}
-          style={{
-            width: '100%', padding: '14px 24px',
-            borderRadius: 'var(--radius-full)',
-            border: '2px solid rgba(0,242,254,0.4)',
-            background: 'rgba(0,242,254,0.08)',
-            color: 'var(--accent-ultra)',
-            fontWeight: '700', fontSize: '1rem', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-            transition: 'all 0.3s ease',
-          }}
-          onMouseOver={e => { e.currentTarget.style.background = 'rgba(0,242,254,0.18)'; e.currentTarget.style.borderColor = 'var(--accent-ultra)'; }}
-          onMouseOut={e => { e.currentTarget.style.background = 'rgba(0,242,254,0.08)'; e.currentTarget.style.borderColor = 'rgba(0,242,254,0.4)'; }}
+          className="btn-flat-accent"
         >
-          <Sparkles size={20} />
-          💡 Consigliati per me
-          {tier !== 'ultra' && <Lock size={14} style={{ marginLeft: '4px' }} />}
+          <Sparkles size={18} />
+          <span>Consigliati per me</span>
+          {tier !== 'ultra' && <Lock size={12} style={{ marginLeft: '2px' }} />}
         </button>
 
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
           <button
             onClick={handleDiscover}
             disabled={discovering}
-            style={{
-              flex: 1, padding: '14px 16px',
-              borderRadius: 'var(--radius-full)',
-              border: '2px solid rgba(109,40,217,0.4)',
-              background: discovering ? 'rgba(109,40,217,0.05)' : 'rgba(109,40,217,0.08)',
-              color: discovering ? 'var(--text-muted)' : 'var(--accent-primary)',
-              fontWeight: '700', fontSize: '0.95rem', cursor: discovering ? 'not-allowed' : 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseOver={e => { if (!discovering) { e.currentTarget.style.background = 'rgba(109,40,217,0.18)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}}
-            onMouseOut={e => { e.currentTarget.style.background = 'rgba(109,40,217,0.08)'; e.currentTarget.style.borderColor = 'rgba(109,40,217,0.4)'; }}
+            className="btn-flat-primary"
           >
-            <Shuffle size={18} style={{ animation: discovering ? 'spin-anim 0.7s linear infinite' : 'none' }} />
-            {discovering ? 'Ricerca...' : '🎲 Gioco del Giorno'}
+            <Shuffle size={16} style={{ animation: discovering ? 'spin-anim 0.7s linear infinite' : 'none' }} />
+            <span>{discovering ? 'Ricerca...' : '🎲 Gioco del Giorno'}</span>
           </button>
-
         </div>
       </div>
 
       {/* Carosello Prossimo Futuro */}
       {upcomingNear.length > 0 && (
-        <div style={{ width: '100%', maxWidth: '800px', marginTop: '40px', textAlign: 'left' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', padding: '0 10px' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.2rem', margin: 0, color: 'var(--text-primary)' }}>
-              <Sparkles size={20} color="var(--accent-primary)" />
-              Prossimamente (Nei prossimi 30 giorni)
-            </h3>
-          </div>
+        <div className="carousel-section">
+          <h3 className="carousel-title">
+            <Sparkles size={18} color="var(--accent-primary)" />
+            Prossimamente (Nei prossimi 30 giorni)
+          </h3>
           
-          <div id="upcoming-near-carousel" style={{ 
-            display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '16px', padding: '0 10px',
-            scrollSnapType: 'x mandatory', scrollbarWidth: 'none', msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch'
-          }} className="hide-scrollbar">
+          <div id="upcoming-near-carousel" className="carousel-wrapper hide-scrollbar">
             {upcomingNear.map((game) => (
               <div 
                 key={game.id}
                 onClick={() => navigate(`/game/${encodeURIComponent(game.name)}`, { state: { game: { id: game.id } } })}
-                style={{
-                  minWidth: '160px', width: '160px', scrollSnapAlign: 'start', cursor: 'pointer',
-                  background: 'var(--bg-glass)', borderRadius: '16px', border: '1px solid var(--glass-border)',
-                  overflow: 'hidden', position: 'relative', transition: 'transform 0.2s',
-                  boxShadow: 'var(--shadow-glass)'
-                }}
-                onMouseOver={e => e.currentTarget.style.transform = 'translateY(-4px)'}
-                onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}
+                className="carousel-card"
               >
-                <div style={{ height: '220px', width: '100%', position: 'relative' }}>
+                <div className="carousel-image-container">
                   <img 
                     src={game.background_image || 'https://via.placeholder.com/160x220?text=No+Cover'} 
                     alt={game.name} 
                     loading="lazy"
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    className="carousel-image" 
                   />
-                  <div style={{
-                    position: 'absolute', bottom: 0, left: 0, right: 0, padding: '40px 12px 12px',
-                    background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%)',
-                  }}>
-                    <h4 style={{ margin: '0 0 4px', fontSize: '0.95rem', color: 'white', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <div className="carousel-overlay">
+                    <h4 className="carousel-game-title">
                       {game.name}
                     </h4>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)', fontWeight: 'bold' }}>
+                    <p className="carousel-game-date">
                       {new Date(game.released).toLocaleDateString('it-IT')}
                     </p>
                   </div>
@@ -313,9 +228,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
-
-
       {/* Overlay Discovery Result */}
       {discoveredGame && (
         <div

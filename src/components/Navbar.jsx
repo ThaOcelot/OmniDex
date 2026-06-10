@@ -27,69 +27,34 @@ export default function Navbar() {
       setSearchOpen(false);
     }
   };
-
   return (
     <>
-      <nav style={{ padding: '16px 0', borderBottom: '1px solid var(--glass-border)', background: 'var(--bg-glass)', position: 'sticky', top: '0px', zIndex: 100, backdropFilter: 'blur(12px)' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+      <nav style={{ padding: '14px 0', borderBottom: '1px solid var(--glass-border)', background: 'var(--bg-glass)', position: 'sticky', top: '0px', zIndex: 100, backdropFilter: 'blur(12px)' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           
-          {/* Logo OmniDex sempre visibile con Versione sotto */}
-          <Link to="/" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', textDecoration: 'none', color: 'inherit' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <img 
-                src={logoUrl} 
-                alt="OmniDex Logo" 
-                style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
-              />
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
-                <span style={{ fontSize: '1.4rem', fontWeight: '800', letterSpacing: '-0.5px', lineHeight: '1' }}>
-                  <span className="text-gradient">Omni</span>Dex
-                </span>
-                {/* Badge ULTRA o PRO */}
-                {tier === 'ultra' && (
-                  <span style={{
-                    fontSize: '0.55rem',
-                    fontWeight: '800',
-                    letterSpacing: '1px',
-                    padding: '2px 6px',
-                    borderRadius: '20px',
-                    background: 'var(--accent-ultra-gradient)',
-                    color: '#002538',
-                    boxShadow: '0 0 10px rgba(0, 242, 254, 0.5), 0 2px 4px rgba(0,0,0,0.3)',
-                    textTransform: 'uppercase',
-                    animation: 'pro-glow 2.5s ease-in-out infinite',
-                  }}>
-                    💎 ULTRA
-                  </span>
-                )}
-                {tier === 'pro' && (
-                  <span style={{
-                    fontSize: '0.55rem',
-                    fontWeight: '800',
-                    letterSpacing: '1px',
-                    padding: '2px 6px',
-                    borderRadius: '20px',
-                    background: 'linear-gradient(135deg, #f5c842 0%, #e8a000 50%, #f5c842 100%)',
-                    color: '#3a2000',
-                    boxShadow: '0 0 10px rgba(245, 200, 66, 0.5), 0 2px 4px rgba(0,0,0,0.3)',
-                    textTransform: 'uppercase',
-                    animation: 'pro-glow 2.5s ease-in-out infinite',
-                  }}>
-                    ★ PRO
-                  </span>
-                )}
-              </div>
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: 'inherit' }}>
+            <img 
+              src={logoUrl} 
+              alt="OmniDex Logo" 
+              style={{ width: '28px', height: '28px', objectFit: 'contain' }} 
+            />
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+              <span style={{ fontSize: '1.25rem', fontWeight: '800', letterSpacing: '-0.5px', lineHeight: '1.1' }}>
+                <span className="text-gradient">Omni</span>Dex
+              </span>
+              {tier === 'ultra' && <span className="navbar-badge ultra">💎 Ultra</span>}
+              {tier === 'pro' && <span className="navbar-badge pro">★ Pro</span>}
             </div>
           </Link>
 
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
             {!isHome && (
               <button 
                 onClick={() => setSearchOpen(true)} 
                 title="Cerca" 
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', borderRadius: '50%', width: '36px', height: '36px', transition: 'all 0.2s' }}
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid var(--glass-border)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)', borderRadius: '50%', width: '36px', height: '36px', transition: 'all 0.2s' }}
               >
-                <Search size={18} />
+                <Search size={16} />
               </button>
             )}
             <button 
@@ -102,27 +67,26 @@ export default function Navbar() {
                 }
               }} 
               title="SOS Gamer" 
-              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#002538', borderRadius: '50%', width: '36px', height: '36px', transition: 'all 0.2s', boxShadow: '0 0 10px rgba(0,242,254,0.5)' }}
+              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#002538', borderRadius: '50%', width: '36px', height: '36px', transition: 'all 0.2s', boxShadow: '0 0 10px rgba(0,242,254,0.3)' }}
             >
-              <Wand size={18} />
+              <Wand size={16} />
             </button>
-            <Link to="/release-radar" className="btn-icon" title="Release Radar">
-              <Calendar size={20} />
+            <Link to="/release-radar" className="btn-icon" style={{ width: '36px', height: '36px' }} title="Release Radar">
+              <Calendar size={18} />
             </Link>
-            <Link to="/favorites" className="btn-icon" title="Raccolta & Profilo">
-              <User size={20} />
+            <Link to="/favorites" className="btn-icon" style={{ width: '36px', height: '36px' }} title="Raccolta & Profilo">
+              <User size={18} />
             </Link>
             <button 
               onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))} 
               className="btn-icon" 
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)' }}
+              style={{ width: '36px', height: '36px', background: 'transparent', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-primary)' }}
             >
-              <Settings size={20} />
+              <Settings size={18} />
             </button>
           </div>
         </div>
       </nav>
-
       {/* Overlay Ricerca Globale Fuori Dalla Nav */}
       {searchOpen && !isHome && (
         <div style={{

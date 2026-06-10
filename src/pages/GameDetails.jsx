@@ -435,78 +435,84 @@ export default function GameDetails() {
       </button>
 
       {/* Hero Header con Parallax */}
-      <div
-        ref={heroRef}
-        className="glass-panel"
-        style={{ padding: 'clamp(20px, 5vw, 40px)', position: 'relative', overflow: 'hidden', marginBottom: '30px', width: '100%' }}
-        onScroll={e => setParallaxY(e.target.scrollTop * 0.3)}
-      >
+      <div ref={heroRef} className="details-hero-section">
         {/* Cover con effetto parallax */}
         {gameData.cover && (
-          <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-            backgroundImage: `url(${gameData.cover})`,
-            backgroundSize: 'cover',
-            backgroundPosition: `center ${parallaxY}px`,
-            transform: `translateY(${parallaxY * 0.4}px) scale(1.1)`,
-            filter: 'blur(2px) brightness(0.25)',
-            zIndex: 0,
-            transition: 'transform 0.05s linear',
-          }} />
+          <div 
+            className="details-hero-bg"
+            style={{
+              backgroundImage: `url(${gameData.cover})`,
+              backgroundPosition: `center ${parallaxY}px`,
+              transform: `translateY(${parallaxY * 0.4}px) scale(1.1)`,
+              transition: 'transform 0.05s linear',
+            }} 
+          />
         )}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(109,40,217,0.35) 0%, rgba(236,72,153,0.15) 100%)', zIndex: 0 }} />
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <div className="hero-flex" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '20px', flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, minWidth: 0, minWidth: '280px' }}>
-              <h1 style={{ fontSize: 'clamp(1.8rem, 5vw, 3.5rem)', marginBottom: '8px', lineHeight: 1.1, wordBreak: 'break-word', overflowWrap: 'break-word' }}>{gameData.title}</h1>
+        <div className="details-hero-overlay" />
+        
+        <div className="details-hero-container">
+          <div className="details-hero-grid">
+            {gameData.cover && (
+              <img 
+                className="details-hero-poster"
+                src={gameData.cover} 
+                alt={`${gameData.title} cover`} 
+              />
+            )}
+            
+            <div className="details-hero-info">
+              <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', marginBottom: '8px', lineHeight: 1.1, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                {gameData.title}
+              </h1>
               {gameData.originalTitle && gameData.originalTitle !== gameData.title && (
-                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', marginBottom: '12px', fontStyle: 'italic', wordBreak: 'break-word' }}>{gameData.originalTitle}</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '12px', fontStyle: 'italic', wordBreak: 'break-word' }}>
+                  {gameData.originalTitle}
+                </p>
               )}
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '16px' }}>
+              
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '14px' }}>
                 {gameData.genres?.map(g => (
-                  <span key={g} style={{ background: 'rgba(109,40,217,0.2)', border: '1px solid rgba(109,40,217,0.4)', padding: '4px 14px', borderRadius: 'var(--radius-full)', fontSize: '0.85rem', color: 'var(--accent-primary)', fontWeight: '600' }}>{g}</span>
+                  <span key={g} className="details-genre-tag">{g}</span>
                 ))}
               </div>
               
-              {/* Descrizione / Panoramica — usa plot (traduzione RAWG, la panoramica ufficiale) */}
-              <div style={{ fontSize: '1rem', lineHeight: '1.8', color: 'var(--text-secondary)', maxWidth: '800px', marginTop: '16px' }}>
+              {/* Descrizione / Panoramica */}
+              <div style={{ fontSize: '0.95rem', lineHeight: '1.7', color: 'var(--text-secondary)' }}>
                 <span dangerouslySetInnerHTML={formatText(
                   typeof gameData.plot === 'string' 
                     ? (isDescriptionExpanded 
                         ? gameData.plot 
-                        : (gameData.plot.length > 500 ? gameData.plot.substring(0, 500) + '...' : gameData.plot))
+                        : (gameData.plot.length > 300 ? gameData.plot.substring(0, 300) + '...' : gameData.plot))
                     : ''
                 )} />
-                {gameData.plot?.length > 500 && (
-                  <span onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)} style={{ color: 'var(--accent-primary)', cursor: 'pointer', fontWeight: '600', marginLeft: '8px', borderBottom: '1px solid var(--accent-primary)' }}>
+                {gameData.plot?.length > 300 && (
+                  <span onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)} style={{ color: 'var(--accent-primary)', cursor: 'pointer', fontWeight: '600', marginLeft: '6px', borderBottom: '1px solid var(--accent-primary)' }}>
                     {isDescriptionExpanded ? ' Mostra meno' : ' Leggi tutto'}
                   </span>
                 )}
               </div>
-              
+
               {gameData._aiLimitReached && (
-                <div className="animate-fade-in" style={{ marginTop: '16px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                <div className="animate-fade-in" style={{ marginTop: '14px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                   <button 
                     onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))} 
                     className="btn-primary" 
-                    style={{ background: 'var(--accent-ultra-gradient)', color: '#002538', padding: '8px 16px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Sparkles size={16} /> Scopri Ultra
+                    style={{ background: 'var(--accent-ultra-gradient)', color: '#002538', padding: '6px 14px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem' }}>
+                    <Sparkles size={14} /> Scopri Ultra
                   </button>
                   {tier === 'free' && (
                     <button 
                       onClick={handleWatchAdForTokens} 
                       disabled={loadingAd} 
-                      style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.05)', color: 'var(--text-primary)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', cursor: loadingAd ? 'wait' : 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      {loadingAd ? <Loader2 size={16} className="spin" /> : '📺 Guarda Pubblicità (+1)'}
+                      style={{ padding: '6px 14px', background: 'rgba(255,255,255,0.05)', color: 'var(--text-primary)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-full)', cursor: loadingAd ? 'wait' : 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem' }}>
+                      {loadingAd ? <Loader2 size={14} className="spin" /> : '📺 Guarda Pubblicità (+1)'}
                     </button>
                   )}
                 </div>
               )}
 
-
-            </div>
-            <div className="hero-stats" style={{ display: 'flex', flexDirection: 'column', gap: '12px', alignItems: 'flex-end' }}>
-              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              {/* Bottoni Azioni ed Info Rapide sotto la descrizione */}
+              <div className="details-actions-row">
                 <StatusBadge 
                   status={gameStatus} 
                   gameId={gameData.id} 
@@ -515,55 +521,60 @@ export default function GameDetails() {
                 />
                 <button className="btn-icon" onClick={handleToggleFavorite}
                   title="Aggiungi ai Preferiti"
-                  style={{ color: isFavorite ? 'var(--accent-secondary)' : 'var(--text-primary)', border: `1px solid ${isFavorite ? 'var(--accent-secondary)' : 'var(--glass-border)'}` }}>
-                  <Heart fill={isFavorite ? 'var(--accent-secondary)' : 'none'} />
+                  style={{ width: '34px', height: '34px', color: isFavorite ? 'var(--accent-secondary)' : 'var(--text-primary)', border: `1px solid ${isFavorite ? 'var(--accent-secondary)' : 'var(--glass-border)'}` }}>
+                  <Heart size={16} fill={isFavorite ? 'var(--accent-secondary)' : 'none'} />
+                </button>
+                <button className="btn-icon" onClick={handleShare}
+                  style={{ width: '34px', height: '34px', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }} title="Condividi">
+                  <Share2 size={16} />
                 </button>
               </div>
-              <button className="btn-icon" onClick={handleShare}
-                style={{ color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }} title="Condividi">
-                <Share2 size={18} />
-              </button>
-              {gameData.metacritic && (
-                <div style={{ textAlign: 'center', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.4)', borderRadius: 'var(--radius-sm)', padding: '8px 14px' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--success)' }}>{gameData.metacritic}</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>Metacritic</div>
-                </div>
-              )}
-              {gameData.rating > 0 && (
-                <div style={{ textAlign: 'center', background: 'rgba(109,40,217,0.15)', border: '1px solid rgba(109,40,217,0.4)', borderRadius: 'var(--radius-sm)', padding: '8px 14px' }}>
-                  <div style={{ fontSize: '1.3rem', fontWeight: '800', color: 'var(--accent-primary)' }}>⭐ {gameData.rating.toFixed(1)}</div>
-                  <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '2px' }}>RAWG ({gameData.ratingsCount})</div>
-                </div>
-              )}
+
+              {/* Statistiche RAWG e Metacritic */}
+              <div className="details-stats-panel">
+                {gameData.metacritic && (
+                  <div className="details-stat-box" style={{ borderColor: 'rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.05)' }}>
+                    <div className="details-stat-value" style={{ color: 'var(--success)' }}>{gameData.metacritic}</div>
+                    <div className="details-stat-label">Metacritic</div>
+                  </div>
+                )}
+                {gameData.rating > 0 && (
+                  <div className="details-stat-box" style={{ borderColor: 'rgba(109,40,217,0.3)', background: 'rgba(109,40,217,0.05)' }}>
+                    <div className="details-stat-value" style={{ color: 'var(--accent-primary)' }}>⭐ {gameData.rating.toFixed(1)}</div>
+                    <div className="details-stat-label">RAWG ({gameData.ratingsCount})</div>
+                  </div>
+                )}
+              </div>
+
             </div>
           </div>
 
-          <div className="quick-stats" style={{ display: 'flex', gap: '30px', flexWrap: 'wrap', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--glass-border)' }}>
+          <div className="quick-stats" style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--glass-border)', fontSize: '0.85rem' }}>
             {gameData.developers?.length > 0 && (
               <div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase' }}>Sviluppatore</div>
-                <div style={{ fontWeight: '600', marginTop: '4px' }}>{gameData.developers.map(d => d.name || d).join(', ')}</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: '700' }}>Sviluppatore</div>
+                <div style={{ fontWeight: '600', marginTop: '3px' }}>{gameData.developers.map(d => d.name || d).join(', ')}</div>
               </div>
             )}
             {gameData.publishers?.length > 0 && (
               <div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase' }}>Publisher</div>
-                <div style={{ fontWeight: '600', marginTop: '4px' }}>{gameData.publishers.map(p => p.name || p).join(', ')}</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: '700' }}>Publisher</div>
+                <div style={{ fontWeight: '600', marginTop: '3px' }}>{gameData.publishers.map(p => p.name || p).join(', ')}</div>
               </div>
             )}
             {gameData.releaseDate && (
               <div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase' }}>Uscita</div>
-                <div style={{ fontWeight: '600', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: '700' }}>Uscita</div>
+                <div style={{ fontWeight: '600', marginTop: '3px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {gameData.releaseDate}
-                  {gameData.tba && <span style={{ background: 'var(--danger)', color: 'white', padding: '2px 6px', borderRadius: '4px', fontSize: '0.65rem' }}>TBA</span>}
+                  {gameData.tba && <span style={{ background: 'var(--danger)', color: 'white', padding: '1px 5px', borderRadius: '4px', fontSize: '0.6', fontWeight: '800' }}>TBA</span>}
                 </div>
               </div>
             )}
             {gameData.esrb && (
               <div>
-                <div style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase' }}>ESRB</div>
-                <div style={{ fontWeight: '600', marginTop: '4px' }}>{gameData.esrb}</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: '700' }}>ESRB</div>
+                <div style={{ fontWeight: '600', marginTop: '3px' }}>{gameData.esrb}</div>
               </div>
             )}
           </div>

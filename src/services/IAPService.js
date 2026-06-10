@@ -276,10 +276,19 @@ class IAPService {
       return;
     }
     try {
-      const { App } = await import('@capacitor/app');
-      await App.openAppSettings();
+      if (this.store && typeof this.store.manageSubscriptions === 'function') {
+        this.store.manageSubscriptions();
+      } else {
+        // Fallback generico
+        window.open('https://play.google.com/store/account/subscriptions', '_system');
+      }
     } catch (e) {
       console.warn('💰 [IAP] Impossibile aprire gestione abbonamenti:', e);
+      // Ultimo fallback
+      try {
+        const { App } = await import('@capacitor/app');
+        await App.openAppSettings();
+      } catch (err) {}
     }
   }
 

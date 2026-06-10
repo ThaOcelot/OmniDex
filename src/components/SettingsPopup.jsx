@@ -371,7 +371,7 @@ export default function SettingsPopup({ onClose }) {
             </div>
 
             <div style={{ padding: '0 4px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              Progetto indipendente e senza scopo di lucro. Dati di gioco gentilmente offerti dalle API di RAWG.
+              Dati di gioco gentilmente offerti dalle API di RAWG.
             </div>
           </div>
         </div>
