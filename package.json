@@ -11,7 +11,7 @@
     "deploy": "vite build && gh-pages -d dist",
     "postinstall": "node scripts/patch-admob.cjs",
     "bump-versioncode": "node scripts/increment_versioncode.js",
-    "preversion": "npm run bump-versioncode && git add android/app/build.gradle",
+    "version": "npm run bump-versioncode && git add android/app/build.gradle",
     "postversion": "git push origin main && git push origin --tags",
     "release": "npm version patch"
   },
