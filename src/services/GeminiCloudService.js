@@ -43,9 +43,17 @@ class GeminiCloudService {
    */
   async translateDescription(description) {
     if (!description || description.length < 20) return description || '';
-    const italianWords = /\b(il|la|lo|le|gli|di|da|in|con|su|per|tra|fra|del|della|dei|degli|delle|un|una|uno|che|è|si|non|ha|ho|sono|essere)\b/gi;
-    const matches = (description.match(italianWords) || []).length;
-    if (matches > 10) return description;
+
+    // Parole ESCLUSIVAMENTE italiane (non esistono in inglese)
+    // Usare una regex che conta solo token inequivocabilmente italiani
+    const strictItalianTokens = /\b(degli|delle|dello|nell|nella|nelle|negli|dell|dal|dalla|dai|dalle|dal|agli|alla|alle|allo|questo|questa|questi|queste|quello|quella|quelli|quelle|viene|vengono|sono|hanno|anche|però|perché|perciò|quindi|oppure|mentre|quando|dove|come|ogni|molto|poco|subito|sempre|mai|ancora|già|proprio|davvero|invece|dopo|prima|durante|attraverso|verso|oltre|insieme|contro|lungo|circa|quasi|senza|grazie|spesso|inoltre|tuttavia|sebbene|affinché|nonostante|qualsiasi|chiunque|ovunque|nessuno|qualcosa|qualcuno)\b/gi;
+    const matches = (description.match(strictItalianTokens) || []).length;
+
+    // Se ci sono almeno 5 parole inequivocabilmente italiane, è già in italiano
+    if (matches >= 5) {
+      console.log(`🔤 Testo già in italiano (${matches} token IT), salto traduzione`);
+      return description;
+    }
 
     return await askGeminiFlash(
       `Traduci la seguente descrizione di un videogioco in ITALIANO professionale, naturale e scorrevole.
@@ -62,6 +70,7 @@ ${description.substring(0, 3000)}
 RICORDA: LA TUA RISPOSTA DEVE ESSERE IN ITALIANO.`
     );
   }
+
 
   /**
    * Genera la trama del gioco in italiano, arricchita da Wikipedia

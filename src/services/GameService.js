@@ -11,6 +11,17 @@ const isNative = window.Capacitor?.isNativePlatform?.();
 const CACHE_VERSION = 22; // Bump per Wikipedia strutturato come fallback per plot/gameplay/personaggi
 
 /**
+ * Rileva se un testo è in inglese (non italiano).
+ * Usa token esclusivamente italiani come segnale.
+ */
+function isEnglishText(text) {
+  if (!text || text.length < 30) return false;
+  const italianTokens = /\b(degli|delle|dello|nell|nella|nelle|negli|dall|dalla|agli|alla|questo|questa|quello|quella|viene|vengono|sono|hanno|anche|però|perché|quindi|mentre|quando|dove|spesso|invece|ancora|sempre|ogni|molto|senza|durante|insieme|nonostante|qualsiasi|nessuno|qualcosa)\b/gi;
+  const matches = (text.match(italianTokens) || []).length;
+  return matches < 3; // se meno di 3 parole inequivocabilmente italiane, è inglese
+}
+
+/**
  * Recupera contenuto testuale completo da Wikipedia in italiano, organizzato per sezioni.
  * Restituisce { raw, plot, gameplay, characters } per essere usato direttamente come fallback.
  */
@@ -187,7 +198,48 @@ class GameService {
       rawg = await RAWGService.getGameDetails(identifier);
     }
 
-    if (!rawg) return null;
+    if (!rawg) {
+      // Nessun risultato RAWG: proviamo a costruire una scheda minima da Wikipedia
+      console.log(`⚠️ RAWG non ha trovato "${identifier}". Provo Wikipedia...`);
+      const wikiData = await fetchWikipediaIt(gameTitle || String(identifier));
+      if (!wikiData.raw) return null;
+      // Costruiamo un oggetto minimale dal titolo + Wikipedia
+      const wikiTitleRes = await fetch(`https://it.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent((gameTitle || '') + ' videogioco')}&format=json&origin=*&srlimit=1`);
+      const wikiTitleData = await wikiTitleRes.json().catch(() => ({}));
+      const wikiGameTitle = wikiTitleData?.query?.search?.[0]?.title || gameTitle || String(identifier);
+      // Traduci via Firebase il testo wikipedia
+      let plotIt = '';
+      let gameplayIt = '';
+      try { plotIt = await GeminiCloudService.translateDescription(wikiData.plot || wikiData.raw.substring(0, 2000)); } catch { plotIt = wikiData.plot || ''; }
+      try { if (wikiData.gameplay) gameplayIt = await GeminiCloudService.translateDescription(wikiData.gameplay); } catch { gameplayIt = wikiData.gameplay || ''; }
+      const wikiOnlyData = {
+        id: null,
+        title: gameTitle || wikiGameTitle,
+        slug: identifier,
+        descriptionRaw: wikiData.raw.substring(0, 2000),
+        plot: plotIt || wikiData.plot || '',
+        description: plotIt || wikiData.plot || '',
+        gameplay: gameplayIt || wikiData.gameplay || '',
+        protagonists: wikiData.characters || [],
+        trivia: [],
+        cover: null,
+        background_image: null,
+        rating: 0,
+        genres: [],
+        platforms: [],
+        tags: [],
+        suggested: [],
+        _version: CACHE_VERSION,
+        _cached: Date.now(),
+        _aiGenerated: false,
+        _wikiUsed: true,
+        _aiLimitReached: false,
+        _isRaw: false,
+        _wikiOnly: true, // flag: dati solo da Wikipedia
+      };
+      console.log('✅ Scheda minima da Wikipedia costruita per:', gameTitle);
+      return wikiOnlyData;
+    }
 
     const tagNames = rawg.tags?.map(t => t.name).slice(0, 15) || [];
     const platformNames = rawg.platforms?.map(p => p.name) || [];
@@ -241,16 +293,24 @@ class GameService {
     const currentTier = IAPService.getTier();
     const cachedTier = firestoreCache?._generatedByTier || 'free';
     const isUltraUser = currentTier === 'ultra';
-    const isEnglishCache = firestoreHasContent && (firestoreCache.plot === rawg.descriptionRaw || firestoreCache.description === rawg.descriptionRaw);
+    // Cache considerata inglese se il plot sembra in inglese (rilevamento robusto)
+    const cachedPlot = firestoreCache?.plot || firestoreCache?.description || '';
+    const isEnglishCache = firestoreHasContent && (cachedPlot === rawg?.descriptionRaw || isEnglishText(cachedPlot));
 
     const cacheNeedsUpgrade = firestoreHasContent && ((isUltraUser && cachedTier !== 'ultra') || isEnglishCache);
 
     if (!forceRegenerate && firestoreHasContent && !cacheNeedsUpgrade) {
+      // Anche dalla cache, se il plot sembra inglese lo ritraduco on-the-fly
+      let cachedPlotFinal = firestoreCache.plot || firestoreCache.translations?.it || firestoreCache.translated?.it || '';
+      if (isEnglishText(cachedPlotFinal) && rawg?.descriptionRaw) {
+        console.log('🔤 Plot dalla cache in inglese, ritraduco on-the-fly...');
+        try { cachedPlotFinal = await GeminiCloudService.translateDescription(rawg.descriptionRaw) || cachedPlotFinal; } catch { /* mantieni inglese */ }
+      }
       const finalData = {
         ...rawg,
         suggested,
         description: firestoreCache.description || '',
-        plot: firestoreCache.plot || firestoreCache.translations?.it || firestoreCache.translated?.it || '',
+        plot: cachedPlotFinal,
         gameplay: firestoreCache.gameplay || '',
         protagonists: firestoreCache.protagonists || [],
         trivia: firestoreCache.trivia || [],
