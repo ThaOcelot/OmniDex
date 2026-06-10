@@ -253,11 +253,8 @@ class GameService {
         
         // La traduzione base viene fatta separatamente, vedi sotto.
         
-        tasks.push(
-          GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, genreNames, tagNames, wikiContent)
-            .then(res => { plot = res; })
-            .catch(e => console.warn("AI plot error:", e))
-        );
+        // La trama non viene più generata da zero, ma viene tradotta la descrizione RAWG (vedi sotto)
+        // Gemini viene usato solo per generare da zero Personaggi, Trivia e Gameplay.
         tasks.push(
           GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames)
             .then(res => { gameplay = res; })
@@ -276,7 +273,7 @@ class GameService {
 
         await Promise.allSettled(tasks);
 
-        if (descriptionIt || plot || gameplay) {
+        if (descriptionIt || gameplay) {
           IAPService.incrementDailyAiCount();
         }
       }
@@ -293,11 +290,12 @@ class GameService {
     }
 
     // 5. Componi il risultato finale
+    // Utilizziamo SOLO la traduzione Firebase (descriptionIt) invece del plot generato da Gemini.
     const finalPlot = descriptionIt || (aiLimitReached ? "Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste IA giornaliere." : "Panoramica non disponibile. (Errore temporaneo del server o del servizio IA. Riprova tra poco)");
     const finalData = {
       ...rawg,
       suggested,
-      description: plot || wikiContent || "Dati della trama non disponibili. (Ricarica la pagina o riprova più tardi)",
+      description: descriptionIt || wikiContent || "Dati della trama non disponibili. (Ricarica la pagina o riprova più tardi)",
       plot: finalPlot,
       gameplay: gameplay || "Dati del gameplay non disponibili.",
       protagonists: characters || [],

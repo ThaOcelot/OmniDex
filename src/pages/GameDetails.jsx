@@ -703,7 +703,13 @@ export default function GameDetails() {
       )}
 
       {/* Tabs */}
-      <div className="tabs-container" style={{ display: 'flex', gap: '8px', marginBottom: '28px', overflowX: 'auto', paddingBottom: '4px' }}>
+      <div className="tabs-container" style={{ 
+        position: 'sticky', top: 0, zIndex: 90,
+        background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(12px)',
+        padding: '10px 0', marginTop: '-10px',
+        display: 'flex', gap: '8px', marginBottom: '28px', overflowX: 'auto',
+        borderBottom: '1px solid rgba(255,255,255,0.05)'
+      }}>
         {tabs.map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)}
             className="tab-btn"
@@ -714,7 +720,8 @@ export default function GameDetails() {
               background: activeTab === tab.id ? 'var(--accent-gradient)' : 'var(--bg-glass)',
               color: activeTab === tab.id ? 'white' : 'var(--text-secondary)',
               cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem',
-              whiteSpace: 'nowrap', transition: 'all 0.2s ease'
+              whiteSpace: 'nowrap', transition: 'all 0.2s ease',
+              flexShrink: 0
             }}>
             {tab.icon} {tab.label}
           </button>
