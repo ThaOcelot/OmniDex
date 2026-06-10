@@ -8,41 +8,82 @@ import { liteClient as algoliasearch } from 'algoliasearch/lite';
 const algoliaClient = algoliasearch('TXFAPWRDB1', 'ccce008e6d7ef0ef672dc4251ed98ca5');
 const isNative = window.Capacitor?.isNativePlatform?.();
 
-const CACHE_VERSION = 21; // Bump per immagini personaggi via OpenVerse invece di Wikipedia
+const CACHE_VERSION = 22; // Bump per Wikipedia strutturato come fallback per plot/gameplay/personaggi
 
 /**
- * Recupera contenuto testuale completo da Wikipedia in italiano.
- * Usato per arricchire i prompt AI con dati reali completi ed evitare riassunti tagliati.
+ * Recupera contenuto testuale completo da Wikipedia in italiano, organizzato per sezioni.
+ * Restituisce { raw, plot, gameplay, characters } per essere usato direttamente come fallback.
  */
 async function fetchWikipediaIt(gameTitle) {
   try {
     const searchUrl = `https://it.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(gameTitle + ' videogioco')}&format=json&origin=*&srlimit=1`;
     const searchRes = await fetch(searchUrl);
-    if (!searchRes.ok) return '';
+    if (!searchRes.ok) return { raw: '', plot: '', gameplay: '', characters: [] };
     const searchData = await searchRes.json();
     const firstResult = searchData?.query?.search?.[0];
-    if (!firstResult) return '';
+    if (!firstResult) return { raw: '', plot: '', gameplay: '', characters: [] };
 
     const sectionsUrl = `https://it.wikipedia.org/api/rest_v1/page/mobile-sections/${encodeURIComponent(firstResult.title)}`;
     const sectionsRes = await fetch(sectionsUrl);
-    if (!sectionsRes.ok) return '';
+    if (!sectionsRes.ok) return { raw: '', plot: '', gameplay: '', characters: [] };
     const sectionsData = await sectionsRes.json();
-    
+
+    const cleanHtml = (html = '') => html.replace(/<[^>]*>/g, ' ').replace(/\s\s+/g, ' ').trim();
+
+    let raw = '';
+    let plot = '';
+    let gameplay = '';
+    let characters = [];
+
     if (sectionsData?.lead) {
-      // Uniamo il testo della sezione principale e di tutte le sottosezioni
-      let fullText = sectionsData.lead.sections[0].text;
-      if (sectionsData.remaining?.sections) {
-        fullText += ' ' + sectionsData.remaining.sections.map(s => s.text).join(' ');
+      // Intro/lead sempre usato come testo grezzo
+      raw = cleanHtml(sectionsData.lead.sections?.[0]?.text || '');
+
+      const sections = sectionsData.remaining?.sections || [];
+      for (const section of sections) {
+        const title = (section.title || '').toLowerCase();
+        const text = cleanHtml(section.text || '');
+        if (!text) continue;
+        raw += ' ' + text;
+
+        // Sezioni trama
+        if (!plot && /trama|storia|narrazione|sinossi|storyline/.test(title)) {
+          plot = text.substring(0, 3000);
+        }
+        // Sezioni gameplay
+        if (!gameplay && /gameplay|giocabilità|meccaniche|sistema di gioco/.test(title)) {
+          gameplay = text.substring(0, 2000);
+        }
+        // Sezioni personaggi
+        if (characters.length === 0 && /personagg|cast|character/.test(title)) {
+          // Estrai nomi da liste: pattern "Nome (ruolo) – descrizione" o "Nome: descrizione"
+          const lines = text.split(/[.;]/).map(l => l.trim()).filter(l => l.length > 20 && l.length < 300);
+          characters = lines.slice(0, 8).map((line, i) => {
+            const colonIdx = line.indexOf(':');
+            const dashIdx = line.indexOf(' –');
+            const sepIdx = colonIdx > 0 && colonIdx < 40 ? colonIdx : dashIdx > 0 && dashIdx < 40 ? dashIdx : -1;
+            if (sepIdx > 0) {
+              return { name: line.substring(0, sepIdx).replace(/[\d.\-*•]+/, '').trim(), role: 'Personaggio', description: line.substring(sepIdx + 1).trim() };
+            }
+            return null;
+          }).filter(Boolean);
+        }
       }
-      // Puliamo il codice HTML per estrarre solo il testo pulito
-      fullText = fullText.replace(/<[^>]*>/g, ' ').replace(/\s\s+/g, ' ').trim();
-      return fullText;
+
+      raw = raw.replace(/\s\s+/g, ' ').trim();
+
+      // Se nessuna sezione trama trovata, usa l'intro di Wikipedia come plot
+      if (!plot && raw) {
+        plot = raw.substring(0, 2500);
+      }
     }
-    return '';
+
+    return { raw, plot, gameplay, characters };
   } catch {
-    return '';
+    return { raw: '', plot: '', gameplay: '', characters: [] };
   }
 }
+
 
 
 class GameService {
@@ -232,7 +273,8 @@ class GameService {
 
     // 4. Se serve l'AI, fetchiamo Wikipedia e parallelizziamo le richieste Gemini
     console.log("📖 Fetching Wikipedia e invocando Gemini...");
-    const wikiContent = await fetchWikipediaIt(gameTitle || String(identifier));
+    const wikiData = await fetchWikipediaIt(gameTitle || String(identifier));
+    const wikiContent = wikiData.raw; // testo grezzo usato nei prompt AI
     
     let descriptionIt = firestoreCache?.translations?.it || null;
     let plot = null, gameplay = null, characters = [], trivia = [];
@@ -254,12 +296,12 @@ class GameService {
         tasks.push(
           GeminiCloudService.generateGameplay(rawg.title, genreNames, tagNames, platformNames)
             .then(res => { gameplay = res; })
-            .catch(e => console.warn("AI gameplay error:", e))
+            .catch(e => console.warn('AI gameplay error:', e))
         );
         tasks.push(
           GeminiCloudService.generateCharacters(rawg.title, rawg.descriptionRaw, wikiContent)
             .then(res => { characters = res; })
-            .catch(e => console.warn("AI characters error:", e))
+            .catch(e => console.warn('AI characters error:', e))
         );
         tasks.push(
           GeminiCloudService.generateTrivia(rawg.title, rawg.descriptionRaw)
@@ -286,15 +328,25 @@ class GameService {
     }
 
     // 5. Componi il risultato finale
-    // Utilizziamo SOLO la traduzione Firebase (descriptionIt) invece del plot generato da Gemini.
-    const finalPlot = descriptionIt || (aiLimitReached ? "Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste giornaliere." : "La panoramica non è al momento disponibile.");
+    // Per plot/descrizione, priorità: AI → Wikipedia → RAWG raw
+    const wikiPlot = wikiData.plot ? `[Fonte: Wikipedia] ${wikiData.plot}` : '';
+    const finalPlot = descriptionIt || wikiPlot || rawg.descriptionRaw || (aiLimitReached ? 'Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste giornaliere.' : 'La panoramica non è al momento disponibile.');
+
+    // Per gameplay, fallback su Wikipedia se AI non ha prodotto nulla
+    const finalGameplay = gameplay || (wikiData.gameplay ? `[Fonte: Wikipedia] ${wikiData.gameplay}` : 'Dati del gameplay non disponibili.');
+
+    // Per personaggi, fallback su Wikipedia se AI non ha prodotto nulla
+    const finalCharacters = (characters && characters.length > 0) ? characters
+      : (wikiData.characters && wikiData.characters.length > 0) ? wikiData.characters
+      : [];
+
     const finalData = {
       ...rawg,
       suggested,
-      description: descriptionIt || wikiContent || "Dati della trama non disponibili. (Ricarica la pagina o riprova più tardi)",
+      description: descriptionIt || wikiData.plot || rawg.descriptionRaw || 'Dati della trama non disponibili.',
       plot: finalPlot,
-      gameplay: gameplay || "Dati del gameplay non disponibili.",
-      protagonists: characters || [],
+      gameplay: finalGameplay,
+      protagonists: finalCharacters,
       trivia: trivia || [],
       _version: CACHE_VERSION,
       _cached: Date.now(),
