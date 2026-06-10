@@ -196,10 +196,26 @@ export default function Home() {
             Prossimamente (Nei prossimi 30 giorni)
           </h3>
           
-          <div id="upcoming-near-carousel" className="carousel-wrapper hide-scrollbar">
+          <motion.div 
+            id="upcoming-near-carousel" 
+            className="carousel-wrapper hide-scrollbar"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: { staggerChildren: 0.1 }
+              }
+            }}
+          >
             {upcomingNear.map((game) => (
-              <div 
+              <motion.div 
                 key={game.id}
+                variants={{
+                  hidden: { opacity: 0, x: 20 },
+                  show: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+                }}
                 onClick={() => navigate(`/game/${encodeURIComponent(game.name)}`, { state: { game: { id: game.id } } })}
                 className="carousel-card"
               >
@@ -219,9 +235,9 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
       {/* Overlay Discovery Result */}

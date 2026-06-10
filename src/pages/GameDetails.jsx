@@ -702,28 +702,40 @@ export default function GameDetails() {
         </div>
       )}
 
-      {/* Tabs */}
-      <div className="tabs-container" style={{ 
-        position: 'sticky', top: 0, zIndex: 90,
-        background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(12px)',
-        padding: '10px 0', marginTop: '-10px',
-        display: 'flex', gap: '8px', marginBottom: '28px', overflowX: 'auto',
-        borderBottom: '1px solid rgba(255,255,255,0.05)'
+      {/* Tabs - Pillola Flottante in Basso */}
+      <div style={{
+        position: 'fixed',
+        bottom: 'calc(var(--banner-height, 0px) + 20px)',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 100,
+        background: 'rgba(15, 23, 42, 0.75)',
+        backdropFilter: 'blur(16px)',
+        WebkitBackdropFilter: 'blur(16px)',
+        padding: '6px',
+        borderRadius: 'var(--radius-full)',
+        display: 'flex',
+        gap: '6px',
+        boxShadow: '0 10px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        maxWidth: '90vw',
+        overflowX: 'auto',
+        scrollbarWidth: 'none'
       }}>
         {tabs.map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)}
             className="tab-btn"
             style={{
               display: 'flex', alignItems: 'center', gap: '6px',
-              padding: '10px 20px', borderRadius: 'var(--radius-full)',
-              border: activeTab === tab.id ? 'none' : '1px solid var(--glass-border)',
-              background: activeTab === tab.id ? 'var(--accent-gradient)' : 'var(--bg-glass)',
+              padding: '10px 16px', borderRadius: 'var(--radius-full)',
+              border: 'none',
+              background: activeTab === tab.id ? 'var(--accent-gradient)' : 'transparent',
               color: activeTab === tab.id ? 'white' : 'var(--text-secondary)',
-              cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem',
-              whiteSpace: 'nowrap', transition: 'all 0.2s ease',
+              cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem',
+              whiteSpace: 'nowrap', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
               flexShrink: 0
             }}>
-            {tab.icon} {tab.label}
+            {tab.icon} <span style={{ display: activeTab === tab.id ? 'inline' : 'none' }}>{tab.label}</span>
           </button>
         ))}
       </div>

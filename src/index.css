@@ -149,6 +149,24 @@ a {
   transition: all 0.3s ease;
 }
 
+/* Skeletons (Shimmer Wave) */
+@keyframes shimmer-wave {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 400% 100%;
+  animation: shimmer-wave 1.5s infinite linear;
+  border-radius: var(--radius-sm);
+}
+
 /* Utilities */
 .glass-panel {
   background: var(--bg-glass);

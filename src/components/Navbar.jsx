@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { User, Settings, Calendar, Search, Wand } from 'lucide-react';
+import { User, Settings, Calendar, Search, Wand, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import logoUrl from '../assets/logo.png';
 import IAPService from '../services/IAPService';
 import SosGamerModal from './SosGamerModal';
@@ -88,42 +89,61 @@ export default function Navbar() {
         </div>
       </nav>
       {/* Overlay Ricerca Globale Fuori Dalla Nav */}
-      {searchOpen && !isHome && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(10px)',
-          zIndex: 9999, display: 'flex', flexDirection: 'column',
-          alignItems: 'center', justifyContent: 'center', padding: '20px'
-        }}>
-          <button 
-            onClick={() => setSearchOpen(false)}
+      <AnimatePresence>
+        {searchOpen && !isHome && (
+          <motion.div 
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(24px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
             style={{
-              position: 'absolute', top: '20px', right: '20px',
-              background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%',
-              width: '40px', height: '40px', color: 'white', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center'
-            }}
-          >
-            X
-          </button>
-          <form onSubmit={handleSearch} style={{ width: '100%', maxWidth: '600px', position: 'relative' }}>
-            <input 
-              autoFocus 
-              type="text" 
-              value={query} 
-              onChange={e => setQuery(e.target.value)} 
-              placeholder="Cerca un gioco o un personaggio..." 
-              style={{ 
-                width: '100%', padding: '20px 24px', paddingLeft: '60px',
-                borderRadius: 'var(--radius-full)', border: '2px solid var(--accent-primary)',
-                background: 'var(--bg-glass)', color: 'white', fontSize: '1.2rem',
-                outline: 'none', boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
-              }} 
-            />
-            <Search size={24} style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', color: 'var(--accent-primary)' }} />
-          </form>
-        </div>
-      )}
+              position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+              backgroundColor: 'rgba(15, 23, 42, 0.65)',
+              zIndex: 9999, display: 'flex', flexDirection: 'column',
+              alignItems: 'center', justifyContent: 'center', padding: '20px'
+            }}>
+            
+            <button 
+              onClick={() => setSearchOpen(false)}
+              style={{
+                position: 'absolute', top: '30px', right: '30px',
+                background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', 
+                borderRadius: '50%', width: '48px', height: '48px', color: 'white', 
+                cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.2s', boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
+              }}
+            >
+              <X size={24} />
+            </button>
+            
+            <motion.form 
+              initial={{ scale: 0.9, y: 30, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 30, opacity: 0 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              onSubmit={handleSearch} 
+              style={{ width: '100%', maxWidth: '600px', position: 'relative' }}
+            >
+              <input 
+                autoFocus 
+                type="text" 
+                value={query} 
+                onChange={e => setQuery(e.target.value)} 
+                placeholder="Cerca un gioco o un personaggio..." 
+                style={{ 
+                  width: '100%', padding: '22px 24px', paddingLeft: '64px',
+                  borderRadius: 'var(--radius-full)', border: '2px solid rgba(255,255,255,0.1)',
+                  background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '1.25rem',
+                  outline: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+                  backdropFilter: 'blur(10px)', transition: 'border-color 0.2s'
+                }} 
+                onFocus={(e) => e.target.style.borderColor = 'var(--accent-primary)'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.1)'}
+              />
+              <Search size={26} style={{ position: 'absolute', left: '24px', top: '50%', transform: 'translateY(-50%)', color: 'var(--accent-primary)' }} />
+            </motion.form>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {sosModalOpen && (
         <SosGamerModal onClose={() => setSosModalOpen(false)} />
