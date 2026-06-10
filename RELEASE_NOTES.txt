@@ -1,5 +1,6 @@
-🚀 Novità in OmniDex!
-- 💎 Introdotti i nuovi piani di abbonamento per supportare il progetto e sbloccare funzionalità esclusive.
-- 📜 Aggiornate le informazioni legali e rimossa la dicitura "senza scopo di lucro" per riflettere i nuovi servizi.
-- 🐛 Correzioni di bug minori e miglioramenti generali della stabilità.
+🚀 Novità in OmniDex 1.6.5!
+- 🎨 Nuova veste grafica per le schede: animazioni ottimizzate, tilt 3D e supporto completo per i temi Chiaro e AMOLED.
+- 🌐 Traduzione IA estesa: tutte le sezioni trama e gameplay (anche da Wikipedia) ora sono in italiano.
+- 🤖 Fallback Intelligente: se un gioco manca dal database principale, creiamo la scheda via Wikipedia.
+- 🐛 Fix generali e miglioramento della leggibilità testuale.
 Grazie per il vostro supporto!
