@@ -5,7 +5,7 @@ import GeminiCloudService from '../services/GeminiCloudService';
 import IAPService from '../services/IAPService';
 import AdService from '../services/AdService';
 import FirebaseService from '../services/FirebaseService';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 export default function CharacterDetails() {
   const { characterName } = useParams();
@@ -14,6 +14,10 @@ export default function CharacterDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [tier, setTier] = useState(IAPService.getTier());
+
+  // Progress Bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
     const unsub = IAPService.subscribe(setTier);
@@ -161,6 +165,14 @@ export default function CharacterDetails() {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
+      {/* Scroll Progress Bar Neon */}
+      <motion.div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, height: '3px',
+        background: 'var(--accent-gradient)',
+        boxShadow: '0 0 10px var(--accent-primary)',
+        transformOrigin: '0%', scaleX, zIndex: 99999
+      }} />
+
       <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
         <ChevronLeft size={24} />
       </button>

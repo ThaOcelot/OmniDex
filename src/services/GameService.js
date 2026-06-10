@@ -251,13 +251,7 @@ class GameService {
         
         const tasks = [];
         
-        if (!descriptionIt) {
-          tasks.push(
-            GeminiCloudService.translateDescription(rawg.descriptionRaw)
-              .then(res => { descriptionIt = res; })
-              .catch(e => console.warn("AI translate error:", e))
-          );
-        }
+        // La traduzione base viene fatta separatamente, vedi sotto.
         
         tasks.push(
           GeminiCloudService.generatePlot(rawg.title, rawg.descriptionRaw, genreNames, tagNames, wikiContent)
@@ -288,18 +282,29 @@ class GameService {
       }
     }
 
+    // Eseguiamo SEMPRE il traduttore di base se manca l'italiano (indipendente dal limite AI, perché la traduzione è un servizio base garantito)
+    if (!descriptionIt && rawg.descriptionRaw) {
+      try {
+        console.log("🔤 Uso il traduttore Firebase come fallback per la descrizione...");
+        descriptionIt = await GeminiCloudService.translateDescription(rawg.descriptionRaw);
+      } catch (e) {
+        console.warn("AI translate error:", e);
+      }
+    }
+
     // 5. Componi il risultato finale
+    const finalPlot = descriptionIt || (aiLimitReached ? "Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste IA giornaliere." : "Panoramica non disponibile. (Errore temporaneo del server o del servizio IA. Riprova tra poco)");
     const finalData = {
       ...rawg,
       suggested,
       description: plot || wikiContent || "Dati della trama non disponibili. (Ricarica la pagina o riprova più tardi)",
-      plot: descriptionIt || (aiLimitReached ? "Panoramica non disponibile. Hai raggiunto il limite di richieste IA giornaliere." : "Panoramica non disponibile. (Errore temporaneo del server o del servizio IA. Riprova tra poco)"),
+      plot: finalPlot,
       gameplay: gameplay || "Dati del gameplay non disponibili.",
       protagonists: characters || [],
       trivia: trivia || [],
       _version: CACHE_VERSION,
       _cached: Date.now(),
-      _aiGenerated: GeminiCloudService.isAvailable() && !aiLimitReached && !!plot && !!gameplay,
+      _aiGenerated: GeminiCloudService.isAvailable() && !aiLimitReached && !!plot && !!gameplay && !!descriptionIt,
       _wikiUsed: !!wikiContent,
       _aiLimitReached: aiLimitReached,
       _isRaw: false

@@ -13,6 +13,28 @@ const STATUS_OPTIONS = [
 const GameCard = ({ game, onClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [savedStatus, setSavedStatus] = useState(null);
+  
+  // 3D Tilt State
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Max 10 degrees tilt
+    const rotateY = ((x / rect.width) - 0.5) * 15;
+    const rotateX = ((y / rect.height) - 0.5) * -15;
+    
+    setRotate({ x: rotateX, y: rotateY });
+    setGlare({ x: (x / rect.width) * 100, y: (y / rect.height) * 100, opacity: 1 });
+  };
+
+  const handleMouseLeave = () => {
+    setRotate({ x: 0, y: 0 });
+    setGlare({ opacity: 0, x: 50, y: 50 });
+  };
 
   useEffect(() => {
     db.isFavorite(game.id).then(async (isFav) => {
@@ -60,18 +82,24 @@ const GameCard = ({ game, onClick }) => {
         overflow: 'visible',
         position: 'relative',
         height: '100%',
+        transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translateY(${rotate.x !== 0 || rotate.y !== 0 ? -10 : 0}px)`,
+        transformStyle: 'preserve-3d',
+        boxShadow: rotate.x !== 0 || rotate.y !== 0 ? '0 20px 40px rgba(109, 40, 217, 0.3)' : 'var(--shadow-glass)',
+        borderColor: rotate.x !== 0 || rotate.y !== 0 ? 'rgba(236, 72, 153, 0.5)' : 'var(--glass-border)',
       }}
-      onMouseOver={e => {
-        e.currentTarget.style.transform = 'translateY(-10px)';
-        e.currentTarget.style.boxShadow = '0 20px 40px rgba(109, 40, 217, 0.3)';
-        e.currentTarget.style.borderColor = 'rgba(236, 72, 153, 0.5)';
-      }}
-      onMouseOut={e => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = 'var(--shadow-glass)';
-        e.currentTarget.style.borderColor = 'var(--glass-border)';
-      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
+      {/* Glare Overlay */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+        background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.2) 0%, transparent 60%)`,
+        opacity: glare.opacity,
+        pointerEvents: 'none',
+        transition: 'opacity 0.3s',
+        zIndex: 40,
+        borderRadius: 'inherit'
+      }} />
       {/* Pulsante + posizionato sul CARD (overflow visible), non nell'img */}
       <div
         style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 50 }}

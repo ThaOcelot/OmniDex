@@ -5,7 +5,8 @@ import {
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen, Sparkles, Lock,
   Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2
 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import AnimatedCounter from '../components/AnimatedCounter';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
 import NewsCard from '../components/NewsCard';
@@ -25,6 +26,10 @@ export default function GameDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   
+  // Progress Bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
   // App States
   const [loading, setLoading] = useState(true);
   const [gameData, setGameData] = useState(null);
@@ -473,6 +478,13 @@ export default function GameDetails() {
       exit={{ opacity: 0, x: -20 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
+      {/* Scroll Progress Bar Neon */}
+      <motion.div style={{
+        position: 'fixed', top: 0, left: 0, right: 0, height: '3px',
+        background: 'var(--accent-gradient)',
+        boxShadow: '0 0 10px var(--accent-primary)',
+        transformOrigin: '0%', scaleX, zIndex: 99999
+      }} />
 
       {/* Back button */}
       <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '24px', fontSize: '0.95rem', transition: 'color 0.2s' }}
@@ -540,6 +552,17 @@ export default function GameDetails() {
                 )}
               </div>
 
+              {(!gameData._aiGenerated || gameData.plot?.includes("Panoramica non disponibile") || gameData.description?.includes("Dati della trama non disponibili")) && !gameData._aiLimitReached && (
+                <div className="animate-fade-in" style={{ marginTop: '14px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  <button 
+                    onClick={handleRegenerate} 
+                    className="btn-primary" 
+                    style={{ background: 'var(--accent-secondary)', color: 'white', padding: '6px 14px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem' }}>
+                    <Sparkles size={14} /> Rigenera Dati IA
+                  </button>
+                </div>
+              )}
+
               {gameData._aiLimitReached && (
                 <div className="animate-fade-in" style={{ marginTop: '14px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                   <button 
@@ -582,13 +605,17 @@ export default function GameDetails() {
               <div className="details-stats-panel">
                 {gameData.metacritic && (
                   <div className="details-stat-box" style={{ borderColor: 'rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.05)' }}>
-                    <div className="details-stat-value" style={{ color: 'var(--success)' }}>{gameData.metacritic}</div>
+                    <div className="details-stat-value" style={{ color: 'var(--success)' }}>
+                      <AnimatedCounter value={gameData.metacritic} />
+                    </div>
                     <div className="details-stat-label">Metacritic</div>
                   </div>
                 )}
                 {gameData.rating > 0 && (
                   <div className="details-stat-box" style={{ borderColor: 'rgba(109,40,217,0.3)', background: 'rgba(109,40,217,0.05)' }}>
-                    <div className="details-stat-value" style={{ color: 'var(--accent-primary)' }}>⭐ {gameData.rating.toFixed(1)}</div>
+                    <div className="details-stat-value" style={{ color: 'var(--accent-primary)' }}>
+                      ⭐ <AnimatedCounter value={gameData.rating} decimals={1} />
+                    </div>
                     <div className="details-stat-label">RAWG ({gameData.ratingsCount})</div>
                   </div>
                 )}
@@ -1023,6 +1050,22 @@ export default function GameDetails() {
               </div>
             </div>
           )}
+
+          {/* Sezione Rigenera */}
+          <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '40px 20px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px dashed var(--glass-border)', marginTop: '10px' }}>
+            {(!gameData._aiGenerated || gameData.plot?.includes("Panoramica non disponibile") || gameData.description?.includes("Dati della trama non disponibili")) && (
+              <p style={{ color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '20px' }}>
+                Alcune informazioni generate dall'IA sembrano mancanti o l'operazione non è andata a buon fine.
+              </p>
+            )}
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '15px' }}>
+              Pensi che questa scheda sia incompleta, inaccurata o vuoi provare a rigenerarla da zero?
+            </p>
+            <button onClick={handleRegenerate} className="btn-primary" style={{ margin: '0 auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Sparkles size={16} /> Rigenera con IA
+            </button>
+          </div>
+
         </div>
       )}
 
