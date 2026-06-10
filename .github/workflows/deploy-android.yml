@@ -51,15 +51,13 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           cd android
-          # Ricrea il file keystore.jks dal Base64
-          echo $KEYSTORE_BASE64 | base64 --decode > app/keystore.jks
-          # Ricrea il file keystore.properties
-          cat <<EOF > keystore.properties
-          storePassword=$KEYSTORE_PASSWORD
-          keyPassword=$KEY_PASSWORD
-          keyAlias=$KEY_ALIAS
-          storeFile=app/keystore.jks
-          EOF
+          # Ricrea il file keystore.jks dal Base64 preservando gli accapo
+          echo "$KEYSTORE_BASE64" | base64 --decode > app/keystore.jks
+          # Ricrea il file keystore.properties senza spaziature
+          echo "storePassword=$KEYSTORE_PASSWORD" > keystore.properties
+          echo "keyPassword=$KEY_PASSWORD" >> keystore.properties
+          echo "keyAlias=$KEY_ALIAS" >> keystore.properties
+          echo "storeFile=app/keystore.jks" >> keystore.properties
 
       - name: Prepare Google Play Config JSON
         env:
