@@ -52,6 +52,17 @@ export default function GameDetails() {
   const [touchStartX, setTouchStartX] = useState(0);
   const [parallaxY, setParallaxY] = useState(0);
   const heroRef = useRef(null);
+  const tabsRef = useRef(null);
+
+  // Auto-scroll the tabs container
+  useEffect(() => {
+    if (tabsRef.current) {
+      const activeBtn = tabsRef.current.querySelector('.active-tab');
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+  }, [activeTab]);
 
   // Ultra AI States
   const [tier, setTier] = useState(IAPService.getTier());
@@ -703,39 +714,60 @@ export default function GameDetails() {
       )}
 
       {/* Tabs - Pillola Flottante in Basso */}
-      <div style={{
-        position: 'fixed',
-        bottom: 'calc(var(--banner-height, 0px) + 20px)',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 100,
-        background: 'rgba(15, 23, 42, 0.75)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        padding: '6px',
-        borderRadius: 'var(--radius-full)',
-        display: 'flex',
-        gap: '6px',
-        boxShadow: '0 10px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        maxWidth: '90vw',
-        overflowX: 'auto',
-        scrollbarWidth: 'none'
-      }}>
+      <div 
+        ref={tabsRef}
+        style={{
+          position: 'fixed',
+          bottom: 'calc(var(--banner-height, 0px) + 20px)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 100,
+          background: 'rgba(15, 23, 42, 0.75)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          padding: '6px',
+          borderRadius: 'var(--radius-full)',
+          display: 'flex',
+          gap: '6px',
+          boxShadow: '0 10px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          maxWidth: '90vw',
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+          scrollBehavior: 'smooth'
+        }}>
         {tabs.map(tab => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-            className="tab-btn"
+            className={`tab-btn ${activeTab === tab.id ? 'active-tab' : ''}`}
             style={{
+              position: 'relative',
               display: 'flex', alignItems: 'center', gap: '6px',
               padding: '10px 16px', borderRadius: 'var(--radius-full)',
               border: 'none',
-              background: activeTab === tab.id ? 'var(--accent-gradient)' : 'transparent',
+              background: 'transparent',
               color: activeTab === tab.id ? 'white' : 'var(--text-secondary)',
               cursor: 'pointer', fontWeight: '700', fontSize: '0.85rem',
-              whiteSpace: 'nowrap', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              flexShrink: 0
+              whiteSpace: 'nowrap', transition: 'color 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              flexShrink: 0,
+              WebkitTapHighlightColor: 'transparent'
             }}>
-            {tab.icon} <span style={{ display: activeTab === tab.id ? 'inline' : 'none' }}>{tab.label}</span>
+            {activeTab === tab.id && (
+              <motion.div
+                layoutId="activeTabBackground"
+                initial={false}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'var(--accent-gradient)',
+                  borderRadius: 'var(--radius-full)',
+                  zIndex: -1
+                }}
+              />
+            )}
+            <span style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              {tab.icon} <span style={{ display: activeTab === tab.id ? 'inline' : 'none' }}>{tab.label}</span>
+            </span>
           </button>
         ))}
       </div>
