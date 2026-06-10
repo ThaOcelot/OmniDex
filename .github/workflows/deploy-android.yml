@@ -51,8 +51,8 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           cd android
-          # Ricrea il file keystore.jks dal Base64 preservando gli accapo
-          echo "$KEYSTORE_BASE64" | base64 --decode > app/keystore.jks
+          # Ricrea il file keystore.jks dal Base64 ignorando ritorni a capo Windows
+          echo "$KEYSTORE_BASE64" | base64 -d -i > app/keystore.jks
           # Ricrea il file keystore.properties senza spaziature
           echo "storePassword=$KEYSTORE_PASSWORD" > keystore.properties
           echo "keyPassword=$KEY_PASSWORD" >> keystore.properties
