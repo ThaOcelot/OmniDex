@@ -53,6 +53,7 @@ export default function GameDetails() {
   const [parallaxY, setParallaxY] = useState(0);
   const heroRef = useRef(null);
   const tabsRef = useRef(null);
+  const contentRef = useRef(null);
 
   // Auto-scroll the tabs container
   useEffect(() => {
@@ -737,7 +738,13 @@ export default function GameDetails() {
           scrollBehavior: 'smooth'
         }}>
         {tabs.map(tab => (
-          <button key={tab.id} onClick={() => setActiveTab(tab.id)}
+          <button key={tab.id} onClick={() => {
+            setActiveTab(tab.id);
+            // Scrolliamo morbidamente la pagina in basso, in modo che l'inizio dei contenuti sia visibile, tenendo conto della Navbar
+            setTimeout(() => {
+              contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50); // Piccolo delay per far partire l'animazione di transizione prima
+          }}
             className={`tab-btn ${activeTab === tab.id ? 'active-tab' : ''}`}
             style={{
               position: 'relative',
@@ -773,6 +780,7 @@ export default function GameDetails() {
       </div>
 
       {/* Tab Content */}
+      <div ref={contentRef} style={{ scrollMarginTop: '80px' }}>
       <AnimatePresence mode="wait">
         <motion.div
           key={activeTab}
@@ -1416,6 +1424,7 @@ export default function GameDetails() {
       )}
         </motion.div>
       </AnimatePresence>
+      </div>
 
 
       <Modal 
