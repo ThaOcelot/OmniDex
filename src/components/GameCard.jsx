@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronRight, Plus, Check } from 'lucide-react';
 import { db } from '../services/db';
 import HapticService from '../services/HapticService';
+import { motion } from 'framer-motion';
 
 const STATUS_OPTIONS = [
   { key: 'backlog',    label: 'Da Giocare',  emoji: '🕹️', color: '#6366f1' },
@@ -69,20 +70,21 @@ const GameCard = ({ game, onClick }) => {
   const currentStatus = STATUS_OPTIONS.find(s => s.key === savedStatus);
 
   return (
-    <div
+    <motion.div
       className="glass-panel"
       onClick={onClick}
+      whileTap={{ scale: 0.95 }}
       style={{
         padding: '0',
         cursor: 'pointer',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'box-shadow 0.3s, border-color 0.3s', // Rimuovi transition su transform perché ci pensa Framer/tilt
         display: 'flex',
         flexDirection: 'column',
         /* overflow VISIBILE sul card così il dropdown non viene tagliato */
         overflow: 'visible',
         position: 'relative',
         height: '100%',
-        transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translateY(${rotate.x !== 0 || rotate.y !== 0 ? -10 : 0}px)`,
+        transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
         transformStyle: 'preserve-3d',
         boxShadow: rotate.x !== 0 || rotate.y !== 0 ? '0 20px 40px rgba(109, 40, 217, 0.3)' : 'var(--shadow-glass)',
         borderColor: rotate.x !== 0 || rotate.y !== 0 ? 'rgba(236, 72, 153, 0.5)' : 'var(--glass-border)',
@@ -194,7 +196,7 @@ const GameCard = ({ game, onClick }) => {
           <span style={{ fontSize: '0.85rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>Dettagli <ChevronRight size={14} /></span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
