@@ -59,11 +59,7 @@ jobs:
           echo "keyAlias=$KEY_ALIAS" >> keystore.properties
           echo "storeFile=app/keystore.jks" >> keystore.properties
 
-      - name: Prepare Google Play Config JSON
-        env:
-          PLAY_CONFIG_JSON_BASE64: ${{ secrets.PLAY_CONFIG_JSON_BASE64 }}
-        run: |
-          echo "$PLAY_CONFIG_JSON_BASE64" | base64 -d -i > android/fastlane/play_config.json
+
 
       - name: Run Fastlane Deploy
         env:
