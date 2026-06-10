@@ -336,7 +336,7 @@ class GameService {
     const wikiData = await fetchWikipediaIt(gameTitle || String(identifier));
     const wikiContent = wikiData.raw; // testo grezzo usato nei prompt AI
     
-    let descriptionIt = firestoreCache?.translations?.it || null;
+    let descriptionIt = firestoreCache?.translated?.it || firestoreCache?.translations?.it || null;
     let plot = null, gameplay = null, characters = [], trivia = [];
     let aiLimitReached = false;
 
@@ -377,31 +377,13 @@ class GameService {
       }
     }
 
-    // Eseguiamo SEMPRE il traduttore di base se manca l'italiano (indipendente dal limite AI)
-    if (!descriptionIt && rawg.descriptionRaw) {
-      try {
-        console.log('🔤 Uso il traduttore Firebase come fallback per la descrizione...');
-        descriptionIt = await GeminiCloudService.translateDescription(rawg.descriptionRaw);
-      } catch (e) {
-        console.warn('AI translate error:', e);
-      }
-    }
-
-    // Traduzione via Firebase del contenuto Wikipedia se usato come fallback
+    // La traduzione base è ora gestita interamente dall'Estensione Firebase (Translate Text).
+    // Pertanto, lato client non forziamo più la chiamata a Gemini per tradurre descriptionRaw o Wikipedia.
+    // L'utente vedrà la lingua originale al primissimo caricamento, e l'italiano ai successivi (dopo che l'estensione ha agito).
+    
     let wikiPlotIt = '';
     let wikiGameplayIt = '';
-    if (!gameplay && wikiData.gameplay) {
-      try {
-        console.log('🔤 Traduzione Wikipedia gameplay via Firebase...');
-        wikiGameplayIt = await GeminiCloudService.translateDescription(wikiData.gameplay);
-      } catch { wikiGameplayIt = wikiData.gameplay; }
-    }
-    if (!descriptionIt && wikiData.plot) {
-      try {
-        console.log('🔤 Traduzione Wikipedia plot via Firebase...');
-        wikiPlotIt = await GeminiCloudService.translateDescription(wikiData.plot);
-      } catch { wikiPlotIt = wikiData.plot; }
-    }
+
     // 5. Componi il risultato finale
     // Per plot/descrizione, priorità: AI → Wikipedia tradotto → RAWG raw
     const finalPlot = descriptionIt || wikiPlotIt || wikiData.plot || rawg.descriptionRaw || (aiLimitReached ? 'Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste giornaliere.' : 'La panoramica non è al momento disponibile.');
@@ -434,15 +416,17 @@ class GameService {
     await db.setGame(cacheKey, finalData);
     
     // 7. Salva in cache GLOBALE (Firestore)
-    if (GeminiCloudService.isAvailable() && !aiLimitReached && descriptionIt) {
+    // Salviamo sempre in Firestore se abbiamo i dati minimi. Così facendo, l'estensione Translate Text 
+    // individuerà il campo 'descriptionRaw' appena scritto e lo tradurrà in background in 'translations.it'
+    if (rawg && rawg.title) {
       const firestorePayload = {
         ...rawg,
-        _aiGenerated: true,
+        _aiGenerated: GeminiCloudService.isAvailable() && !aiLimitReached,
         _wikiUsed: !!wikiContent,
         _generatedByTier: IAPService.getTier(),
         description: plot || '',
-        plot: descriptionIt || '',
-        gameplay: gameplay || '',
+        plot: finalPlot || '',
+        gameplay: finalGameplay || '',
         protagonists: characters || [],
         trivia: trivia || [],
         title: rawg.title || '',
