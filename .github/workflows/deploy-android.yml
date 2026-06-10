@@ -67,7 +67,7 @@ jobs:
 
       - name: Run Fastlane Deploy
         env:
-          PLAY_CONFIG_JSON_PATH: "play_config.json"
+          PLAY_CONFIG_JSON_PATH: "fastlane/play_config.json"
         run: |
           cd android
           chmod +x gradlew
