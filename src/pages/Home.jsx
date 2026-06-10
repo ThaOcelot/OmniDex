@@ -124,9 +124,13 @@ export default function Home() {
             <Search size={18} color="var(--text-secondary)" />
             <div className="search-input-divider"></div>
           </div>
-          <button type="submit" className="btn-primary search-submit-btn">
+          <motion.button 
+            whileTap={{ scale: 0.92 }}
+            type="submit" 
+            className="btn-primary search-submit-btn"
+          >
             Cerca
-          </button>
+          </motion.button>
         </div>
         
         {/* Toggles Container */}
@@ -152,7 +156,8 @@ export default function Home() {
 
           {/* Toggle Modalità Sommelier */}
           {searchType === 'game' && (
-            <button 
+            <motion.button 
+              whileTap={{ scale: 0.92 }}
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAiMode(!aiMode); }}
               className={`toggle-sommelier-btn ${aiMode ? 'active' : ''}`}
@@ -160,31 +165,33 @@ export default function Home() {
               <Sparkles size={12} color={aiMode ? "var(--accent-ultra)" : "currentColor"} />
               Sommelier AI
               {tier !== 'ultra' && <Lock size={12} style={{ marginLeft: '4px' }} />}
-            </button>
+            </motion.button>
           )}
         </div>
       </form>
 
       {/* Pulsanti Azione Rapida */}
       <div className="home-actions-column">
-        <button
+        <motion.button
+          whileTap={{ scale: 0.95 }}
           onClick={handlePersonalizedSuggestions}
           className="btn-flat-accent"
         >
           <Sparkles size={18} />
           <span>Consigliati per me</span>
           {tier !== 'ultra' && <Lock size={12} style={{ marginLeft: '2px' }} />}
-        </button>
+        </motion.button>
 
         <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
             onClick={handleDiscover}
             disabled={discovering}
             className="btn-flat-primary"
           >
             <Shuffle size={16} style={{ animation: discovering ? 'spin-anim 0.7s linear infinite' : 'none' }} />
             <span>{discovering ? 'Ricerca...' : '🎲 Gioco del Giorno'}</span>
-          </button>
+          </motion.button>
         </div>
       </div>
 
