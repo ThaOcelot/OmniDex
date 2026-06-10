@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronRight, Plus, Check } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ChevronRight, Plus, Check, Star } from 'lucide-react';
 import { db } from '../services/db';
 import HapticService from '../services/HapticService';
 import { motion } from 'framer-motion';
@@ -11,31 +11,70 @@ const STATUS_OPTIONS = [
   { key: 'dropped',   label: 'Abbandonato', emoji: '❌',  color: '#ef4444' },
 ];
 
+// Colori per genere — usati sul badge genere in basso
+const GENRE_COLORS = {
+  'Action': '#ef4444',
+  'RPG': '#8b5cf6',
+  'Adventure': '#06b6d4',
+  'Shooter': '#f97316',
+  'Strategy': '#10b981',
+  'Simulation': '#3b82f6',
+  'Puzzle': '#ec4899',
+  'Racing': '#f59e0b',
+  'Fighting': '#dc2626',
+  'Sports': '#22c55e',
+  'Platformer': '#a78bfa',
+  'Horror': '#6b7280',
+  'default': '#6d28d9',
+};
+
+function getRatingColor(rating) {
+  if (!rating || rating === 0) return null;
+  if (rating >= 4.0) return '#10b981'; // verde
+  if (rating >= 3.0) return '#f59e0b'; // giallo
+  return '#ef4444'; // rosso
+}
+
 const GameCard = ({ game, onClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [savedStatus, setSavedStatus] = useState(null);
-  
-  // 3D Tilt State
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
-  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
 
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Max 10 degrees tilt
-    const rotateY = ((x / rect.width) - 0.5) * 15;
-    const rotateX = ((y / rect.height) - 0.5) * -15;
-    
-    setRotate({ x: rotateX, y: rotateY });
-    setGlare({ x: (x / rect.width) * 100, y: (y / rect.height) * 100, opacity: 1 });
-  };
+  // ── Tilt 3D via DOM ref (zero re-render) ──────────────────────────────────
+  const cardRef = useRef(null);
+  const glareRef = useRef(null);
+  const rafRef = useRef(null);
 
-  const handleMouseLeave = () => {
-    setRotate({ x: 0, y: 0 });
-    setGlare({ opacity: 0, x: 50, y: 50 });
-  };
+  const handleMouseMove = useCallback((e) => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const card = cardRef.current;
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const rotateY = ((x / rect.width) - 0.5) * 14;
+      const rotateX = ((y / rect.height) - 0.5) * -14;
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      card.style.boxShadow = '0 20px 40px rgba(109, 40, 217, 0.3)';
+      card.style.borderColor = 'rgba(236, 72, 153, 0.5)';
+      if (glareRef.current) {
+        const gx = (x / rect.width) * 100;
+        const gy = (y / rect.height) * 100;
+        glareRef.current.style.background = `radial-gradient(circle at ${gx}% ${gy}%, rgba(255,255,255,0.18) 0%, transparent 60%)`;
+        glareRef.current.style.opacity = '1';
+      }
+    });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    const card = cardRef.current;
+    if (!card) return;
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+    card.style.boxShadow = 'var(--shadow-glass)';
+    card.style.borderColor = 'var(--glass-border)';
+    if (glareRef.current) glareRef.current.style.opacity = '0';
+  }, []);
 
   useEffect(() => {
     db.isFavorite(game.id).then(async (isFav) => {
@@ -68,41 +107,41 @@ const GameCard = ({ game, onClick }) => {
   };
 
   const currentStatus = STATUS_OPTIONS.find(s => s.key === savedStatus);
+  const ratingColor = getRatingColor(game.rating);
+  const genreColor = GENRE_COLORS[game.genre] || GENRE_COLORS['default'];
 
   return (
     <motion.div
+      ref={cardRef}
       className="glass-panel"
       onClick={onClick}
-      whileTap={{ scale: 0.95 }}
+      whileTap={{ scale: 0.97 }}
       style={{
         padding: '0',
         cursor: 'pointer',
-        transition: 'box-shadow 0.3s, border-color 0.3s', // Rimuovi transition su transform perché ci pensa Framer/tilt
         display: 'flex',
         flexDirection: 'column',
-        /* overflow VISIBILE sul card così il dropdown non viene tagliato */
         overflow: 'visible',
         position: 'relative',
         height: '100%',
-        transform: `perspective(1000px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
         transformStyle: 'preserve-3d',
-        boxShadow: rotate.x !== 0 || rotate.y !== 0 ? '0 20px 40px rgba(109, 40, 217, 0.3)' : 'var(--shadow-glass)',
-        borderColor: rotate.x !== 0 || rotate.y !== 0 ? 'rgba(236, 72, 153, 0.5)' : 'var(--glass-border)',
+        transition: 'box-shadow 0.3s, border-color 0.3s',
+        willChange: 'transform',
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       {/* Glare Overlay */}
-      <div style={{
+      <div ref={glareRef} style={{
         position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-        background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.2) 0%, transparent 60%)`,
-        opacity: glare.opacity,
+        opacity: 0,
         pointerEvents: 'none',
         transition: 'opacity 0.3s',
         zIndex: 40,
-        borderRadius: 'inherit'
+        borderRadius: 'inherit',
       }} />
-      {/* Pulsante + posizionato sul CARD (overflow visible), non nell'img */}
+
+      {/* Pulsante + */}
       <div
         style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 50 }}
         onClick={e => e.stopPropagation()}
@@ -162,16 +201,33 @@ const GameCard = ({ game, onClick }) => {
         )}
       </div>
 
-      {/* Immagine — overflow:hidden solo qui */}
-      <div style={{ height: '180px', position: 'relative', overflow: 'hidden', borderBottom: '1px solid rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}>
+      {/* Immagine */}
+      <div style={{ height: '180px', position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}>
         {game.cover ? (
-          <img src={game.cover} alt={game.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img
+            src={game.cover}
+            alt={game.title}
+            loading="lazy"
+            decoding="async"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
         ) : (
           <div style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, rgba(109,40,217,0.3) 0%, rgba(236,72,153,0.1) 100%)' }} />
         )}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 100%)' }} />
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,0.85) 100%)' }} />
+
+        {/* Rating bar colorata in fondo all'immagine */}
+        {ratingColor && (
+          <div style={{
+            position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px',
+            background: `linear-gradient(90deg, ${ratingColor}, ${ratingColor}88)`,
+          }} />
+        )}
+
         <div style={{ position: 'absolute', bottom: '15px', left: '15px', right: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-          <h2 style={{ fontSize: '1.2rem', lineHeight: '1.2', fontWeight: '800', textShadow: '0 2px 4px rgba(0,0,0,0.5)', margin: 0, color: 'white' }}>{game.title}</h2>
+          <h2 style={{ fontSize: '1.2rem', lineHeight: '1.2', fontWeight: '800', textShadow: '0 2px 4px rgba(0,0,0,0.5)', margin: 0, color: 'white' }}>
+            {game.title}
+          </h2>
           {game.year && (
             <span style={{ background: 'var(--accent-gradient)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>
               {game.year}
@@ -181,19 +237,32 @@ const GameCard = ({ game, onClick }) => {
       </div>
 
       {/* Body */}
-      <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '15px' }}>
-          {game.platforms?.slice(0, 4).map(p => (
+      <div style={{ padding: '16px 20px 0', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px', alignItems: 'center' }}>
+          {game.platforms?.slice(0, 3).map(p => (
             <span key={p} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.7rem', color: 'var(--text-secondary)' }}>
               {p}
             </span>
           ))}
-          <span style={{ background: 'rgba(109,40,217,0.1)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.7rem', color: 'var(--accent-primary)', fontWeight: 'bold' }}>
+          {/* Badge genere colorato */}
+          <span style={{ background: `${genreColor}22`, border: `1px solid ${genreColor}44`, padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', color: genreColor, fontWeight: '700', marginLeft: 'auto' }}>
             {game.genre}
           </span>
         </div>
-        <div style={{ padding: '10px 0', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'var(--accent-secondary)' }}>
-          <span style={{ fontSize: '0.85rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px' }}>Dettagli <ChevronRight size={14} /></span>
+
+        {/* Rating + CTA */}
+        <div style={{ padding: '10px 0', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          {game.rating > 0 ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Star size={13} fill={ratingColor || 'gold'} color={ratingColor || 'gold'} />
+              <span style={{ fontSize: '0.82rem', fontWeight: '700', color: ratingColor || 'var(--text-primary)' }}>
+                {game.rating.toFixed(1)}
+              </span>
+            </div>
+          ) : <div />}
+          <span style={{ fontSize: '0.82rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--accent-secondary)' }}>
+            Dettagli <ChevronRight size={14} />
+          </span>
         </div>
       </div>
     </motion.div>

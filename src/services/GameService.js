@@ -317,23 +317,37 @@ class GameService {
       }
     }
 
-    // Eseguiamo SEMPRE il traduttore di base se manca l'italiano (indipendente dal limite AI, perché la traduzione è un servizio base garantito)
+    // Eseguiamo SEMPRE il traduttore di base se manca l'italiano (indipendente dal limite AI)
     if (!descriptionIt && rawg.descriptionRaw) {
       try {
-        console.log("🔤 Uso il traduttore Firebase come fallback per la descrizione...");
+        console.log('🔤 Uso il traduttore Firebase come fallback per la descrizione...');
         descriptionIt = await GeminiCloudService.translateDescription(rawg.descriptionRaw);
       } catch (e) {
-        console.warn("AI translate error:", e);
+        console.warn('AI translate error:', e);
       }
     }
 
+    // Traduzione via Firebase del contenuto Wikipedia se usato come fallback
+    let wikiPlotIt = '';
+    let wikiGameplayIt = '';
+    if (!gameplay && wikiData.gameplay) {
+      try {
+        console.log('🔤 Traduzione Wikipedia gameplay via Firebase...');
+        wikiGameplayIt = await GeminiCloudService.translateDescription(wikiData.gameplay);
+      } catch { wikiGameplayIt = wikiData.gameplay; }
+    }
+    if (!descriptionIt && wikiData.plot) {
+      try {
+        console.log('🔤 Traduzione Wikipedia plot via Firebase...');
+        wikiPlotIt = await GeminiCloudService.translateDescription(wikiData.plot);
+      } catch { wikiPlotIt = wikiData.plot; }
+    }
     // 5. Componi il risultato finale
-    // Per plot/descrizione, priorità: AI → Wikipedia → RAWG raw
-    const wikiPlot = wikiData.plot ? `[Fonte: Wikipedia] ${wikiData.plot}` : '';
-    const finalPlot = descriptionIt || wikiPlot || rawg.descriptionRaw || (aiLimitReached ? 'Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste giornaliere.' : 'La panoramica non è al momento disponibile.');
+    // Per plot/descrizione, priorità: AI → Wikipedia tradotto → RAWG raw
+    const finalPlot = descriptionIt || wikiPlotIt || wikiData.plot || rawg.descriptionRaw || (aiLimitReached ? 'Panoramica non disponibile in italiano. Hai raggiunto il limite di richieste giornaliere.' : 'La panoramica non è al momento disponibile.');
 
-    // Per gameplay, fallback su Wikipedia se AI non ha prodotto nulla
-    const finalGameplay = gameplay || (wikiData.gameplay ? `[Fonte: Wikipedia] ${wikiData.gameplay}` : 'Dati del gameplay non disponibili.');
+    // Per gameplay, fallback su Wikipedia tradotto se AI non ha prodotto nulla
+    const finalGameplay = gameplay || wikiGameplayIt || wikiData.gameplay || 'Dati del gameplay non disponibili.';
 
     // Per personaggi, fallback su Wikipedia se AI non ha prodotto nulla
     const finalCharacters = (characters && characters.length > 0) ? characters
@@ -343,7 +357,7 @@ class GameService {
     const finalData = {
       ...rawg,
       suggested,
-      description: descriptionIt || wikiData.plot || rawg.descriptionRaw || 'Dati della trama non disponibili.',
+      description: descriptionIt || wikiPlotIt || wikiData.plot || rawg.descriptionRaw || 'Dati della trama non disponibili.',
       plot: finalPlot,
       gameplay: finalGameplay,
       protagonists: finalCharacters,

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Sparkles, Shuffle, X, Star, Lock, CalendarClock, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -18,6 +18,60 @@ export default function Home() {
   const [upcomingNear, setUpcomingNear] = useState([]);
   const [upcomingFar, setUpcomingFar] = useState([]);
   const navigate = useNavigate();
+
+  // Placeholder animato per la barra di ricerca
+  const PLACEHOLDERS_GAME = [
+    'Cerca un videogioco...',
+    'Es: The Witcher 3...',
+    'Es: Elden Ring...',
+    'Es: Red Dead Redemption 2...',
+    'Es: Dark Souls...',
+  ];
+  const PLACEHOLDERS_AI = [
+    'Voglio un GDR open world lungo 50 ore...',
+    'Un gioco horror atmosferico in prima persona...',
+    'Un puzzle game rilassante per mobile...',
+    'Un picchiaduro competitivo online...',
+  ];
+  const PLACEHOLDERS_CHAR = [
+    'Cerca un personaggio...',
+    'Es: Geralt di Rivia...',
+    'Es: Solid Snake...',
+    'Es: Master Chief...',
+  ];
+  const [placeholderIdx, setPlaceholderIdx] = useState(0);
+  const [displayedPlaceholder, setDisplayedPlaceholder] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const typingRef = useRef(null);
+
+  const getCurrentPlaceholders = () => {
+    if (searchType === 'character') return PLACEHOLDERS_CHAR;
+    if (aiMode) return PLACEHOLDERS_AI;
+    return PLACEHOLDERS_GAME;
+  };
+
+  useEffect(() => {
+    const phrases = getCurrentPlaceholders();
+    const fullText = phrases[placeholderIdx % phrases.length];
+
+    clearTimeout(typingRef.current);
+
+    if (!isDeleting && displayedPlaceholder.length < fullText.length) {
+      typingRef.current = setTimeout(() => {
+        setDisplayedPlaceholder(fullText.slice(0, displayedPlaceholder.length + 1));
+      }, 60);
+    } else if (!isDeleting && displayedPlaceholder.length === fullText.length) {
+      typingRef.current = setTimeout(() => setIsDeleting(true), 2200);
+    } else if (isDeleting && displayedPlaceholder.length > 0) {
+      typingRef.current = setTimeout(() => {
+        setDisplayedPlaceholder(prev => prev.slice(0, -1));
+      }, 30);
+    } else if (isDeleting && displayedPlaceholder.length === 0) {
+      setIsDeleting(false);
+      setPlaceholderIdx(i => i + 1);
+    }
+    return () => clearTimeout(typingRef.current);
+  }, [displayedPlaceholder, isDeleting, placeholderIdx, searchType, aiMode]);
 
   useEffect(() => {
     RAWGService.getUpcomingGames().then(games => {
@@ -115,7 +169,7 @@ export default function Home() {
         <div className="search-input-wrapper">
           <input
             type="text"
-            placeholder={searchType === 'character' ? "Cerca un personaggio..." : (aiMode ? "Es: Voglio un gioco nello spazio lungo 20 ore..." : "Cerca un videogioco...")}
+            placeholder={displayedPlaceholder}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="search-input-field"
