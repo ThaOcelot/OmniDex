@@ -5,6 +5,7 @@ import GeminiCloudService from '../services/GeminiCloudService';
 import IAPService from '../services/IAPService';
 import AdService from '../services/AdService';
 import FirebaseService from '../services/FirebaseService';
+import { motion } from 'framer-motion';
 
 export default function CharacterDetails() {
   const { characterName } = useParams();
@@ -81,7 +82,14 @@ export default function CharacterDetails() {
 
   if (loading) {
     return (
-      <div className="container animate-fade-in" style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh' }}>
+      <motion.div 
+        className="container" 
+        style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh' }}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
+      >
         <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
           <ChevronLeft size={24} />
         </button>
@@ -105,7 +113,7 @@ export default function CharacterDetails() {
             <div className="skeleton" style={{ width: '100%', height: '40px', borderRadius: '8px' }} />
           </div>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -145,7 +153,14 @@ export default function CharacterDetails() {
   }
 
   return (
-    <div className="container animate-fade-in" style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh' }}>
+    <motion.div 
+      className="container" 
+      style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh' }}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+    >
       <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
         <ChevronLeft size={24} />
       </button>
@@ -274,6 +289,6 @@ export default function CharacterDetails() {
         </button>
       </div>
 
-    </div>
+    </motion.div>
   );
 }

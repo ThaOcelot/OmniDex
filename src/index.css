@@ -134,7 +134,8 @@ a {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-glass);
+  box-shadow: var(--shadow-glass), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  will-change: transform, backdrop-filter;
 }
 
 .search-title {

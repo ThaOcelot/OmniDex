@@ -5,6 +5,7 @@ import {
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen, Sparkles, Lock,
   Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
 import NewsCard from '../components/NewsCard';
@@ -234,7 +235,47 @@ export default function GameDetails() {
 
   // ─── Early returns ──────────────────────────────────────────────────────────
   if (loading) {
-    return <LoadingScreen title={loadingMessage} />;
+    return (
+      <div className="game-details-page" style={{ padding: 'clamp(15px, 4vw, 30px)', maxWidth: '1400px', margin: '0 auto' }}>
+        <div className="skeleton" style={{ width: '120px', height: '24px', marginBottom: '24px', borderRadius: '4px' }} />
+        
+        <div className="details-hero-section" style={{ background: 'transparent' }}>
+          <div className="details-hero-container">
+            <div className="details-hero-grid">
+              <div className="skeleton details-hero-poster" style={{ borderRadius: '12px' }} />
+              <div className="details-hero-info">
+                <div className="skeleton" style={{ width: '70%', height: '40px', marginBottom: '16px', borderRadius: '8px' }} />
+                <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
+                  <div className="skeleton" style={{ width: '60px', height: '24px', borderRadius: '12px' }} />
+                  <div className="skeleton" style={{ width: '80px', height: '24px', borderRadius: '12px' }} />
+                  <div className="skeleton" style={{ width: '70px', height: '24px', borderRadius: '12px' }} />
+                </div>
+                <div className="skeleton" style={{ width: '100%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ width: '90%', height: '16px', marginBottom: '8px', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ width: '95%', height: '16px', marginBottom: '24px', borderRadius: '4px' }} />
+                
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <div className="skeleton" style={{ width: '150px', height: '36px', borderRadius: '24px' }} />
+                  <div className="skeleton" style={{ width: '36px', height: '36px', borderRadius: '50%' }} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '28px', marginTop: '40px' }}>
+          <div className="skeleton" style={{ width: '100px', height: '40px', borderRadius: '20px' }} />
+          <div className="skeleton" style={{ width: '80px', height: '40px', borderRadius: '20px' }} />
+          <div className="skeleton" style={{ width: '120px', height: '40px', borderRadius: '20px' }} />
+        </div>
+        
+        <div className="glass-panel" style={{ padding: '24px', height: '200px' }}>
+          <div className="skeleton" style={{ width: '30%', height: '24px', marginBottom: '20px', borderRadius: '4px' }} />
+          <div className="skeleton" style={{ width: '100%', height: '8px', marginBottom: '12px', borderRadius: '4px' }} />
+          <div className="skeleton" style={{ width: '100%', height: '8px', marginBottom: '12px', borderRadius: '4px' }} />
+        </div>
+      </div>
+    );
   }
 
   if (!gameData && !error) {
@@ -424,7 +465,14 @@ export default function GameDetails() {
   };
 
   return (
-    <div className="game-details-page animate-fade-in" style={{ padding: 'clamp(15px, 4vw, 30px)', maxWidth: '1400px', margin: '0 auto' }}>
+    <motion.div 
+      className="game-details-page" 
+      style={{ padding: 'clamp(15px, 4vw, 30px)', maxWidth: '1400px', margin: '0 auto' }}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+    >
 
       {/* Back button */}
       <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '24px', fontSize: '0.95rem', transition: 'color 0.2s' }}
@@ -1659,7 +1707,6 @@ export default function GameDetails() {
           </div>
         )}
       </Modal>
-
-    </div>
+    </motion.div>
   );
 }

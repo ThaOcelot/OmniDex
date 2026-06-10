@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Sparkles, Shuffle, X, Star, Lock, CalendarClock, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { CHANGELOG } from '../data/changelog';
 import RAWGService from '../services/RAWGService';
 import IAPService from '../services/IAPService';
+import HapticService from '../services/HapticService';
 import { db } from '../services/db';
 
 export default function Home() {
@@ -30,30 +32,16 @@ export default function Home() {
       setUpcomingFar(far);
     }).catch(console.error);
 
-    let scrollInterval;
-    const startAutoScroll = () => {
-      scrollInterval = setInterval(() => {
-        const container = document.getElementById('upcoming-near-carousel');
-        if (container) {
-          if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 10) {
-            container.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            container.scrollBy({ left: 176, behavior: 'smooth' });
-          }
-        }
-      }, 3000);
-    };
-    startAutoScroll();
-    
     return () => {
       IAPService.subscribe((t) => setTier(t));
-      clearInterval(scrollInterval);
     };
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;
+    
+    await HapticService.medium();
 
     if (searchType === 'character') {
       if (tier !== 'ultra') {
@@ -73,6 +61,7 @@ export default function Home() {
   };
 
   const handlePersonalizedSuggestions = async () => {
+    await HapticService.medium();
     if (tier !== 'ultra') {
       window.dispatchEvent(new CustomEvent('open-settings'));
       return;
@@ -90,6 +79,7 @@ export default function Home() {
 
   const handleDiscover = async () => {
     if (discovering) return;
+    await HapticService.medium();
     setDiscovering(true);
     setDiscoveredGame(null);
     try {
@@ -101,7 +91,13 @@ export default function Home() {
       setDiscovering(false);
     }
   };  return (
-    <div className="home-container animate-fade-in">
+    <motion.div 
+      className="home-container"
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -15 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+    >
       <div className="home-badge-ia">
         <Sparkles size={14} />
         <span>Potenziato dall'IA</span>
@@ -311,6 +307,6 @@ export default function Home() {
         <span style={{ cursor: 'pointer', transition: 'color 0.3s' }} onMouseOver={e => e.target.style.color = 'var(--text-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-muted)'} onClick={() => navigate('/game/Final Fantasy VII Rebirth')}>FFVII Rebirth</span>
         <span style={{ cursor: 'pointer', transition: 'color 0.3s' }} onMouseOver={e => e.target.style.color = 'var(--text-primary)'} onMouseOut={e => e.target.style.color = 'var(--text-muted)'} onClick={() => navigate('/game/Dragons Dogma 2')}>Dragon's Dogma 2</span>
       </div>
-    </div>
+    </motion.div>
   );
 }

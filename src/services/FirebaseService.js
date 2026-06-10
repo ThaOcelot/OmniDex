@@ -1,27 +1,47 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, doc, getDoc, setDoc, serverTimestamp, increment, initializeFirestore, persistentLocalCache, collection, query, where, getDocs, documentId } from "firebase/firestore";
-import { getFunctions } from "firebase/functions";
+let app = null;
+let db = null;
+let functionsInstance = null;
+let initPromise = null;
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCSNlFH72VJtcfZkrxdtjmqfLqfzMfZOU8",
-  authDomain: "omnidex-a751d.firebaseapp.com",
-  projectId: "omnidex-a751d",
-  storageBucket: "omnidex-a751d.firebasestorage.app",
-  messagingSenderId: "1037711572342",
-  appId: "1:1037711572342:web:4fdef9acd99e2b45fd0e57"
+const initFirebase = async () => {
+  if (app) return;
+  if (initPromise) return initPromise;
+  
+  initPromise = (async () => {
+    const { initializeApp } = await import("firebase/app");
+    const { initializeFirestore, persistentLocalCache } = await import("firebase/firestore");
+    const { getFunctions } = await import("firebase/functions");
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCSNlFH72VJtcfZkrxdtjmqfLqfzMfZOU8",
+      authDomain: "omnidex-a751d.firebaseapp.com",
+      projectId: "omnidex-a751d",
+      storageBucket: "omnidex-a751d.firebasestorage.app",
+      messagingSenderId: "1037711572342",
+      appId: "1:1037711572342:web:4fdef9acd99e2b45fd0e57"
+    };
+
+    app = initializeApp(firebaseConfig);
+    db = initializeFirestore(app, { localCache: persistentLocalCache() });
+    functionsInstance = getFunctions(app, 'europe-west3');
+  })();
+  
+  await initPromise;
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-const db = initializeFirestore(app, { localCache: persistentLocalCache() });
-export const functions = getFunctions(app, 'europe-west3'); // Assicuriamoci di puntare a Frankfurt
-
 class FirebaseService {
+  async getFunctionsInstance() {
+    await initFirebase();
+    return functionsInstance;
+  }
+
   /**
    * Recupera un gioco dalla cache globale (Firestore)
    */
   async getGameFromCache(gameId) {
     try {
+      await initFirebase();
+      const { doc, getDoc } = await import("firebase/firestore");
       const docRef = doc(db, "games", String(gameId));
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -37,14 +57,13 @@ class FirebaseService {
 
   /**
    * Salva un gioco nella cache globale (Firestore).
-   * Il campo `_generatedByTier` ('free' | 'pro' | 'ultra') permette a GameService
-   * di decidere se rigenerare il contenuto con un modello migliore (es. Ultra).
    */
   async saveGameToCache(gameId, data) {
     try {
+      await initFirebase();
+      const { doc, setDoc, serverTimestamp } = await import("firebase/firestore");
       const docRef = doc(db, "games", String(gameId));
       
-      // Firebase odia i valori "undefined". Li rimuoviamo prima di salvare.
       const sanitizedData = JSON.parse(JSON.stringify(data));
       
       await setDoc(docRef, {
@@ -62,6 +81,8 @@ class FirebaseService {
    */
   async getGlobalCharacter(characterName) {
     try {
+      await initFirebase();
+      const { doc, getDoc } = await import("firebase/firestore");
       const docId = characterName.replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase();
       const docRef = doc(db, "characters", docId);
       const docSnap = await getDoc(docRef);
@@ -81,6 +102,8 @@ class FirebaseService {
    */
   async saveGlobalCharacter(characterName, deepDiveData) {
     try {
+      await initFirebase();
+      const { doc, setDoc, serverTimestamp } = await import("firebase/firestore");
       const docId = characterName.replace(/[^a-zA-Z0-9_]/g, '_').toLowerCase();
       const docRef = doc(db, "characters", docId);
       await setDoc(docRef, {
@@ -98,6 +121,8 @@ class FirebaseService {
    */
   async getCharacterVotes(gameId) {
     try {
+      await initFirebase();
+      const { doc, getDoc } = await import("firebase/firestore");
       const docRef = doc(db, "character_votes", String(gameId));
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -112,6 +137,8 @@ class FirebaseService {
 
   async voteCharacter(gameId, newCharacter, oldCharacter = null) {
     try {
+      await initFirebase();
+      const { doc, setDoc, increment } = await import("firebase/firestore");
       const docRef = doc(db, "character_votes", String(gameId));
       const votesUpdate = { [newCharacter]: increment(1) };
       if (oldCharacter) {
@@ -140,6 +167,9 @@ class FirebaseService {
     if (!gameIds || gameIds.length === 0) return existingIds;
     
     try {
+      await initFirebase();
+      const { collection, query, where, getDocs, documentId } = await import("firebase/firestore");
+      
       // Spezziamo la lista in blocchi di 30 (limite dell'operatore 'in' di Firestore)
       for (let i = 0; i < gameIds.length; i += 30) {
         const chunk = gameIds.slice(i, i + 30).map(String);

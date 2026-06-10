@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CalendarClock, ChevronLeft } from 'lucide-react';
 import RAWGService from '../services/RAWGService';
 import GameService from '../services/GameService';
+import { motion } from 'framer-motion';
 
 export default function ReleaseRadar() {
   const [upcomingFar, setUpcomingFar] = useState([]);
@@ -57,8 +58,28 @@ export default function ReleaseRadar() {
   const groupedGames = groupByMonth(upcomingFar);
   const sortedMonthKeys = Object.keys(groupedGames).sort();
 
+  // Varianti per lo stagger dei mesi e giochi
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    show: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  };
+
   return (
-    <div className="animate-fade-in" style={{ paddingBottom: '40px' }}>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      style={{ paddingBottom: '40px' }}
+    >
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
         <button 
           onClick={() => navigate(-1)}
@@ -124,12 +145,16 @@ export default function ReleaseRadar() {
                 </div>
 
                 {/* Lista Giochi */}
-                <div style={{ 
-                  display: 'flex', flexDirection: 'column', gap: '12px'
-                }}>
+                <motion.div 
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="show"
+                  style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
+                >
                   {group.games.map((game) => (
-                    <div 
+                    <motion.div 
                       key={game.id}
+                      variants={itemVariants}
                       onClick={() => navigate(`/game/${encodeURIComponent(game.name)}`, { state: { game: { id: game.id } } })}
                       style={{
                         display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer',
@@ -168,9 +193,9 @@ export default function ReleaseRadar() {
                           ))}
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
             );
           })}
@@ -178,6 +203,6 @@ export default function ReleaseRadar() {
       ) : (
         <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>Nessun gioco in uscita nei prossimi 6 mesi.</div>
       )}
-    </div>
+    </motion.div>
   );
 }

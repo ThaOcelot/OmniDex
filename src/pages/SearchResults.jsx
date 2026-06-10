@@ -5,6 +5,7 @@ import GameService from '../services/GameService';
 import GameCard from '../components/GameCard';
 import LoadingScreen from '../components/LoadingScreen';
 import ModelDownloader from '../components/ModelDownloader';
+import { motion } from 'framer-motion';
 
 export default function SearchResults() {
   const { query } = useParams();
@@ -40,7 +41,30 @@ export default function SearchResults() {
   }, [query]);
 
   if (loading) {
-    return <LoadingScreen title={isPersonalized ? "Sto analizzando i tuoi gusti..." : `Sto cercando tutti i giochi con "${decodedQuery}"...`} />;
+    return (
+      <div className="animate-fade-in" style={{ paddingBottom: '60px' }}>
+        <div style={{ marginBottom: '40px', textAlign: 'center' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
+            <div className="skeleton" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+            <div className="skeleton" style={{ width: '250px', height: '40px', borderRadius: '8px' }} />
+          </div>
+          <div className="skeleton" style={{ width: '180px', height: '20px', borderRadius: '4px', margin: '0 auto' }} />
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="glass-panel" style={{ display: 'flex', height: '140px', overflow: 'hidden' }}>
+              <div className="skeleton" style={{ width: '100px', height: '100%' }} />
+              <div style={{ padding: '16px', flex: 1, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div className="skeleton" style={{ width: '60%', height: '24px', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ width: '40%', height: '16px', borderRadius: '4px' }} />
+                <div className="skeleton" style={{ width: '80%', height: '16px', marginTop: 'auto', borderRadius: '4px' }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -56,8 +80,28 @@ export default function SearchResults() {
     );
   }
 
+  // Varianti per lo stagger dei risultati
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  };
+
   return (
-    <div className="animate-fade-in" style={{ paddingBottom: '60px' }}>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      style={{ paddingBottom: '60px' }}
+    >
       <div style={{ marginBottom: '40px', textAlign: 'center' }}>
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', marginBottom: '15px' }}>
           <Search size={32} color={isAiSearch ? "var(--accent-ultra)" : "var(--accent-primary)"} />
@@ -70,9 +114,14 @@ export default function SearchResults() {
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="show"
+        style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+      >
         {results.map((game) => (
-          <div key={game.id} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <motion.div key={game.id} variants={itemVariants} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {game.aiReason && (
               <div style={{ padding: '12px 16px', background: 'rgba(0,242,254,0.1)', borderLeft: '3px solid var(--accent-ultra)', borderRadius: '4px', fontSize: '0.9rem', color: 'var(--text-primary)', fontStyle: 'italic', lineHeight: '1.4' }}>
                 " {game.aiReason} "
@@ -82,9 +131,9 @@ export default function SearchResults() {
               game={game}
               onClick={() => navigate(`/game/${encodeURIComponent(game.title)}`, { state: { game } })}
             />
-          </div>
+          </motion.div>
         ))}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

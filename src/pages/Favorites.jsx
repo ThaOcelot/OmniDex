@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { User, Trash2, BarChart2, ChevronDown, ChevronUp, Star, Bell, BellOff, BookOpen, Camera, Loader2, Share2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import html2canvas from 'html2canvas';
 import { Share } from '@capacitor/share';
 import { Filesystem, Directory } from '@capacitor/filesystem';
@@ -315,8 +316,28 @@ export default function Favorites() {
   const statusCounts = { backlog: 0, playing: 0, completed: 0, dropped: 0 };
   games.forEach(g => { if (statusCounts[g.status] !== undefined) statusCounts[g.status]++; });
 
+  // Varianti per lo stagger
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.05 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  };
+
   return (
-    <div className="animate-fade-in" style={{ position: 'relative' }}>
+    <motion.div 
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+      style={{ position: 'relative' }}
+    >
       
       {/* 📸 Cartolina Social Nascosta (Renderizzata solo per screenshot) */}
       <div 
@@ -500,18 +521,24 @@ export default function Favorites() {
           }
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}
+        >
           {filtered.map(game => (
-            <GameCard
-              key={game.id}
-              game={game}
-              onRemove={handleRemove}
-              onToggleFavorite={handleToggleFavorite}
-              onStatusChange={loadGames}
-            />
+            <motion.div key={game.id} variants={itemVariants} layoutId={`game-${game.id}`}>
+              <GameCard
+                game={game}
+                onRemove={handleRemove}
+                onToggleFavorite={handleToggleFavorite}
+                onStatusChange={loadGames}
+              />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

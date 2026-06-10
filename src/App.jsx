@@ -1,24 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense, lazy } from 'react';
 import { HashRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { App as CapApp } from '@capacitor/app';
+import { AnimatePresence } from 'framer-motion';
+
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import GameDetails from './pages/GameDetails';
-import SearchResults from './pages/SearchResults';
-import Favorites from './pages/Favorites';
-import ReleaseRadar from './pages/ReleaseRadar';
 import ChangelogPopup from './components/ChangelogPopup';
-import CharacterDetails from './pages/CharacterDetails';
 import SettingsPopup from './components/SettingsPopup';
 import FloatingSearchBar from './components/FloatingSearchBar';
 import AdBanner from './components/AdBanner';
 import WelcomePopup from './components/WelcomePopup';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import LoadingScreen from './components/LoadingScreen';
 
 import { LocalNotifications } from '@capacitor/local-notifications';
 import NotificationService from './services/NotificationService';
 import IAPService from './services/IAPService';
 import AdService from './services/AdService';
+
+// Lazy load delle pagine per il code splitting
+const Home = lazy(() => import('./pages/Home'));
+const GameDetails = lazy(() => import('./pages/GameDetails'));
+const SearchResults = lazy(() => import('./pages/SearchResults'));
+const Favorites = lazy(() => import('./pages/Favorites'));
+const ReleaseRadar = lazy(() => import('./pages/ReleaseRadar'));
+const CharacterDetails = lazy(() => import('./pages/CharacterDetails'));
 
 function SystemHandler() {
   const navigate = useNavigate();
@@ -109,6 +114,23 @@ function SystemHandler() {
 const isGitHubPages = window.location.hostname.includes('github.io');
 const basename = isGitHubPages ? '/OmniDex' : '/';
 
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Home />} />
+        <Route path="/search/:query" element={<SearchResults />} />
+        <Route path="/game/:gameName" element={<GameDetails />} />
+        <Route path="/character/:characterName" element={<CharacterDetails />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/release-radar" element={<ReleaseRadar />} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
+
 function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -150,14 +172,9 @@ function App() {
         <FloatingSearchBar />
         <main className="main-content container">
           <ErrorBoundary>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/search/:query" element={<SearchResults />} />
-              <Route path="/game/:gameName" element={<GameDetails />} />
-              <Route path="/character/:characterName" element={<CharacterDetails />} />
-              <Route path="/favorites" element={<Favorites />} />
-              <Route path="/release-radar" element={<ReleaseRadar />} />
-            </Routes>
+            <Suspense fallback={<LoadingScreen />}>
+              <AnimatedRoutes />
+            </Suspense>
           </ErrorBoundary>
         </main>
         <footer className="app-footer" style={{ borderTop: '1px solid var(--glass-border)', marginTop: 'auto', padding: '24px 0' }}>

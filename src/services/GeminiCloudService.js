@@ -1,5 +1,4 @@
-import { httpsCallable } from "firebase/functions";
-import { functions } from "./FirebaseService";
+import FirebaseService from "./FirebaseService";
 import IAPService from './IAPService';
 
 // Chiamata AI usando il modello corretto per il tier (Pro se Ultra, Flash altrimenti)
@@ -14,7 +13,10 @@ async function askGeminiFlash(prompt) {
 
 async function askGeminiInternal(prompt, forceFlash = false) {
   const tier = IAPService.getTier();
-  const getGeminiResponse = httpsCallable(functions, "getGeminiResponse");
+  
+  const { httpsCallable } = await import("firebase/functions");
+  const functionsInstance = await FirebaseService.getFunctionsInstance();
+  const getGeminiResponse = httpsCallable(functionsInstance, "getGeminiResponse");
   
   const modelLabel = forceFlash ? 'Flash' : (tier === 'ultra' ? 'Pro💮' : 'Flash');
   console.log(`🤖 Gemini [${modelLabel}] chiamato (Backend Cloud Function)`);

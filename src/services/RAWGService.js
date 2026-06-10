@@ -1,5 +1,4 @@
-import { httpsCallable } from "firebase/functions";
-import { functions } from "./FirebaseService";
+import FirebaseService from "./FirebaseService";
 
 class RAWGService {
   /**
@@ -7,7 +6,9 @@ class RAWGService {
    */
   async get(endpoint, params = {}) {
     try {
-      const getRawgGames = httpsCallable(functions, "getRawgGames");
+      const { httpsCallable } = await import("firebase/functions");
+      const functionsInstance = await FirebaseService.getFunctionsInstance();
+      const getRawgGames = httpsCallable(functionsInstance, "getRawgGames");
       const response = await getRawgGames({ endpoint, params });
       return response.data.data; // Le funzioni Firebase avvolgono la risposta in 'data'
     } catch (error) {

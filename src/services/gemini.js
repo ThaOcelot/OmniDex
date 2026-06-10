@@ -1,11 +1,14 @@
 import { registerPlugin, CapacitorHttp } from '@capacitor/core';
 import { db } from './db';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-import { app } from './FirebaseService';
+import FirebaseService from './FirebaseService';
 
 const LocalAIPlugin = registerPlugin('LocalAIPlugin');
-const functions = getFunctions(app);
-const getRawgGames = httpsCallable(functions, 'getRawgGames');
+
+async function getRawgGamesFunc() {
+  const { httpsCallable } = await import('firebase/functions');
+  const functions = await FirebaseService.getFunctionsInstance();
+  return httpsCallable(functions, 'getRawgGames');
+}
 
 const SYSTEM_PROMPT = `
 Sei l'Archivista Monumentale di OmniDex. 
@@ -31,6 +34,7 @@ async function httpGet(url, params = {}) {
 
 async function rawgGet(endpoint, params = {}) {
   try {
+    const getRawgGames = await getRawgGamesFunc();
     const response = await getRawgGames({ endpoint, params });
     return response.data.data;
   } catch (e) { return null; }
