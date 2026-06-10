@@ -5,7 +5,7 @@ import {
   AlertTriangle, Trophy, Star, Globe, ArrowLeft, BookOpen, Sparkles, Lock,
   Cpu, Info, Zap, ChevronRight, Film, Package, Layers, Award, User, Video, ThumbsUp, X, ChevronLeft, ZoomIn, ZoomOut, Share2
 } from 'lucide-react';
-import { motion, useScroll, useSpring } from 'framer-motion';
+import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import AnimatedCounter from '../components/AnimatedCounter';
 import GameService from '../services/GameService';
 import { db } from '../services/db';
@@ -741,8 +741,17 @@ export default function GameDetails() {
       </div>
 
       {/* Tab Content */}
-      {activeTab === 'info' && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 15, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -15, scale: 0.98 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          style={{ width: '100%' }}
+        >
+          {activeTab === 'info' && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
 
 
           {/* Valutazioni / Ratings */}
@@ -1373,6 +1382,8 @@ export default function GameDetails() {
       )}
       </>
       )}
+        </motion.div>
+      </AnimatePresence>
 
 
       <Modal 
