@@ -68,7 +68,7 @@ export default function Navbar() {
                 }
               }} 
               title="SOS Gamer" 
-              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#002538', borderRadius: '50%', width: '36px', height: '36px', transition: 'all 0.2s', boxShadow: '0 0 10px rgba(0,242,254,0.3)' }}
+              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-on-ultra)', borderRadius: '50%', width: '36px', height: '36px', transition: 'all 0.2s', boxShadow: '0 0 10px rgba(0,242,254,0.3)' }}
             >
               <Wand size={16} />
             </button>
@@ -107,7 +107,7 @@ export default function Navbar() {
               style={{
                 position: 'absolute', top: '30px', right: '30px',
                 background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', 
-                borderRadius: '50%', width: '48px', height: '48px', color: 'white', 
+                borderRadius: '50%', width: '48px', height: '48px', color: 'var(--text-on-accent)', 
                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 transition: 'all 0.2s', boxShadow: '0 4px 15px rgba(0,0,0,0.3)'
               }}
@@ -132,7 +132,7 @@ export default function Navbar() {
                 style={{ 
                   width: '100%', padding: '22px 24px', paddingLeft: '64px',
                   borderRadius: 'var(--radius-full)', border: '2px solid rgba(255,255,255,0.1)',
-                  background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '1.25rem',
+                  background: 'rgba(255,255,255,0.05)', color: 'var(--text-on-accent)', fontSize: '1.25rem',
                   outline: 'none', boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
                   backdropFilter: 'blur(10px)', transition: 'border-color 0.2s'
                 }} 

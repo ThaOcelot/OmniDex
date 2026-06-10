@@ -569,7 +569,7 @@ export default function GameDetails() {
                   <button 
                     onClick={handleRegenerate} 
                     className="btn-primary" 
-                    style={{ background: 'var(--accent-secondary)', color: 'white', padding: '6px 14px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem' }}>
+                    style={{ background: 'var(--accent-secondary)', color: 'var(--text-on-accent)', padding: '6px 14px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem' }}>
                     <Sparkles size={14} /> Rigenera Dati IA
                   </button>
                 </div>
@@ -580,7 +580,7 @@ export default function GameDetails() {
                   <button 
                     onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))} 
                     className="btn-primary" 
-                    style={{ background: 'var(--accent-ultra-gradient)', color: '#002538', padding: '6px 14px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem' }}>
+                    style={{ background: 'var(--accent-ultra-gradient)', color: 'var(--text-on-ultra)', padding: '6px 14px', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.82rem' }}>
                     <Sparkles size={14} /> Scopri Ultra
                   </button>
                   {tier === 'free' && (
@@ -654,7 +654,7 @@ export default function GameDetails() {
                 <div style={{ color: 'var(--text-muted)', fontSize: '0.72rem', textTransform: 'uppercase', fontWeight: '700' }}>Uscita</div>
                 <div style={{ fontWeight: '600', marginTop: '3px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   {gameData.releaseDate}
-                  {gameData.tba && <span style={{ background: 'var(--danger)', color: 'white', padding: '1px 5px', borderRadius: '4px', fontSize: '0.6', fontWeight: '800' }}>TBA</span>}
+                  {gameData.tba && <span style={{ background: 'var(--danger)', color: 'var(--text-on-accent)', padding: '1px 5px', borderRadius: '4px', fontSize: '0.6', fontWeight: '800' }}>TBA</span>}
                 </div>
               </div>
             )}
@@ -1147,7 +1147,7 @@ export default function GameDetails() {
           <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button 
               className="btn-primary" 
-              style={{ padding: '14px 28px', fontSize: '1.1rem', fontWeight: 'bold', background: 'var(--accent-ultra-gradient)', color: '#002538', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)' }}
+              style={{ padding: '14px 28px', fontSize: '1.1rem', fontWeight: 'bold', background: 'var(--accent-ultra-gradient)', color: 'var(--text-on-ultra)', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)' }}
               onClick={() => window.dispatchEvent(new CustomEvent('open-settings'))}
             >
               Scopri OmniDex Ultra
@@ -1402,7 +1402,7 @@ export default function GameDetails() {
                     flexShrink: 0, width: '28px', height: '28px', borderRadius: '50%',
                     background: 'var(--accent-gradient)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '0.8rem', fontWeight: '800', color: 'white', marginTop: '1px'
+                    fontSize: '0.8rem', fontWeight: '800', color: 'var(--text-on-accent)', marginTop: '1px'
                   }}>{i + 1}</span>
                   <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.95rem' }}
                     dangerouslySetInnerHTML={formatText(item.fact || item)} />
@@ -1525,7 +1525,7 @@ export default function GameDetails() {
                 alignItems: 'center',
                 gap: '8px',
                 background: 'var(--accent-primary)',
-                color: 'white',
+                color: 'var(--text-on-accent)',
                 padding: '12px 24px',
                 borderRadius: 'var(--radius-full)',
                 textDecoration: 'none',
@@ -1612,7 +1612,7 @@ export default function GameDetails() {
             <>
               {/* Left Arrow Button */}
               <button 
-                style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '56px', height: '56px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 20005, transition: 'background 0.2s' }}
+                style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-on-accent)', borderRadius: '50%', width: '56px', height: '56px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 20005, transition: 'background 0.2s' }}
                 onClick={(e) => {
                   e.stopPropagation();
                   setZoomScale(1);
@@ -1626,7 +1626,7 @@ export default function GameDetails() {
 
               {/* Right Arrow Button */}
               <button 
-                style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '56px', height: '56px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 20005, transition: 'background 0.2s' }}
+                style={{ position: 'absolute', right: '20px', top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-on-accent)', borderRadius: '50%', width: '56px', height: '56px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 20005, transition: 'background 0.2s' }}
                 onClick={(e) => {
                   e.stopPropagation();
                   setZoomScale(1);
@@ -1642,7 +1642,7 @@ export default function GameDetails() {
               <div style={{ position: 'absolute', top: '20px', right: '20px', display: 'flex', gap: '12px', zIndex: 20005 }}>
                 {/* Manual Zoom Button */}
                 <button 
-                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
+                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-on-accent)', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
                   onClick={(e) => {
                     e.stopPropagation();
                     setZoomScale(prev => (prev === 1 ? 2.2 : 1));
@@ -1655,7 +1655,7 @@ export default function GameDetails() {
 
                 {/* Close Button */}
                 <button 
-                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'white', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
+                  style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-on-accent)', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}
                   onClick={(e) => { e.stopPropagation(); setSelectedScreenshotIndex(null); }}
                   onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
                   onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.08)'}
@@ -1675,7 +1675,7 @@ export default function GameDetails() {
           {zoomScale > 1 && (
             <div style={{ position: 'fixed', top: '20px', right: '20px', display: 'flex', gap: '12px', zIndex: 20005 }}>
               <button 
-                style={{ background: 'rgba(0,0,0,0.8)', border: '1px solid var(--accent-primary)', color: 'white', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 15px rgba(0,0,0,0.5)' }}
+                style={{ background: 'rgba(0,0,0,0.8)', border: '1px solid var(--accent-primary)', color: 'var(--text-on-accent)', borderRadius: '50%', width: '48px', height: '48px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 15px rgba(0,0,0,0.5)' }}
                 onClick={(e) => {
                   e.stopPropagation();
                   setZoomScale(1);

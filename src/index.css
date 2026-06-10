@@ -10,6 +10,8 @@
   --text-primary: #ffffff;
   --text-secondary: #a0a0b0;
   --text-muted: #666677;
+  --text-on-accent: #ffffff;
+  --text-on-ultra: #002538;
   
   --accent-primary: #6d28d9; /* Deep Purple */
   --accent-secondary: #ec4899; /* Pink */
@@ -42,6 +44,8 @@
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
+  --text-on-accent: #ffffff;
+  --text-on-ultra: #ffffff;
 
   --accent-ultra: #0284c7; /* Darker Blue for light mode */
   --accent-ultra-gradient: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
@@ -62,6 +66,8 @@
   --text-primary: #ffffff;
   --text-secondary: #a0a0b0;
   --text-muted: #666677;
+  --text-on-accent: #ffffff;
+  --text-on-ultra: #002538;
   
   --accent-primary: #6d28d9;
   --accent-secondary: #ec4899;

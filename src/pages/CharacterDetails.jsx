@@ -94,7 +94,7 @@ export default function CharacterDetails() {
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
       >
-        <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
+        <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'var(--text-on-accent)', width: '40px', height: '40px' }}>
           <ChevronLeft size={24} />
         </button>
         <div className="glass-panel" style={{ padding: '30px', textAlign: 'center', marginBottom: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -124,7 +124,7 @@ export default function CharacterDetails() {
   if (error === "locked") {
     return (
       <div className="container" style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh' }}>
-        <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
+        <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'var(--text-on-accent)', width: '40px', height: '40px' }}>
           <ChevronLeft size={24} />
         </button>
         <div className="glass-panel animate-fade-in" style={{ padding: '60px 20px', textAlign: 'center', marginTop: '40px' }}>
@@ -148,7 +148,7 @@ export default function CharacterDetails() {
   if (error) {
     return (
       <div className="container" style={{ paddingTop: '80px', paddingBottom: '40px', minHeight: '100vh', textAlign: 'center' }}>
-        <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
+        <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'var(--text-on-accent)', width: '40px', height: '40px' }}>
           <ChevronLeft size={24} />
         </button>
         <div style={{ marginTop: '100px', color: 'var(--text-secondary)' }}>{error}</div>
@@ -173,7 +173,7 @@ export default function CharacterDetails() {
         transformOrigin: '0%', scaleX, zIndex: 99999
       }} />
 
-      <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'white', width: '40px', height: '40px' }}>
+      <button onClick={() => navigate(-1)} className="btn-icon" style={{ position: 'absolute', top: '20px', left: '20px', zIndex: 10, background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(10px)', color: 'var(--text-on-accent)', width: '40px', height: '40px' }}>
         <ChevronLeft size={24} />
       </button>
 

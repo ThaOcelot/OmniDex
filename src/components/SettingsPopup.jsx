@@ -207,7 +207,7 @@ export default function SettingsPopup({ onClose }) {
                 {tier === 'ultra' ? '💎' : '👑'}
               </span>
               <div>
-                <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '800', color: 'white' }}>
+                <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: '800', color: 'var(--text-on-accent)' }}>
                   {tier === 'ultra' ? 'OmniDex Ultra' : tier === 'pro' ? 'OmniDex Pro' : 'OmniDex Base'}
                 </h4>
                 <p style={{ margin: 0, fontSize: '0.75rem', color: tier === 'ultra' ? 'var(--accent-ultra)' : tier === 'pro' ? '#10B981' : 'var(--accent-primary)', fontWeight: 'bold' }}>
@@ -254,7 +254,7 @@ export default function SettingsPopup({ onClose }) {
                 className="btn-primary"
                 style={{
                   width: '100%', padding: '10px', borderRadius: 'var(--radius-full)', fontWeight: 'bold', fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: purchasing ? 'not-allowed' : 'pointer',
-                  background: 'var(--accent-ultra-gradient)', color: '#002538', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)'
+                  background: 'var(--accent-ultra-gradient)', color: 'var(--text-on-ultra)', border: 'none', boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)'
                 }}
               >
                 <Sparkles size={14} />
@@ -288,7 +288,7 @@ export default function SettingsPopup({ onClose }) {
                     transition: 'all 0.2s', textAlign: 'center'
                   }}
                 >
-                  <div style={{ fontSize: '0.6rem', position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', background: '#10B981', color: 'white', padding: '1px 8px', borderRadius: '6px', whiteSpace: 'nowrap' }}>2 MESI GRATIS</div>
+                  <div style={{ fontSize: '0.6rem', position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', background: '#10B981', color: 'var(--text-on-accent)', padding: '1px 8px', borderRadius: '6px', whiteSpace: 'nowrap' }}>2 MESI GRATIS</div>
                   <div style={{ fontSize: '1rem', marginBottom: '2px' }}>€14,99</div>
                   <div style={{ fontSize: '0.65rem', opacity: 0.8 }}>all'anno</div>
                 </button>

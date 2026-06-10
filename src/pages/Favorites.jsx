@@ -347,13 +347,13 @@ export default function Favorites() {
           width: '1080px', height: '1920px', // formato story IG/TikTok
           maxWidth: 'none', maxHeight: 'none', // Override global max-width: 100%
           background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
-          color: 'white', padding: '80px', display: 'flex', flexDirection: 'column',
+          color: 'var(--text-on-accent)', padding: '80px', display: 'flex', flexDirection: 'column',
           alignItems: 'center', fontFamily: 'sans-serif', zIndex: -100
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '24px', marginBottom: '20px' }}>
           <img src={logoUrl} alt="OmniDex Logo" style={{ width: '100px', height: '100px', objectFit: 'contain' }} />
-          <div style={{ fontSize: '5.5rem', fontWeight: '800', letterSpacing: '-2px', lineHeight: '1.1', color: 'white' }}>
+          <div style={{ fontSize: '5.5rem', fontWeight: '800', letterSpacing: '-2px', lineHeight: '1.1', color: 'var(--text-on-accent)' }}>
             <span style={{ background: 'linear-gradient(135deg, #6d28d9, #ec4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Omni</span>Dex
           </div>
         </div>
@@ -399,7 +399,7 @@ export default function Favorites() {
             <button
               onClick={handleShareCard}
               disabled={sharing}
-              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', borderRadius: 'var(--radius-md)', padding: '8px 14px', cursor: sharing ? 'wait' : 'pointer', color: '#002538', fontSize: '0.82rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}
+              style={{ background: 'var(--accent-ultra-gradient)', border: 'none', borderRadius: 'var(--radius-md)', padding: '8px 14px', cursor: sharing ? 'wait' : 'pointer', color: 'var(--text-on-ultra)', fontSize: '0.82rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}
             >
               {sharing ? <Loader2 size={14} className="spin" /> : <Camera size={14} />} Condividi
             </button>

@@ -81,7 +81,7 @@ const AdBanner = () => {
             borderRadius: '4px', 
             fontSize: '0.65rem', 
             fontWeight: 'bold', 
-            color: 'white',
+            color: 'var(--text-on-accent)',
             letterSpacing: '1px',
             textTransform: 'uppercase'
           }}
@@ -89,7 +89,7 @@ const AdBanner = () => {
           Annuncio
         </div>
         <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.85rem', fontWeight: '500' }}>
-          Vuoi rimuovere le pubblicità? Passa a <strong style={{ color: 'white' }}>OmniDex Pro</strong> e sblocca l'esperienza pura!
+          Vuoi rimuovere le pubblicità? Passa a <strong style={{ color: 'var(--text-on-accent)' }}>OmniDex Pro</strong> e sblocca l'esperienza pura!
         </p>
       </div>
 
@@ -100,7 +100,7 @@ const AdBanner = () => {
             background: 'var(--accent-gradient)',
             border: 'none',
             borderRadius: 'var(--radius-full)',
-            color: 'white',
+            color: 'var(--text-on-accent)',
             padding: '6px 14px',
             fontSize: '0.8rem',
             fontWeight: 'bold',

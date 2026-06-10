@@ -153,7 +153,7 @@ const GameCard = ({ game, onClick }) => {
             width: '32px', height: '32px', borderRadius: '50%', border: 'none',
             background: savedStatus ? `${currentStatus?.color}ee` : 'rgba(0,0,0,0.55)',
             backdropFilter: 'blur(6px)',
-            color: 'white', cursor: 'pointer',
+            color: 'var(--text-on-accent)', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: '1rem',
             boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
@@ -225,11 +225,11 @@ const GameCard = ({ game, onClick }) => {
         )}
 
         <div style={{ position: 'absolute', bottom: '15px', left: '15px', right: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-          <h2 style={{ fontSize: '1.2rem', lineHeight: '1.2', fontWeight: '800', textShadow: '0 2px 4px rgba(0,0,0,0.5)', margin: 0, color: 'white' }}>
+          <h2 style={{ fontSize: '1.2rem', lineHeight: '1.2', fontWeight: '800', textShadow: '0 2px 4px rgba(0,0,0,0.5)', margin: 0, color: 'var(--text-on-accent)' }}>
             {game.title}
           </h2>
           {game.year && (
-            <span style={{ background: 'var(--accent-gradient)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', color: 'white', fontWeight: 'bold', flexShrink: 0 }}>
+            <span style={{ background: 'var(--accent-gradient)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', color: 'var(--text-on-accent)', fontWeight: 'bold', flexShrink: 0 }}>
               {game.year}
             </span>
           )}
